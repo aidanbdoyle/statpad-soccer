@@ -717,16 +717,22 @@ function playerWonPLTitle(player) {
   return player.seasons.some(s => s.won_pl_title);
 }
 
+function normForAward(name) {
+  return name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
 function playerWonGoldenBoot(player) {
+  const pNorm = normForAward(player.name);
   return player.seasons.some(s => {
     const winners = GOLDEN_BOOT_WINNERS[s.season] || [];
-    return winners.includes(player.name);
+    return winners.some(w => normForAward(w) === pNorm);
   });
 }
 
 function seasonWonGoldenBoot(player, season) {
+  const pNorm = normForAward(player.name);
   const winners = GOLDEN_BOOT_WINNERS[season.season] || [];
-  return winners.includes(player.name);
+  return winners.some(w => normForAward(w) === pNorm);
 }
 
 function checkQualifier(player, season, qualifier) {
@@ -1217,15 +1223,20 @@ function makeGaveUpCell(rowIdx) {
 
 // ── Score Display ─────────────────────────────────────────────
 function updateScoreDisplay() {
-  const target  = PUZZLE.target;
-  const score   = state.totalScore;
-  const offByEl = document.getElementById('off-by-display');
-  const offByLb = document.getElementById('off-by-label');
-
-  document.getElementById('total-score').textContent = score.toLocaleString();
+  const target    = PUZZLE.target;
+  const score     = state.totalScore;
+  const scoreEl   = document.getElementById('total-score');
+  const scoreLb   = document.getElementById('score-label');
+  const offByEl   = document.getElementById('off-by-display');
+  const offByLb   = document.getElementById('off-by-label');
 
   if (state.gameMode === 'target' && target != null) {
-    // ── Target mode: show how far off the target you are ──
+    // ── Target mode ──
+    // Middle block: show target number instead of actual score
+    scoreEl.textContent = target.toLocaleString();
+    scoreLb.textContent = 'TARGET';
+
+    // Right block: show difference
     const diff = target - score;
     if (score === 0) {
       offByEl.textContent = '—';
@@ -1240,12 +1251,14 @@ function updateScoreDisplay() {
       offByEl.style.color = '#94a3b8';
       offByLb.textContent = 'REMAINING';
     } else {
-      offByEl.textContent = diff.toLocaleString();
+      offByEl.textContent = Math.abs(diff).toLocaleString();
       offByEl.style.color = '#ef4444';
       offByLb.textContent = 'OVER BY';
     }
   } else {
-    // ── Normal mode: show guesses ──
+    // ── Normal mode: show score + guess count ──
+    scoreEl.textContent = score.toLocaleString();
+    scoreLb.textContent = 'YOUR SCORE';
     offByEl.textContent = state.totalGuesses;
     offByEl.style.color = '';
     offByLb.textContent = 'GUESSES';
@@ -1568,17 +1581,10 @@ function _init() {
     player: null, season: null, statValue: null, percentile: null,
   }));
 
-  // Set category display
-  // Score bar target display
-  const targetEl = document.getElementById('target-display');
-  const targetLb = document.getElementById('target-label');
-  if (PUZZLE.target != null) {
-    targetEl.textContent = PUZZLE.target.toLocaleString();
-    targetLb.textContent = PUZZLE.category.toUpperCase();
-  } else {
-    targetEl.textContent = '—';
-    targetLb.textContent = 'TARGET';
-  }
+  // Set category display (top-left: e.g. "CAREER" / "APPEARANCES")
+  const mode = (PUZZLE.categoryMode || 'season') === 'career' ? 'CAREER' : 'SEASON';
+  document.getElementById('category-display').textContent = PUZZLE.category.toUpperCase();
+  document.getElementById('category-label').textContent   = mode;
 
   // Render
   renderGrid();
