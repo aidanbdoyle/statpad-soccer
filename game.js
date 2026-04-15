@@ -1571,7 +1571,7 @@ function handleShare() {
 }
 
 // ── Initialisation ────────────────────────────────────────────
-function init() {
+function _init() {
   // Load player data: prefer scraped data, fall back to sample
   if (window.PLAYERS_DATA && window.PLAYERS_DATA.players && window.PLAYERS_DATA.players.length) {
     players = window.PLAYERS_DATA.players;
@@ -1686,8 +1686,18 @@ function setupEventListeners() {
 }
 
 // ── Entry Point ───────────────────────────────────────────────
-// Wait for players_data.js to (potentially) load before init
+// init() is called by the players_data.js onload/onerror handler in index.html.
+// The DOMContentLoaded fallback below handles the edge case where players_data.js
+// was already cached and executed before this script ran (onload would have fired
+// before init() was defined, so we check and call it here if needed).
+let _initCalled = false;
+function init() {
+  if (_initCalled) return;
+  _initCalled = true;
+  _init();
+}
 window.addEventListener('DOMContentLoaded', () => {
-  // Give async script tag a moment to execute if present
-  setTimeout(init, 150);
+  // Safety net: if players_data.js load event already fired (cached), call init now.
+  // If it hasn't fired yet, the onload handler in index.html will call it.
+  if (window.PLAYERS_DATA !== undefined) init();
 });

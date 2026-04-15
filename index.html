@@ -175,18 +175,19 @@
 
     Until scraper runs, a built-in sample dataset is used automatically.
   -->
+  <script src="puzzles.js"></script>
+  <script src="game.js"></script>
   <script>
-    // Attempt to load players_data.js. If it fails (file doesn't exist yet),
-    // game.js will fall back to its built-in sample dataset.
+    // Load players_data.js and call init() as soon as it's ready.
+    // Falls back to the built-in sample dataset if the file doesn't exist.
     (function () {
       var s = document.createElement('script');
       s.src = 'data/players_data.js';
-      s.onerror = function () { window.PLAYERS_DATA = null; };
+      s.onload  = function () { if (typeof init === 'function') init(); };
+      s.onerror = function () { window.PLAYERS_DATA = null; if (typeof init === 'function') init(); };
       document.head.appendChild(s);
     })();
   </script>
-  <script src="puzzles.js"></script>
-  <script src="game.js"></script>
 
 </body>
 </html>
