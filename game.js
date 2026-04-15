@@ -577,6 +577,124 @@ const state = {
   gameMode: 'normal',   // 'normal' = maximise | 'target' = hit the target
 };
 
+// ── History & Streak (localStorage) ──────────────────────────
+const HISTORY_KEY = 'statpad_history';
+
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '{}'); }
+  catch { return {}; }
+}
+
+function saveHistory(history) {
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); } catch {}
+}
+
+function isGameComplete() {
+  return state.rows.every(r => r.submitted || r.givenUp);
+}
+
+function saveResult() {
+  if (!isGameComplete()) return;
+  const TIER_EMOJI = { purple:'🟣', blue:'🔵', gold:'🟠', silver:'⬜', bronze:'🟫', '':'⬛' };
+  const emojis = state.rows.map(r => {
+    if (r.givenUp)   return '❌';
+    if (!r.submitted) return '⬜';
+    return TIER_EMOJI[getPercentileTier(r.percentile)] || '⬛';
+  }).join('');
+
+  const submitted = state.rows.filter(r => r.submitted && r.percentile !== null);
+  const avgPct = submitted.length
+    ? (submitted.reduce((s,r) => s + r.percentile, 0) / submitted.length).toFixed(1)
+    : '0';
+
+  const history = loadHistory();
+  history[todayKey()] = {
+    puzzleNumber: PUZZLE.puzzleNumber || '?',
+    score:        state.totalScore,
+    guesses:      state.totalGuesses,
+    avgPct,
+    emojis,
+    mode:         PUZZLE.categoryMode || 'season',
+    category:     PUZZLE.category,
+    completed:    true,
+  };
+  saveHistory(history);
+  updateStreakDisplay();
+}
+
+function getStreak() {
+  const history = loadHistory();
+  let streak = 0;
+  const d = new Date();
+  for (let i = 0; i < 365; i++) {
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if (history[key] && history[key].completed) {
+      streak++;
+      d.setDate(d.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+function updateStreakDisplay() {
+  const streak = getStreak();
+  const el = document.getElementById('streak-display');
+  if (!el) return;
+  el.textContent = streak > 0 ? `🔥 ${streak}` : '';
+  el.title = streak === 1 ? '1 day streak' : `${streak} day streak`;
+}
+
+function renderHistoryInModal() {
+  const el = document.getElementById('htp-history');
+  if (!el) return;
+  const history = loadHistory();
+  const entries = [];
+  const d = new Date();
+  for (let i = 6; i >= 0; i--) {
+    const dd = new Date(d);
+    dd.setDate(d.getDate() - i);
+    const key = `${dd.getFullYear()}-${String(dd.getMonth()+1).padStart(2,'0')}-${String(dd.getDate()).padStart(2,'0')}`;
+    entries.push({ key, data: history[key] || null });
+  }
+
+  el.innerHTML = '';
+  const hasAny = entries.some(e => e.data);
+  if (!hasAny) {
+    el.innerHTML = '<p style="color:#888;font-size:0.85rem">No history yet — play a puzzle to start tracking!</p>';
+    return;
+  }
+
+  entries.forEach(({ key, data }) => {
+    const row = document.createElement('div');
+    row.className = 'htp-history-row';
+
+    const dateEl = document.createElement('span');
+    dateEl.className = 'htp-history-date';
+    const [,mm,dd] = key.split('-');
+    dateEl.textContent = `${mm}/${dd}`;
+
+    const emojisEl = document.createElement('span');
+    emojisEl.className = 'htp-history-emojis';
+    emojisEl.textContent = data ? data.emojis : '· · · · ·';
+
+    const scoreEl = document.createElement('span');
+    scoreEl.className = 'htp-history-score';
+    scoreEl.textContent = data ? data.score.toLocaleString() : '—';
+
+    row.appendChild(dateEl);
+    row.appendChild(emojisEl);
+    row.appendChild(scoreEl);
+    el.appendChild(row);
+  });
+}
+
 // ── Utility ───────────────────────────────────────────────────
 function seasonLabel(year) {
   // e.g. 2023 → "2023-24"
@@ -893,9 +1011,22 @@ function makeResultCell(rowIdx) {
   chevron.className = 'result-expand-btn';
   chevron.textContent = '▼';
 
+  // Photo + name row
+  const topRow = document.createElement('div');
+  topRow.className = 'result-top-row';
+
+  const avatar = makePlayerAvatar(player);
+
+  const nameWrap = document.createElement('div');
+  nameWrap.className = 'result-name-wrap';
+
   const name = document.createElement('div');
   name.className = 'result-player-name';
   name.textContent = player.name;
+
+  nameWrap.appendChild(name);
+  topRow.appendChild(avatar);
+  topRow.appendChild(nameWrap);
 
   const seasonEl = document.createElement('div');
   seasonEl.className = 'result-season';
@@ -946,7 +1077,7 @@ function makeResultCell(rowIdx) {
   pWrap.appendChild(pLabel);
 
   cell.appendChild(chevron);
-  cell.appendChild(name);
+  cell.appendChild(topRow);
   cell.appendChild(seasonEl);
   cell.appendChild(statRow);
   cell.appendChild(pWrap);
@@ -1127,6 +1258,38 @@ function normaliseSearch(str) {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 }
 
+// ── Player photo ─────────────────────────────────────────────
+function playerPhotoUrl(playerId) {
+  return `https://resources.premierleague.com/premierleague/photos/players/110x140/p${playerId}.png`;
+}
+
+function makePlayerAvatar(player) {
+  const wrap = document.createElement('div');
+  wrap.className = 'player-avatar';
+
+  const img = document.createElement('img');
+  img.src     = playerPhotoUrl(player.id);
+  img.alt     = player.name;
+  img.className = 'player-avatar-img';
+
+  // On error show initials fallback
+  img.onerror = () => {
+    img.remove();
+    const initials = player.name
+      .split(' ')
+      .map(w => w[0])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join('')
+      .toUpperCase();
+    wrap.textContent = initials;
+    wrap.classList.add('player-avatar-initials');
+  };
+
+  wrap.appendChild(img);
+  return wrap;
+}
+
 function searchPlayers(query) {
   if (!query || query.length < 2) return [];
   const q = normaliseSearch(query);
@@ -1250,6 +1413,7 @@ function handleSubmit() {
 
   updateActionCell(activeRow);
   updateScoreDisplay();
+  if (isGameComplete()) saveResult();
   closeModal();
 }
 
@@ -1258,6 +1422,7 @@ function handleGiveUp() {
   state.rows[activeRow] = { submitted: false, givenUp: true, player: null, season: null, statValue: null, percentile: null };
   updateActionCell(activeRow);
   updateScoreDisplay();
+  if (isGameComplete()) saveResult();
   closeModal();
 }
 
@@ -1399,6 +1564,7 @@ function init() {
   renderGrid();
   computeAllValidAnswers();
   updateScoreDisplay();
+  updateStreakDisplay();
   setupEventListeners();
 }
 
@@ -1446,6 +1612,7 @@ function setupEventListeners() {
 
   // How To Play
   document.getElementById('btn-how-to-play').addEventListener('click', () => {
+    renderHistoryInModal();
     document.getElementById('htp-overlay').classList.remove('hidden');
   });
   document.getElementById('htp-close-btn').addEventListener('click', () => {

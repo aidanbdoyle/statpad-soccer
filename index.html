@@ -12,6 +12,7 @@
     <!-- ── Header ── -->
     <header id="main-header">
       <h1 class="site-title">StatpadGame.com</h1>
+      <span id="streak-display"></span>
       <div id="header-right">
         <div class="sport-badge">PL ▾</div>
       </div>
@@ -140,6 +141,9 @@
           <li>Use <strong>Give Up</strong> on a row if you're stuck — it won't count as a guess.</li>
           <li>Hit <strong>SHARE</strong> after finishing to copy your results and send to friends.</li>
         </ul>
+
+        <h3>Your History</h3>
+        <div id="htp-history"></div>
       </div>
     </div>
   </div>
@@ -181,7 +185,7 @@
       document.head.appendChild(s);
     })();
   </script>
-  <script src="puzzle.js"></script>
+  <script src="puzzles.js"></script>
   <script src="game.js"></script>
 
 </body>
