@@ -1259,40 +1259,22 @@ function normaliseSearch(str) {
 }
 
 // ── Player photo ─────────────────────────────────────────────
-// FPL photo codes: keyed by normalised player name (accent-stripped, lowercase).
-// Populated at startup by fetchFplPhotoCodes(); used for current-season players.
-const fplPhotoCodes = {};   // normName → numeric code
+// photo_codes.js (loaded before game.js) sets window.FPL_PHOTO_CODES:
+// a flat map of lowercased name/web_name → numeric FPL photo code.
 
 function normName(name) {
   return name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 }
 
-async function fetchFplPhotoCodes() {
-  try {
-    const res = await fetch('https://fantasy.premierleague.com/api/bootstrap-static/');
-    if (!res.ok) return;
-    const data = await res.json();
-    (data.elements || []).forEach(el => {
-      if (el.code && el.web_name) {
-        // Index by both web_name and full name for broader matching
-        fplPhotoCodes[normName(el.web_name)] = el.code;
-        if (el.first_name && el.second_name) {
-          fplPhotoCodes[normName(`${el.first_name} ${el.second_name}`)] = el.code;
-        }
-      }
-    });
-  } catch (e) {
-    // Network unavailable – photos will fall back to initials
-  }
-}
-
 function getFplPhotoCode(player) {
-  // Try full name first, then last word of name (web_name equivalent)
+  const codes = window.FPL_PHOTO_CODES;
+  if (!codes) return null;
   const full = normName(player.name);
-  if (fplPhotoCodes[full]) return fplPhotoCodes[full];
+  if (codes[full]) return codes[full];
+  // Try last surname only (matches FPL web_name style)
   const parts = player.name.trim().split(' ');
   const last = normName(parts[parts.length - 1]);
-  if (fplPhotoCodes[last]) return fplPhotoCodes[last];
+  if (codes[last]) return codes[last];
   return null;
 }
 
@@ -1579,9 +1561,6 @@ function _init() {
     players = SAMPLE_PLAYERS;
     console.info('StatpadGame: using built-in sample dataset. Run scraper.py to load full data.');
   }
-
-  // Pre-fetch FPL photo codes in the background (current-season players only)
-  fetchFplPhotoCodes();
 
   // Initialise row state
   state.rows = PUZZLE.rows.map(() => ({
