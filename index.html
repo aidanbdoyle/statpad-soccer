@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StatpadGame.com — Premier League</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ── Header ── -->
+    <header id="main-header">
+      <h1 class="site-title">StatpadGame.com</h1>
+      <div id="header-right">
+        <div class="sport-badge">PL ▾</div>
+      </div>
+    </header>
+
+    <!-- ── Score Bar ── -->
+    <div id="score-bar">
+      <div class="score-block">
+        <div class="score-value" id="target-display">—</div>
+        <div class="score-label" id="target-label">TARGET</div>
+      </div>
+      <div class="score-block">
+        <div class="score-value" id="total-score">0</div>
+        <div class="score-label">YOUR SCORE</div>
+      </div>
+      <div class="score-block">
+        <div class="score-value" id="off-by-display">—</div>
+        <div class="score-label" id="off-by-label">OFF BY</div>
+      </div>
+    </div>
+
+    <!-- ── Game Grid (rows injected by game.js) ── -->
+    <div id="game-grid"></div>
+
+    <!-- ── Footer ── -->
+    <footer id="main-footer">
+      <button class="footer-btn" id="btn-target">
+        <span class="footer-icon">◎</span>
+        <span>TARGET</span>
+      </button>
+      <button class="footer-btn" id="btn-how-to-play">
+        <span class="footer-icon">?</span>
+        <span>HOW TO PLAY</span>
+      </button>
+      <button class="footer-btn" id="btn-share">
+        <span class="footer-icon">⬆</span>
+        <span id="share-btn-label">SHARE</span>
+      </button>
+    </footer>
+
+  </div><!-- /#app -->
+
+
+  <!-- ════════════════════════════════════════
+       ADD PLAYER MODAL
+  ════════════════════════════════════════ -->
+  <div id="modal-overlay" class="overlay hidden">
+    <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+      <div class="modal-header">
+        <span id="modal-title" class="modal-title">ADD PLAYER</span>
+        <button class="modal-close-btn" id="modal-close-btn">Close</button>
+      </div>
+
+      <div class="search-wrapper">
+        <input
+          type="text"
+          id="player-search"
+          placeholder="Type a player name…"
+          autocomplete="off"
+          spellcheck="false"
+        >
+        <button id="search-clear" class="hidden" aria-label="Clear search">✕</button>
+      </div>
+
+      <div id="search-results" role="listbox" aria-label="Player suggestions"></div>
+
+      <p id="search-hint" class="search-hint">Start typing to search all Premier League players.</p>
+      <p id="search-error" class="search-error hidden"></p>
+
+      <div class="modal-footer-btns">
+        <button id="btn-give-up" class="btn-give-up">Give Up</button>
+        <button id="btn-submit"  class="btn-submit" disabled>Submit</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       HOW TO PLAY MODAL
+  ════════════════════════════════════════ -->
+  <div id="htp-overlay" class="overlay hidden">
+    <div id="htp-modal" role="dialog" aria-modal="true">
+
+      <div class="modal-header">
+        <span class="modal-title">How to Play</span>
+        <button class="modal-close-btn" id="htp-close-btn">Close</button>
+      </div>
+
+      <div class="htp-body">
+        <h3>Objective</h3>
+        <p>Select 5 Premier League players to <strong>maximise your score</strong> for the category shown at the top (e.g. Goals, Assists, Clean Sheets).</p>
+
+        <h3>How to Play</h3>
+        <p>Submit one player per row. Each row has up to three requirements:</p>
+        <ul>
+          <li><strong>Club(s)</strong> — the player must have appeared for that club in the Premier League.</li>
+          <li><strong>Season range</strong> — the appearance must fall within those years.</li>
+          <li><strong>Qualifier</strong> — an optional extra condition (e.g. "WON PL TITLE").</li>
+        </ul>
+        <p>Qualifiers are tagged <em>SAME SEASON</em> (must be met in the submitted season) or <em>CAREER</em> (met at any point in their PL career).</p>
+
+        <h3>Scoring</h3>
+        <p>When you submit a valid player, their best matching season's stat is added to your total score.</p>
+        <p>Example: submitting a player who scored <strong>32 goals</strong> in their best valid season adds <strong>32</strong> to your score.</p>
+
+        <h3>Percentile</h3>
+        <p>The percentile beneath each stat shows how your answer ranks against every possible valid answer for that row. <strong>100% = the best possible pick.</strong></p>
+
+        <h3>Easy Mode</h3>
+        <p>Easy Mode is always on — just submit a player's name and the best valid season is automatically chosen for you.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       TARGET SCORES MODAL
+  ════════════════════════════════════════ -->
+  <div id="target-overlay" class="overlay hidden">
+    <div id="target-modal" role="dialog" aria-modal="true">
+
+      <div class="modal-header">
+        <span class="modal-title">TARGET SCORES</span>
+        <button class="modal-close-btn" id="target-close-btn">Close</button>
+      </div>
+
+      <div id="target-display-modal"></div>
+    </div>
+  </div>
+
+
+  <!-- ── Data + Logic ── -->
+  <!--
+    SETUP:
+      1. Run:  python3 scraper.py
+         This generates data/players_data.js (takes ~1–2 hrs, fetches from fbref.com).
+      2. Open index.html in a browser (or serve with: python3 -m http.server 8080).
+      3. Edit puzzle.js to change today's puzzle.
+
+    Until scraper runs, a built-in sample dataset is used automatically.
+  -->
+  <script>
+    // Attempt to load players_data.js. If it fails (file doesn't exist yet),
+    // game.js will fall back to its built-in sample dataset.
+    (function () {
+      var s = document.createElement('script');
+      s.src = 'data/players_data.js';
+      s.onerror = function () { window.PLAYERS_DATA = null; };
+      document.head.appendChild(s);
+    })();
+  </script>
+  <script src="puzzle.js"></script>
+  <script src="game.js"></script>
+
+</body>
+</html>

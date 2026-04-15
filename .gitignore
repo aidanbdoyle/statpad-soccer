@@ -1,0 +1,6 @@
+data/players.json
+data/scrape_progress.json
+data/scrape.log
+data/scraper_log.txt
+scraper.py
+.claude/
