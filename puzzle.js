@@ -113,7 +113,7 @@ const PUZZLE = {
       }
     },
     {
-      // Row 4: Any club, 2020–2026, outfield player with max 10 goals that season
+      // Row 4: Any club, 2020–2026, outfield player with max 5 career goals
       clubs: [],
       seasonStart: 2020,
       seasonEnd: 2026,

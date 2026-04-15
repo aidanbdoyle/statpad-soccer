@@ -353,7 +353,7 @@ input  { font-family: inherit; }
 }
 .percentile-bar-fill {
   height: 100%;
-  background: #5aab6e;
+  background: #4a4a47;
   border-radius: 2px;
   transition: width 0.4s ease;
 }
@@ -473,48 +473,6 @@ input  { font-family: inherit; }
   line-height: 1;
 }
 
-.easy-mode-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #3a3a37;
-  border: 1px solid #555;
-  border-radius: 50px;
-  padding: 10px 18px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #cccccc;
-  user-select: none;
-}
-.easy-mode-pill.active { border-color: #5aab6e; color: #5aab6e; }
-
-.easy-toggle-dot {
-  width: 28px;
-  height: 16px;
-  background: #444;
-  border-radius: 8px;
-  position: relative;
-  transition: background 0.2s;
-}
-.easy-toggle-dot::after {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background: #888;
-  border-radius: 50%;
-  top: 2px;
-  left: 2px;
-  transition: left 0.2s, background 0.2s;
-}
-.easy-mode-pill.active .easy-toggle-dot {
-  background: #3d6b4a;
-}
-.easy-mode-pill.active .easy-toggle-dot::after {
-  left: 14px;
-  background: #5aab6e;
-}
 
 /* ══════════════════════════════════════════
    OVERLAYS & MODALS
@@ -718,41 +676,32 @@ input  { font-family: inherit; }
   line-height: 1.6;
 }
 
-/* ── Target Modal ── */
-.target-intro {
-  font-size: 0.85rem;
-  color: #aaaaaa;
+
+.target-big-number {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: -0.02em;
+  margin: 16px 0 4px;
 }
 
-#target-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.target-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #1e1c1a;
-  padding: 12px 14px;
-  border-radius: 8px;
-}
-.target-row-desc {
-  font-size: 0.8rem;
-  color: #cccccc;
-  flex: 1;
-}
-.target-row-best {
+.target-big-unit {
   font-size: 1rem;
-  font-weight: 700;
-  color: #5aab6e;
-  margin-left: 12px;
+  color: #94a3b8;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
 }
-.target-row-player {
-  font-size: 0.7rem;
-  color: #888;
-  margin-left: 8px;
+
+.target-status {
+  text-align: center;
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  margin-top: 8px;
 }
 
 /* ── Loading / No Data ── */
@@ -788,5 +737,5 @@ input  { font-family: inherit; }
     grid-template-columns: 80px 90px 1fr 100px;
   }
   #main-footer { gap: 6px; }
-  .footer-btn, .easy-mode-pill { padding: 8px 14px; }
+  .footer-btn { padding: 8px 14px; }
 }

@@ -935,7 +935,12 @@ function makeResultCell(rowIdx) {
 
   const pLabel = document.createElement('div');
   pLabel.className = 'percentile-label';
-  pLabel.textContent = `${percentile}th PERCENTILE`;
+  const ordinal = (n) => {
+    if (n >= 11 && n <= 13) return 'th';
+    const s = ['th','st','nd','rd'];
+    return s[n % 10] || 'th';
+  };
+  pLabel.textContent = `${percentile}${ordinal(percentile)} PERCENTILE`;
 
   pWrap.appendChild(pBg);
   pWrap.appendChild(pLabel);
@@ -1221,7 +1226,7 @@ function handleSubmit() {
   const validSeasons = getValidSeasons(selectedPlayer, rowConfig);
 
   if (!validSeasons.length) {
-    const clubs = rowConfig.clubs.join(' / ');
+    const clubs = rowConfig.clubs.length ? rowConfig.clubs.join(' / ') : 'any Premier League club';
     const qualArr = !rowConfig.qualifier ? [] : Array.isArray(rowConfig.qualifier) ? rowConfig.qualifier : [rowConfig.qualifier];
     const qual  = qualArr.length ? ` and meets the "${qualArr.map(q => q.display).join(' + ')}" requirement` : '';
     showError(`${selectedPlayer.name} didn't play for ${clubs} in that season range${qual}.`);
@@ -1251,7 +1256,6 @@ function handleSubmit() {
 function handleGiveUp() {
   if (activeRow === null) return;
   state.rows[activeRow] = { submitted: false, givenUp: true, player: null, season: null, statValue: null, percentile: null };
-  state.totalGuesses += 1;
   updateActionCell(activeRow);
   updateScoreDisplay();
   closeModal();
@@ -1330,7 +1334,8 @@ function handleShare() {
 
   // One emoji per row
   const emojis = state.rows.map(r => {
-    if (!r.submitted) return '⬛';
+    if (r.givenUp) return '❌';
+    if (!r.submitted) return '⬜';
     return TIER_EMOJI[getPercentileTier(r.percentile)] || '⬛';
   }).join('');
 
