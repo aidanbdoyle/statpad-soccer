@@ -278,7 +278,7 @@ const GOLDEN_BOOT_WINNERS = {
   "2011-12": ["Robin van Persie"],
   "2012-13": ["Robin van Persie"],
   "2013-14": ["Luis Suarez"],
-  "2014-15": ["Harry Kane"],
+  "2014-15": ["Sergio Aguero"],
   "2015-16": ["Harry Kane"],
   "2016-17": ["Harry Kane"],
   "2017-18": ["Mohamed Salah"],
@@ -1259,22 +1259,50 @@ function normaliseSearch(str) {
 }
 
 // ── Player photo ─────────────────────────────────────────────
-function playerPhotoUrl(playerId) {
-  return `https://resources.premierleague.com/premierleague/photos/players/110x140/p${playerId}.png`;
+// FPL photo codes: keyed by normalised player name (accent-stripped, lowercase).
+// Populated at startup by fetchFplPhotoCodes(); used for current-season players.
+const fplPhotoCodes = {};   // normName → numeric code
+
+function normName(name) {
+  return name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+async function fetchFplPhotoCodes() {
+  try {
+    const res = await fetch('https://fantasy.premierleague.com/api/bootstrap-static/');
+    if (!res.ok) return;
+    const data = await res.json();
+    (data.elements || []).forEach(el => {
+      if (el.code && el.web_name) {
+        // Index by both web_name and full name for broader matching
+        fplPhotoCodes[normName(el.web_name)] = el.code;
+        if (el.first_name && el.second_name) {
+          fplPhotoCodes[normName(`${el.first_name} ${el.second_name}`)] = el.code;
+        }
+      }
+    });
+  } catch (e) {
+    // Network unavailable – photos will fall back to initials
+  }
+}
+
+function getFplPhotoCode(player) {
+  // Try full name first, then last word of name (web_name equivalent)
+  const full = normName(player.name);
+  if (fplPhotoCodes[full]) return fplPhotoCodes[full];
+  const parts = player.name.trim().split(' ');
+  const last = normName(parts[parts.length - 1]);
+  if (fplPhotoCodes[last]) return fplPhotoCodes[last];
+  return null;
 }
 
 function makePlayerAvatar(player) {
   const wrap = document.createElement('div');
   wrap.className = 'player-avatar';
 
-  const img = document.createElement('img');
-  img.src     = playerPhotoUrl(player.id);
-  img.alt     = player.name;
-  img.className = 'player-avatar-img';
+  const code = getFplPhotoCode(player);
 
-  // On error show initials fallback
-  img.onerror = () => {
-    img.remove();
+  function showInitials() {
     const initials = player.name
       .split(' ')
       .map(w => w[0])
@@ -1284,9 +1312,19 @@ function makePlayerAvatar(player) {
       .toUpperCase();
     wrap.textContent = initials;
     wrap.classList.add('player-avatar-initials');
-  };
+  }
 
-  wrap.appendChild(img);
+  if (code) {
+    const img = document.createElement('img');
+    img.src       = `https://resources.premierleague.com/premierleague/photos/players/110x140/p${code}.png`;
+    img.alt       = player.name;
+    img.className = 'player-avatar-img';
+    img.onerror   = () => { img.remove(); showInitials(); };
+    wrap.appendChild(img);
+  } else {
+    showInitials();
+  }
+
   return wrap;
 }
 
@@ -1541,6 +1579,9 @@ function init() {
     players = SAMPLE_PLAYERS;
     console.info('StatpadGame: using built-in sample dataset. Run scraper.py to load full data.');
   }
+
+  // Pre-fetch FPL photo codes in the background (current-season players only)
+  fetchFplPhotoCodes();
 
   // Initialise row state
   state.rows = PUZZLE.rows.map(() => ({
