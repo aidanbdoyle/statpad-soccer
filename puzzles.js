@@ -65,34 +65,34 @@ const PUZZLES = [
     target: 75,
     rows: [
       {
-        clubs: ["Chelsea"],
-        seasonStart: 2004,
+        clubs: ["West Ham"],
+        seasonStart: 2010,
+        seasonEnd: 2019,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2006,
+        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "SEASON" }
+      },
+      {
+        clubs: ["Arsenal"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "England", display: "ENGLISH", scopeDisplay: "SEASON" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "relegated", display: "RELEGATED", scopeDisplay: "SEASON" }
+      },
+      {
+        clubs: ["Manchester City", "Manchester United"],
+        seasonStart: 2010,
         seasonEnd: 2015,
-        qualifier: null
-      },
-      {
-        clubs: [],
-        seasonStart: 1992,
-        seasonEnd: 2010,
-        qualifier: { type: "nationality", value: "England", display: "ENGLISH", scopeDisplay: "CAREER" }
-      },
-      {
-        clubs: ["Manchester City"],
-        seasonStart: 2011,
-        seasonEnd: 2026,
-        qualifier: null
-      },
-      {
-        clubs: [],
-        seasonStart: 1992,
-        seasonEnd: 2026,
-        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
-      },
-      {
-        clubs: ["Liverpool"],
-        seasonStart: 2017,
-        seasonEnd: 2026,
-        qualifier: null
+        qualifier: { type: "position", value: "DF", display: "DEFENDER", scopeDisplay: "SEASON" }
       }
     ]
   },
