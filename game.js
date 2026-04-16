@@ -608,6 +608,7 @@ let players = [];
 let rowValidAnswers = [];   // per-row sorted arrays of {player, season, statValue}
 let activeRow = null;
 let selectedPlayer = null;
+let currentDaySince = 0;   // tracks which puzzle date is active (for history keying)
 
 const state = {
   rows: [],       // {submitted, givenUp, player, season, statValue, percentile}
@@ -619,9 +620,11 @@ const state = {
 // ── History & Streak (localStorage) ──────────────────────────
 const HISTORY_KEY = 'statpad_history';
 
-function todayKey() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+// Returns YYYY-MM-DD for the puzzle currently being played (keyed by daysSince)
+function puzzleDateKey(daySince) {
+  const startUTC = Date.UTC(2026, 3, 15);
+  const d = new Date(startUTC + daySince * 86400000);
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
 }
 
 function loadHistory() {
@@ -641,27 +644,41 @@ function saveResult() {
   if (!isGameComplete()) return;
   const TIER_EMOJI = { purple:'🟣', blue:'🔵', gold:'🟠', silver:'⬜', bronze:'🟫', '':'⬛' };
   const emojis = state.rows.map(r => {
-    if (r.givenUp)   return '❌';
+    if (r.givenUp)    return '❌';
     if (!r.submitted) return '⬜';
     return TIER_EMOJI[getPercentileTier(r.percentile)] || '⬛';
   }).join('');
 
-  const submitted = state.rows.filter(r => r.submitted && r.percentile !== null);
-  const avgPct = submitted.length
-    ? (submitted.reduce((s,r) => s + r.percentile, 0) / submitted.length).toFixed(1)
-    : '0';
-
+  const key     = puzzleDateKey(currentDaySince);
   const history = loadHistory();
-  history[todayKey()] = {
-    puzzleNumber: PUZZLE.puzzleNumber || '?',
-    score:        state.totalScore,
-    guesses:      state.totalGuesses,
-    avgPct,
-    emojis,
-    mode:         PUZZLE.categoryMode || 'season',
-    category:     PUZZLE.category,
-    completed:    true,
-  };
+
+  // Initialise entry if first time completing this puzzle date
+  if (!history[key]) {
+    history[key] = {
+      puzzleNumber: PUZZLE.puzzleNumber || '?',
+      emojis,
+      normal: null,
+      target: null,
+      completed: true,
+    };
+  }
+
+  // Save first score only for each mode — never overwrite
+  if (state.gameMode !== 'target' && !history[key].normal) {
+    history[key].normal = {
+      score:   state.totalScore,
+      guesses: state.totalGuesses,
+    };
+  }
+  if (state.gameMode === 'target' && PUZZLE.target != null && !history[key].target) {
+    const diff = PUZZLE.target - state.totalScore;
+    history[key].target = {
+      score:  state.totalScore,
+      target: PUZZLE.target,
+      diff,
+    };
+  }
+
   saveHistory(history);
   updateStreakDisplay();
 }
@@ -669,12 +686,14 @@ function saveResult() {
 function getStreak() {
   const history = loadHistory();
   let streak = 0;
-  const d = new Date();
+  const startUTC = Date.UTC(2026, 3, 15);
+  const now = new Date();
+  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
   for (let i = 0; i < 365; i++) {
-    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const d = new Date(todayUTC - i * 86400000);
+    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
     if (history[key] && history[key].completed) {
       streak++;
-      d.setDate(d.getDate() - 1);
     } else {
       break;
     }
@@ -690,47 +709,86 @@ function updateStreakDisplay() {
   el.title = streak === 1 ? '1 day streak' : `${streak} day streak`;
 }
 
+function removeHistoryScore(key, mode) {
+  const history = loadHistory();
+  if (!history[key]) return;
+  history[key][mode] = null;
+  // If both scores removed, delete the whole entry
+  if (!history[key].normal && !history[key].target) {
+    delete history[key];
+  }
+  saveHistory(history);
+  renderHistoryInModal();
+  updateStreakDisplay();
+}
+
 function renderHistoryInModal() {
   const el = document.getElementById('htp-history');
   if (!el) return;
   const history = loadHistory();
+
+  // Collect last 10 days that have any data
+  const startUTC = Date.UTC(2026, 3, 15);
+  const now = new Date();
+  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
   const entries = [];
-  const d = new Date();
-  for (let i = 6; i >= 0; i--) {
-    const dd = new Date(d);
-    dd.setDate(d.getDate() - i);
-    const key = `${dd.getFullYear()}-${String(dd.getMonth()+1).padStart(2,'0')}-${String(dd.getDate()).padStart(2,'0')}`;
-    entries.push({ key, data: history[key] || null });
+  for (let i = 0; i < 30 && entries.length < 10; i++) {
+    const d = new Date(todayUTC - i * 86400000);
+    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+    if (history[key]) entries.push({ key, data: history[key] });
   }
 
   el.innerHTML = '';
-  const hasAny = entries.some(e => e.data);
-  if (!hasAny) {
-    el.innerHTML = '<p style="color:#888;font-size:0.85rem">No history yet — play a puzzle to start tracking!</p>';
+  if (!entries.length) {
+    el.innerHTML = '<p style="color:#888;font-size:0.85rem">No history yet — complete a puzzle to start tracking!</p>';
     return;
   }
 
   entries.forEach(({ key, data }) => {
-    const row = document.createElement('div');
-    row.className = 'htp-history-row';
+    const [, mm, dd] = key.split('-');
+    const dateLabel = `${mm}/${dd}`;
 
-    const dateEl = document.createElement('span');
-    dateEl.className = 'htp-history-date';
-    const [,mm,dd] = key.split('-');
-    dateEl.textContent = `${mm}/${dd}`;
+    // Header row: date + emojis
+    const header = document.createElement('div');
+    header.className = 'htp-history-header';
+    header.innerHTML = `<span class="htp-history-date">${dateLabel}</span><span class="htp-history-emojis">${data.emojis || ''}</span><span class="htp-history-puzzle">#${data.puzzleNumber}</span>`;
+    el.appendChild(header);
 
-    const emojisEl = document.createElement('span');
-    emojisEl.className = 'htp-history-emojis';
-    emojisEl.textContent = data ? data.emojis : '· · · · ·';
+    // Score rows: one per mode
+    const addScoreRow = (label, scoreData, mode) => {
+      if (!scoreData) return;
+      const row = document.createElement('div');
+      row.className = 'htp-history-score-row';
 
-    const scoreEl = document.createElement('span');
-    scoreEl.className = 'htp-history-score';
-    scoreEl.textContent = data ? data.score.toLocaleString() : '—';
+      const lbl = document.createElement('span');
+      lbl.className = 'htp-history-mode-label';
+      lbl.textContent = label;
 
-    row.appendChild(dateEl);
-    row.appendChild(emojisEl);
-    row.appendChild(scoreEl);
-    el.appendChild(row);
+      const val = document.createElement('span');
+      val.className = 'htp-history-score';
+      if (mode === 'normal') {
+        val.textContent = `${scoreData.score.toLocaleString()} pts · ${scoreData.guesses} guess${scoreData.guesses !== 1 ? 'es' : ''}`;
+      } else {
+        const sign = scoreData.diff > 0 ? '+' : scoreData.diff < 0 ? '' : '';
+        val.textContent = scoreData.diff === 0
+          ? `🎯 Exact! (${scoreData.score.toLocaleString()} pts)`
+          : `${sign}${scoreData.diff.toLocaleString()} off target`;
+      }
+
+      const xBtn = document.createElement('button');
+      xBtn.className = 'htp-history-remove';
+      xBtn.textContent = '✕';
+      xBtn.title = 'Remove this score';
+      xBtn.addEventListener('click', () => removeHistoryScore(key, mode));
+
+      row.appendChild(lbl);
+      row.appendChild(val);
+      row.appendChild(xBtn);
+      el.appendChild(row);
+    };
+
+    addScoreRow('STANDARD', data.normal, 'normal');
+    addScoreRow('TARGET',   data.target, 'target');
   });
 }
 
@@ -1613,6 +1671,7 @@ function handleShare() {
   lines.push(`Guesses: ${guesses}`);
   lines.push(`Percentile: ${avgPct}%`);
   lines.push(emojis);
+  lines.push(`https://aidanbdoyle.github.io/statpad-soccer/`);
   const text = lines.join('\n');
 
   const label = document.getElementById('share-btn-label');
@@ -1637,6 +1696,12 @@ function _init() {
     players = SAMPLE_PLAYERS;
     console.info('StatpadGame: using built-in sample dataset. Run scraper.py to load full data.');
   }
+
+  // Set currentDaySince from today
+  const now = new Date();
+  const todayUTC  = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  const startUTC  = Date.UTC(2026, 3, 15);
+  currentDaySince = Math.max(0, Math.floor((todayUTC - startUTC) / 86400000));
 
   // Initialise row state
   state.rows = PUZZLE.rows.map(() => ({
@@ -1685,6 +1750,7 @@ function populateDateSelect() {
 function resetGame(daysSince) {
   // Set the puzzle for this day
   window.PUZZLE = PUZZLES[daysSince % PUZZLES.length];
+  currentDaySince = daysSince;
 
   // Reset all mutable state
   state.rows = PUZZLE.rows.map(() => ({

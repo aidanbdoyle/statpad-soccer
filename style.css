@@ -810,23 +810,66 @@ input  { font-family: inherit; }
   margin-top: 8px;
 }
 
-.htp-history-row {
-  display: grid;
-  grid-template-columns: 40px 1fr auto;
+.htp-history-header {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  font-size: 0.85rem;
+  gap: 10px;
+  padding: 8px 0 4px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin-top: 4px;
 }
 
 .htp-history-date {
   color: #888;
+  font-size: 0.8rem;
+  min-width: 32px;
 }
 
 .htp-history-emojis {
   font-size: 1rem;
   letter-spacing: 2px;
+  flex: 1;
+}
+
+.htp-history-puzzle {
+  color: #555;
+  font-size: 0.75rem;
+}
+
+.htp-history-score-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0 3px 32px;
+  font-size: 0.82rem;
+}
+
+.htp-history-mode-label {
+  color: #666;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  min-width: 58px;
+}
+
+.htp-history-score {
+  color: #ddd;
+  flex: 1;
+}
+
+.htp-history-remove {
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.htp-history-remove:hover {
+  color: #ef4444;
 }
 
 .htp-history-score {
