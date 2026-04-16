@@ -33,7 +33,7 @@ input  { font-family: inherit; }
   max-width: 760px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 14px 16px 10px;
   position: relative;
 }
