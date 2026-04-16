@@ -1878,7 +1878,7 @@ function getBestStreak() {
 
 function nextPuzzleCountdown() {
   const now      = new Date();
-  const midnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+  const midnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1) + 15 * 3600000);
   const ms       = midnight - now;
   const h = Math.floor(ms / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);
