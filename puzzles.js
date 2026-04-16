@@ -77,7 +77,7 @@ const PUZZLES = [
         qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "SEASON" }
       },
       {
-        clubs: ["Arsenal"],
+        clubs: ["Arsenal","Chelsea"],
         seasonStart: 1992,
         seasonEnd: 2026,
         qualifier: { type: "nationality_one_of", values: ["Spain","Italy","Portugal"], display: "SPANISH / ITALIAN / PORTUGUESE", scopeDisplay: "SEASON" }
