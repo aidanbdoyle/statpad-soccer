@@ -225,6 +225,13 @@ input  { font-family: inherit; }
   line-height: 1.2;
 }
 
+.qualifier-flags {
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: help;
+  letter-spacing: 0.1em;
+}
+
 .qualifier-scope {
   display: inline-block;
   background: #444440;

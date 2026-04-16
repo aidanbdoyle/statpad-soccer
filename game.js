@@ -128,6 +128,45 @@ const CLUB_LOGOS = {
   "Luton":               "https://upload.wikimedia.org/wikipedia/en/9/9d/Luton_Town_logo.svg",
 };
 
+// ── Flag emoji map (nationality → flag emoji) ─────────────────
+const FLAG_MAP = {
+  // British Isles
+  "England":"🏴󠁧󠁢󠁥󠁮󠁧󁿢","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󁿢","Wales":"🏴󠁧󠁢󠁷󠁬󠁳󁿢",
+  "Northern Ireland":"🇬🇧","Republic of Ireland":"🇮🇪","Ireland":"🇮🇪",
+  // Europe
+  "France":"🇫🇷","Germany":"🇩🇪","Spain":"🇪🇸","Italy":"🇮🇹","Portugal":"🇵🇹",
+  "Netherlands":"🇳🇱","Belgium":"🇧🇪","Sweden":"🇸🇪","Denmark":"🇩🇰","Norway":"🇳🇴",
+  "Finland":"🇫🇮","Iceland":"🇮🇸","Switzerland":"🇨🇭","Austria":"🇦🇹","Greece":"🇬🇷",
+  "Poland":"🇵🇱","Czech Republic":"🇨🇿","Slovakia":"🇸🇰","Hungary":"🇭🇺","Romania":"🇷🇴",
+  "Bulgaria":"🇧🇬","Croatia":"🇭🇷","Serbia":"🇷🇸","Bosnia and Herzegovina":"🇧🇦",
+  "Bosnia & Herzegovina":"🇧🇦","Montenegro":"🇲🇪","Slovenia":"🇸🇮","Albania":"🇦🇱",
+  "North Macedonia":"🇲🇰","Ukraine":"🇺🇦","Russia":"🇷🇺","Belarus":"🇧🇾",
+  "Turkey":"🇹🇷","Turkiye":"🇹🇷","Cyprus":"🇨🇾","Israel":"🇮🇱","Luxembourg":"🇱🇺",
+  "Gibraltar":"🇬🇮","Faroe Islands":"🇫🇴","Kosovo":"🇽🇰","Moldova":"🇲🇩",
+  "Lithuania":"🇱🇹","Latvia":"🇱🇻","Estonia":"🇪🇪","Georgia":"🇬🇪","Armenia":"🇦🇲",
+  // South America
+  "Brazil":"🇧🇷","Argentina":"🇦🇷","Colombia":"🇨🇴","Uruguay":"🇺🇾","Chile":"🇨🇱",
+  "Peru":"🇵🇪","Paraguay":"🇵🇾","Ecuador":"🇪🇨","Venezuela":"🇻🇪","Bolivia":"🇧🇴",
+  // Africa
+  "Nigeria":"🇳🇬","Ghana":"🇬🇭","Ivory Coast":"🇨🇮","Cote D'Ivoire":"🇨🇮",
+  "Cote D\u2019Ivoire":"🇨🇮","Senegal":"🇸🇳","Cameroon":"🇨🇲","Mali":"🇲🇱",
+  "South Africa":"🇿🇦","Morocco":"🇲🇦","Algeria":"🇩🇿","Tunisia":"🇹🇳","Egypt":"🇪🇬",
+  "DR Congo":"🇨🇩","Congo":"🇨🇬","Togo":"🇹🇬","Gabon":"🇬🇦","Guinea":"🇬🇳",
+  "Guinea-Bissau":"🇬🇼","Equatorial Guinea":"🇬🇶","Sierra Leone":"🇸🇱","Liberia":"🇱🇷",
+  "Burkina Faso":"🇧🇫","Benin":"🇧🇯","Zimbabwe":"🇿🇼","Zambia":"🇿🇲","Kenya":"🇰🇪",
+  "Tanzania":"🇹🇿","Uganda":"🇺🇬","Rwanda":"🇷🇼","Ethiopia":"🇪🇹","Angola":"🇦🇴",
+  "Mozambique":"🇲🇿","Madagascar":"🇲🇬","Mauritania":"🇲🇷","Gambia":"🇬🇲","Burundi":"🇧🇮",
+  "Seychelles":"🇸🇨","Central African Republic":"🇨🇫","Sudan":"🇸🇩","Libya":"🇱🇾",
+  // North America & Caribbean
+  "USA":"🇺🇸","United States":"🇺🇸","Canada":"🇨🇦","Mexico":"🇲🇽","Jamaica":"🇯🇲",
+  "Trinidad and Tobago":"🇹🇹","Trinidad & Tobago":"🇹🇹","Barbados":"🇧🇧",
+  "Antigua and Barbuda":"🇦🇬","Antigua & Barbuda":"🇦🇬","St. Kitts & Nevis":"🇰🇳",
+  "Cuba":"🇨🇺","Guadeloupe":"🇬🇵","Martinique":"🇲🇶","Montserrat":"🇲🇸",
+  // Asia & Oceania
+  "Japan":"🇯🇵","South Korea":"🇰🇷","China":"🇨🇳","Australia":"🇦🇺","New Zealand":"🇳🇿",
+  "Pakistan":"🇵🇰","Oman":"🇴🇲","Bangladesh":"🇧🇩","India":"🇮🇳",
+};
+
 // ── Continent groupings (for nationality qualifier) ──────────
 const CONTINENT_MAP = {
   // Europe
@@ -769,6 +808,8 @@ function checkQualifier(player, season, qualifier) {
     }
     case 'nationality':
       return (player.nationality || '').toLowerCase() === qualifier.value.toLowerCase();
+    case 'nationality_one_of':
+      return qualifier.values.some(v => v.toLowerCase() === (player.nationality || '').toLowerCase());
     case 'continent': {
       const playerContinent = CONTINENT_MAP[player.nationality] || '';
       return playerContinent.toLowerCase() === qualifier.value.toLowerCase();
@@ -942,6 +983,18 @@ function makeSeasonCell(rowConfig) {
   return cell;
 }
 
+function qualifierFlags(q) {
+  // Returns flag emoji string for nationality/nationality_one_of qualifiers, or null
+  if (q.type === 'nationality') {
+    return FLAG_MAP[q.value] || null;
+  }
+  if (q.type === 'nationality_one_of') {
+    const flags = q.values.map(v => FLAG_MAP[v] || '').filter(Boolean);
+    return flags.length ? flags.join(' ') : null;
+  }
+  return null;
+}
+
 function makeQualifierCell(rowConfig) {
   const cell = document.createElement('div');
   cell.className = 'grid-cell qualifier-cell';
@@ -951,9 +1004,19 @@ function makeQualifierCell(rowConfig) {
     : [rowConfig.qualifier];
 
   quals.forEach(q => {
+    const flags = qualifierFlags(q);
+
     const main = document.createElement('div');
     main.className = 'qualifier-main';
-    main.textContent = q.display;
+
+    if (flags) {
+      // Show flag emoji(s) with tooltip on hover
+      main.className += ' qualifier-flags';
+      main.textContent = flags;
+      main.title = q.display;   // hover tooltip shows full text
+    } else {
+      main.textContent = q.display;
+    }
 
     const scope = document.createElement('div');
     scope.className = 'qualifier-scope';

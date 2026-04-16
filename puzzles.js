@@ -80,7 +80,7 @@ const PUZZLES = [
         clubs: ["Arsenal"],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "nationality", value: "England", display: "ENGLISH", scopeDisplay: "SEASON" }
+        qualifier: { type: "nationality_one_of", values: ["Spain","Italy","Portugal"], display: "SPANISH / ITALIAN / PORTUGUESE", scopeDisplay: "SEASON" }
       },
       {
         clubs: [],
