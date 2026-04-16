@@ -70,6 +70,10 @@
         <span class="footer-icon">?</span>
         <span>HOW TO PLAY</span>
       </button>
+      <button class="footer-btn" id="btn-stats">
+        <span class="footer-icon">📊</span>
+        <span>STATS</span>
+      </button>
       <button class="footer-btn" id="btn-share">
         <span class="footer-icon">⬆</span>
         <span id="share-btn-label">SHARE</span>
@@ -188,6 +192,20 @@
   </div>
 
 
+  <!-- ════════════════════════════════════════
+       STATS MODAL
+  ════════════════════════════════════════ -->
+  <div id="stats-overlay" class="overlay hidden">
+    <div id="stats-modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <span class="modal-title">YOUR STATS</span>
+        <button class="modal-close-btn" id="stats-close-btn">Close</button>
+      </div>
+      <div id="stats-content"></div>
+    </div>
+  </div>
+
+
   <!-- ── Data + Logic ── -->
   <!--
     SETUP:
@@ -200,6 +218,7 @@
   -->
   <script src="puzzles.js"></script>
   <script src="data/photo_codes.js"></script>
+  <script src="data/player_photos_extra.js"></script>
   <script src="game.js"></script>
   <script>
     // Load players_data.js and call init() as soon as it's ready.

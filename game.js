@@ -652,6 +652,9 @@ function saveResult() {
   const key     = puzzleDateKey(currentDaySince);
   const history = loadHistory();
 
+  // Track whether this is the very first completion of this puzzle
+  const isFirstCompletion = !history[key];
+
   // Initialise entry if first time completing this puzzle date
   if (!history[key]) {
     history[key] = {
@@ -681,6 +684,9 @@ function saveResult() {
 
   saveHistory(history);
   updateStreakDisplay();
+
+  // Auto-show stats modal the first time this puzzle is completed
+  if (isFirstCompletion) setTimeout(openStatsModal, 1800);
 }
 
 function getStreak() {
@@ -1529,10 +1535,28 @@ function getFplPhotoCode(player) {
   if (!codes) return null;
   const full = normName(player.name);
   if (codes[full]) return codes[full];
-  // Try last surname only (matches FPL web_name style)
-  const parts = player.name.trim().split(' ');
+  const parts = player.name.trim().split(/\s+/);
+  // Last name only (FPL web_name style)
   const last = normName(parts[parts.length - 1]);
   if (codes[last]) return codes[last];
+  // First name only (single-name players: Robinho, Emerson, etc.)
+  const first = normName(parts[0]);
+  if (codes[first] && parts.length === 1) return codes[first];
+  // Strip hyphens (e.g. "Son Heung-min" → "son heungmin")
+  const noHyphen = full.replace(/-/g, '');
+  if (codes[noHyphen]) return codes[noHyphen];
+  return null;
+}
+
+function getExtraPhotoUrl(player) {
+  const extra = window.EXTRA_PLAYER_PHOTOS;
+  if (!extra) return null;
+  const key = normName(player.name);
+  if (extra[key]) return extra[key];
+  // Try last name only
+  const parts = player.name.trim().split(/\s+/);
+  const last = normName(parts[parts.length - 1]);
+  if (extra[last]) return extra[last];
   return null;
 }
 
@@ -1554,9 +1578,32 @@ function makePlayerAvatar(player) {
     wrap.classList.add('player-avatar-initials');
   }
 
+  const extraUrl = !code ? getExtraPhotoUrl(player) : null;
+
   if (code) {
     const img = document.createElement('img');
     img.src       = `https://resources.premierleague.com/premierleague/photos/players/110x140/p${code}.png`;
+    img.alt       = player.name;
+    img.className = 'player-avatar-img';
+    img.onerror   = () => {
+      img.remove();
+      // Try supplemental map before falling back to initials
+      const fallbackUrl = getExtraPhotoUrl(player);
+      if (fallbackUrl) {
+        const img2 = document.createElement('img');
+        img2.src = fallbackUrl;
+        img2.alt = player.name;
+        img2.className = 'player-avatar-img';
+        img2.onerror = () => { img2.remove(); showInitials(); };
+        wrap.appendChild(img2);
+      } else {
+        showInitials();
+      }
+    };
+    wrap.appendChild(img);
+  } else if (extraUrl) {
+    const img = document.createElement('img');
+    img.src       = extraUrl;
     img.alt       = player.name;
     img.className = 'player-avatar-img';
     img.onerror   = () => { img.remove(); showInitials(); };
@@ -1811,6 +1858,144 @@ function handleShare() {
   }
 }
 
+// ── Stats Modal ───────────────────────────────────────────────
+
+function getBestStreak() {
+  const history  = loadHistory();
+  const startUTC = Date.UTC(2026, 3, 15);
+  const now      = new Date();
+  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  const totalDays = Math.floor((todayUTC - startUTC) / 86400000) + 1;
+  let best = 0, run = 0;
+  for (let i = 0; i < totalDays; i++) {
+    const d   = new Date(startUTC + i * 86400000);
+    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+    if (history[key] && history[key].completed) { run++; best = Math.max(best, run); }
+    else { run = 0; }
+  }
+  return best;
+}
+
+function nextPuzzleCountdown() {
+  const now      = new Date();
+  const midnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+  const ms       = midnight - now;
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function renderStatsModal() {
+  const el = document.getElementById('stats-content');
+  if (!el) return;
+
+  const history   = loadHistory();
+  const entries   = Object.values(history);
+  const played    = entries.length;
+  const completed = entries.filter(e => e.completed).length;
+  const pct       = played ? Math.round((completed / played) * 100) : 0;
+  const streak    = getStreak();
+  const best      = getBestStreak();
+
+  // Score history: all puzzles with a normal score, newest first
+  const scoreHistory = Object.entries(history)
+    .filter(([, d]) => d.normal)
+    .sort(([a], [b]) => b.localeCompare(a))
+    .slice(0, 8)
+    .map(([, d]) => ({ puzzleNumber: d.puzzleNumber, score: d.normal.score, emojis: d.emojis || '' }));
+
+  el.innerHTML = '';
+
+  // ── Stat boxes ──
+  const grid = document.createElement('div');
+  grid.className = 'stats-grid';
+  [
+    { value: played,  label: 'PLAYED'   },
+    { value: pct+'%', label: 'COMPLETE' },
+    { value: streak,  label: 'STREAK'   },
+    { value: best,    label: 'BEST'     },
+  ].forEach(({ value, label }) => {
+    const box = document.createElement('div');
+    box.className = 'stats-box';
+    box.innerHTML = `<div class="stats-number">${value}</div><div class="stats-label">${label}</div>`;
+    grid.appendChild(box);
+  });
+  el.appendChild(grid);
+
+  // ── Score history bars ──
+  if (scoreHistory.length) {
+    const sec = document.createElement('div');
+    sec.className = 'stats-section-title';
+    sec.textContent = 'SCORE HISTORY';
+    el.appendChild(sec);
+
+    const maxScore = Math.max(...scoreHistory.map(s => s.score), 1);
+    scoreHistory.forEach(entry => {
+      const row = document.createElement('div');
+      row.className = 'dist-row';
+
+      const lbl = document.createElement('div');
+      lbl.className = 'dist-label';
+      lbl.textContent = `#${entry.puzzleNumber}`;
+
+      const bg = document.createElement('div');
+      bg.className = 'dist-bar-bg';
+      const fill = document.createElement('div');
+      fill.className = 'dist-bar-fill';
+      fill.style.width = '0%';
+      bg.appendChild(fill);
+
+      const cnt = document.createElement('div');
+      cnt.className = 'dist-count';
+      cnt.textContent = entry.score.toLocaleString();
+
+      row.appendChild(lbl);
+      row.appendChild(bg);
+      row.appendChild(cnt);
+      el.appendChild(row);
+
+      // Animate bar in
+      requestAnimationFrame(() => { fill.style.width = `${Math.max(4, Math.round((entry.score / maxScore) * 100))}%`; });
+    });
+  }
+
+  // ── Countdown ──
+  const divider = document.createElement('div');
+  divider.className = 'stats-divider';
+  el.appendChild(divider);
+
+  const cdWrap = document.createElement('div');
+  cdWrap.className = 'stats-countdown';
+  const cdLabel = document.createElement('div');
+  cdLabel.className = 'stats-countdown-label';
+  cdLabel.textContent = 'NEXT PUZZLE IN';
+  const cdTimer = document.createElement('div');
+  cdTimer.className = 'stats-countdown-timer';
+  cdTimer.id = 'stats-countdown-value';
+  cdTimer.textContent = nextPuzzleCountdown();
+  cdWrap.appendChild(cdLabel);
+  cdWrap.appendChild(cdTimer);
+  el.appendChild(cdWrap);
+
+  if (window._statsInterval) clearInterval(window._statsInterval);
+  window._statsInterval = setInterval(() => {
+    const t = document.getElementById('stats-countdown-value');
+    if (t) t.textContent = nextPuzzleCountdown();
+    else { clearInterval(window._statsInterval); window._statsInterval = null; }
+  }, 1000);
+}
+
+function openStatsModal() {
+  renderStatsModal();
+  document.getElementById('stats-overlay').classList.remove('hidden');
+}
+
+function closeStatsModal() {
+  document.getElementById('stats-overlay').classList.add('hidden');
+  if (window._statsInterval) { clearInterval(window._statsInterval); window._statsInterval = null; }
+}
+
 // ── Initialisation ────────────────────────────────────────────
 function _init() {
   // Load player data: prefer scraped data, fall back to sample
@@ -1970,6 +2155,13 @@ function setupEventListeners() {
     updateScoreDisplay();
   });
 
+  // Stats
+  document.getElementById('btn-stats').addEventListener('click', openStatsModal);
+  document.getElementById('stats-close-btn').addEventListener('click', closeStatsModal);
+  document.getElementById('stats-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('stats-overlay')) closeStatsModal();
+  });
+
   // Share
   document.getElementById('btn-share').addEventListener('click', handleShare);
 
@@ -1983,6 +2175,7 @@ function setupEventListeners() {
     if (e.key === 'Escape') {
       closeModal();
       document.getElementById('htp-overlay').classList.add('hidden');
+      closeStatsModal();
     }
   });
 }
