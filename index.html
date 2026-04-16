@@ -12,8 +12,28 @@
     <!-- ── Header ── -->
     <header id="main-header">
       <div class="site-title-block">
-        <h1 class="site-title">Stat of the Day</h1>
-        <p class="site-subtitle">Daily Premier League Puzzle Game</p>
+        <!-- Ball icon styled after Match of the Day -->
+        <div class="site-ball">
+          <svg width="54" height="54" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="ball-clip">
+                <circle cx="30" cy="30" r="29"/>
+              </clipPath>
+            </defs>
+            <circle cx="30" cy="30" r="29" fill="#111111"/>
+            <g clip-path="url(#ball-clip)">
+              <circle  cx="30" cy="30" r="14"  fill="#f0be18"/>
+              <ellipse cx="30" cy="9"  rx="9"  ry="13" fill="#f0be18"/>
+              <ellipse cx="51" cy="30" rx="13" ry="9"  fill="#f0be18"/>
+              <ellipse cx="30" cy="51" rx="9"  ry="13" fill="#f0be18"/>
+              <ellipse cx="9"  cy="30" rx="13" ry="9"  fill="#f0be18"/>
+            </g>
+          </svg>
+        </div>
+        <div class="site-title-text">
+          <h1 class="site-title">STAT OF<br>THE DAY</h1>
+          <p class="site-subtitle">Daily Premier League Puzzle Game</p>
+        </div>
       </div>
       <span id="streak-display"></span>
       <div id="header-right">
