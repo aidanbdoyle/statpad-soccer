@@ -65,9 +65,9 @@ const PUZZLES = [
     target: 75,
     rows: [
       {
-        clubs: ["West Ham"],
-        seasonStart: 2010,
-        seasonEnd: 2019,
+        clubs: ["West Ham","Southampton"],
+        seasonStart: 2012,
+        seasonEnd: 2022,
         qualifier: null
       },
       {
