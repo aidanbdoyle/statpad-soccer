@@ -268,7 +268,7 @@ input  { font-family: inherit; }
   text-transform: lowercase;
 }
 
-/* ── Completed / Result Cell ── */
+/* ── Completed / Result Cell (legacy narrow — kept for fallback) ── */
 .result-cell {
   background: #2e2e2b;
   flex-direction: column;
@@ -282,24 +282,50 @@ input  { font-family: inherit; }
 }
 .result-cell:hover { filter: brightness(1.15); }
 
-/* Percentile tier colours — gradient across full row + left border accent */
-.result-cell.tier-purple {
+/* ── Full-row answered state ── */
+.grid-row-answered {
+  display: block;   /* override the 4-column grid */
+}
+
+/* ── Full-row Result Card ── */
+.result-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px 12px 16px;
+  background: #2e2e2b;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  transition: filter 0.15s;
+  min-height: 80px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.result-card:hover { filter: brightness(1.15); }
+
+/* Percentile tier colours — gradient + left border */
+.result-cell.tier-purple,
+.result-card.tier-purple {
   border-left-color: #7c3aed;
   background: linear-gradient(to right, rgba(124,58,237,0.45), rgba(124,58,237,0.12) 55%, rgba(124,58,237,0.04));
 }
-.result-cell.tier-blue {
+.result-cell.tier-blue,
+.result-card.tier-blue {
   border-left-color: #2563eb;
   background: linear-gradient(to right, rgba(37,99,235,0.45), rgba(37,99,235,0.12) 55%, rgba(37,99,235,0.04));
 }
-.result-cell.tier-gold {
+.result-cell.tier-gold,
+.result-card.tier-gold {
   border-left-color: #d97706;
   background: linear-gradient(to right, rgba(217,119,6,0.45), rgba(217,119,6,0.12) 55%, rgba(217,119,6,0.04));
 }
-.result-cell.tier-silver {
+.result-cell.tier-silver,
+.result-card.tier-silver {
   border-left-color: #94a3b8;
   background: linear-gradient(to right, rgba(148,163,184,0.35), rgba(148,163,184,0.09) 55%, rgba(148,163,184,0.03));
 }
-.result-cell.tier-bronze {
+.result-cell.tier-bronze,
+.result-card.tier-bronze {
   border-left-color: #b45309;
   background: linear-gradient(to right, rgba(180,83,9,0.45), rgba(180,83,9,0.12) 55%, rgba(180,83,9,0.04));
 }
@@ -310,7 +336,85 @@ input  { font-family: inherit; }
 .tier-silver .percentile-bar-fill { background: #94a3b8; }
 .tier-bronze .percentile-bar-fill { background: #b45309; }
 
-/* Expand chevron */
+/* ── Result card: left section (avatar + name) ── */
+.rc-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.rc-name-block {
+  min-width: 0;
+  flex: 1;
+}
+
+.rc-player-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rc-season {
+  font-size: 0.72rem;
+  color: #aaaaaa;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Result card: right section (stat + percentile) ── */
+.rc-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+.rc-stat-row {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.rc-stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.rc-stat-unit {
+  font-size: 0.72rem;
+  color: #aaaaaa;
+}
+
+.rc-percentile-wrap {
+  min-width: 80px;
+  text-align: right;
+}
+
+/* ── Expand chevron for result card ── */
+.rc-expand-btn {
+  font-size: 0.65rem;
+  color: #666;
+  transition: transform 0.2s, color 0.15s;
+  flex-shrink: 0;
+  line-height: 1;
+  padding: 2px 0 2px 4px;
+}
+.result-card.expanded .rc-expand-btn {
+  transform: rotate(180deg);
+  color: #aaa;
+}
+
+/* Legacy expand chevron (result-cell) */
 .result-expand-btn {
   position: absolute;
   top: 6px;
@@ -434,22 +538,41 @@ input  { font-family: inherit; }
 .top5-club  { color: #aaa; font-size: 0.68rem; text-align: center; }
 .top5-val   { font-weight: 700; text-align: right; color: #ffffff; }
 
-/* Given-up cell */
+/* Given-up cell (legacy narrow) */
 .gave-up-cell {
   background: #2a2a27;
   flex-direction: column;
   align-items: center;
   gap: 4px;
 }
+
+/* Full-width gave-up card */
+.gave-up-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #2a2a27;
+  min-height: 80px;
+  width: 100%;
+  box-sizing: border-box;
+  border-left: 4px solid #444440;
+}
+
 .gave-up-label {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: #666;
-  letter-spacing: 0.06em;
-  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 .gave-up-best {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: #888;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── Footer ── */
@@ -732,29 +855,39 @@ input  { font-family: inherit; }
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .grid-row {
-    grid-template-columns: 100px 110px 1fr 120px;
+    grid-template-columns: 84px 100px 1fr 90px;
   }
   .club-badge {
-    width: 36px;
-    height: 36px;
-    font-size: 0.55rem;
+    width: 34px;
+    height: 34px;
+    font-size: 0.52rem;
   }
   .club-crest-img {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
   }
-  .season-text { font-size: 1rem; }
+  .season-text { font-size: 0.95rem; }
   .score-value { font-size: 1.6rem; }
   .site-title  { font-size: 1.2rem; }
   .result-stat-value { font-size: 1.2rem; }
+  /* Result card on mobile */
+  .rc-stat-value { font-size: 1.4rem; }
+  .rc-player-name { font-size: 0.92rem; }
+  .qualifier-main { font-size: 0.82rem; }
 }
 
 @media (max-width: 420px) {
   .grid-row {
-    grid-template-columns: 80px 90px 1fr 100px;
+    grid-template-columns: 72px 84px 1fr 80px;
   }
+  .qualifier-main { font-size: 0.75rem; }
+  .qualifier-flags { font-size: 1.2rem; }
   #main-footer { gap: 6px; }
   .footer-btn { padding: 8px 14px; }
+  /* Result card on small mobile */
+  .rc-stat-value { font-size: 1.3rem; }
+  .rc-player-name { font-size: 0.88rem; }
+  .rc-right { min-width: 72px; }
 }
 
 /* ── Player avatar in result card ── */

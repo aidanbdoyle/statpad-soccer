@@ -1108,21 +1108,27 @@ function makeActionCell(rowIdx) {
 }
 
 function updateActionCell(rowIdx) {
-  const row  = document.querySelector(`.grid-row[data-row-idx="${rowIdx}"]`);
+  const row = document.querySelector(`.grid-row[data-row-idx="${rowIdx}"]`);
   if (!row) return;
 
-  const old  = row.querySelector('[data-row-idx]');
   const rowState = state.rows[rowIdx];
 
-  let newCell;
-  if (rowState.givenUp) {
-    newCell = makeGaveUpCell(rowIdx);
-  } else if (rowState.submitted) {
-    newCell = makeResultCell(rowIdx);
+  if (rowState.submitted) {
+    // Replace entire row content with a full-width result card
+    row.innerHTML = '';
+    row.classList.add('grid-row-answered');
+    row.appendChild(makeResultCard(rowIdx));
+  } else if (rowState.givenUp) {
+    // Replace entire row content with a full-width gave-up card
+    row.innerHTML = '';
+    row.classList.add('grid-row-answered');
+    row.appendChild(makeGaveUpCard(rowIdx));
   } else {
-    newCell = makeActionCell(rowIdx);
+    // Normal unanswered state: only swap the action cell (4th column)
+    row.classList.remove('grid-row-answered');
+    const old = row.querySelector('[data-row-idx]');
+    if (old) old.replaceWith(makeActionCell(rowIdx));
   }
-  old.replaceWith(newCell);
 }
 
 function makeResultCell(rowIdx) {
@@ -1215,6 +1221,123 @@ function makeResultCell(rowIdx) {
   return cell;
 }
 
+// ── Full-width Result Card (replaces entire row when answered) ─
+function makeResultCard(rowIdx) {
+  const { player, season, statValue, percentile } = state.rows[rowIdx];
+  const tier = getPercentileTier(percentile);
+
+  const card = document.createElement('div');
+  card.className = `result-card${tier ? ' tier-' + tier : ''}`;
+  card.dataset.rowIdx = rowIdx;
+
+  // ── Left: avatar + name block ──
+  const left = document.createElement('div');
+  left.className = 'rc-left';
+
+  const avatar = makePlayerAvatar(player);
+
+  const nameBlock = document.createElement('div');
+  nameBlock.className = 'rc-name-block';
+
+  const nameEl = document.createElement('div');
+  nameEl.className = 'rc-player-name';
+  nameEl.textContent = player.name;
+
+  const seasonEl = document.createElement('div');
+  seasonEl.className = 'rc-season';
+  if (season._careerMode) {
+    const endYr = season._lastYear + 1;
+    seasonEl.textContent = season._firstYear === season._lastYear
+      ? `${season._firstYear}–${String(season._firstYear + 1).slice(-2)} · Career`
+      : `${season._firstYear}–${endYr} · Career`;
+  } else {
+    seasonEl.textContent = `${season.season} · ${season.club}`;
+  }
+
+  nameBlock.appendChild(nameEl);
+  nameBlock.appendChild(seasonEl);
+  left.appendChild(avatar);
+  left.appendChild(nameBlock);
+
+  // ── Right: stat value + percentile bar ──
+  const right = document.createElement('div');
+  right.className = 'rc-right';
+
+  const statRow = document.createElement('div');
+  statRow.className = 'rc-stat-row';
+
+  const val = document.createElement('div');
+  val.className = 'rc-stat-value';
+  val.textContent = statValue;
+
+  const unit = document.createElement('div');
+  unit.className = 'rc-stat-unit';
+  unit.textContent = PUZZLE.categoryUnit + (statValue !== 1 ? 's' : '');
+
+  statRow.appendChild(val);
+  statRow.appendChild(unit);
+
+  // Percentile bar
+  const pWrap = document.createElement('div');
+  pWrap.className = 'rc-percentile-wrap';
+
+  const pBg = document.createElement('div');
+  pBg.className = 'percentile-bar-bg';
+  const pFill = document.createElement('div');
+  pFill.className = 'percentile-bar-fill';
+  pFill.style.width = `${percentile}%`;
+  pBg.appendChild(pFill);
+
+  const pLabel = document.createElement('div');
+  pLabel.className = 'percentile-label';
+  const ordinal = (n) => {
+    if (n >= 11 && n <= 13) return 'th';
+    const s = ['th','st','nd','rd'];
+    return s[n % 10] || 'th';
+  };
+  pLabel.textContent = `${percentile}${ordinal(percentile)} PCTILE`;
+
+  pWrap.appendChild(pBg);
+  pWrap.appendChild(pLabel);
+
+  right.appendChild(statRow);
+  right.appendChild(pWrap);
+
+  // ── Expand chevron ──
+  const chevron = document.createElement('div');
+  chevron.className = 'rc-expand-btn';
+  chevron.textContent = '▼';
+
+  card.appendChild(left);
+  card.appendChild(right);
+  card.appendChild(chevron);
+
+  card.addEventListener('click', () => toggleTop5Panel(rowIdx));
+  return card;
+}
+
+// ── Full-width Gave-Up Card ────────────────────────────────────
+function makeGaveUpCard(rowIdx) {
+  const card = document.createElement('div');
+  card.className = 'gave-up-card';
+
+  const label = document.createElement('div');
+  label.className = 'gave-up-label';
+  label.textContent = 'SKIPPED';
+
+  card.appendChild(label);
+
+  const best = getBestPossible(rowIdx);
+  if (best) {
+    const hint = document.createElement('div');
+    hint.className = 'gave-up-best';
+    hint.textContent = `Best: ${best.player.name} (${best.statValue})`;
+    card.appendChild(hint);
+  }
+
+  return card;
+}
+
 // ── Top-5 panel ───────────────────────────────────────────────
 let openPanelRowIdx = null;
 
@@ -1225,8 +1348,9 @@ function toggleTop5Panel(rowIdx) {
   if (openPanelRowIdx !== null) {
     const existingPanel = grid.querySelector(`.top5-panel[data-row-idx="${openPanelRowIdx}"]`);
     if (existingPanel) existingPanel.classList.remove('open');
-    const existingCell = grid.querySelector(`.result-cell[data-row-idx="${openPanelRowIdx}"]`);
-    if (existingCell) existingCell.classList.remove('expanded');
+    // Support both legacy result-cell and new result-card
+    const existingEl = grid.querySelector(`.result-card[data-row-idx="${openPanelRowIdx}"], .result-cell[data-row-idx="${openPanelRowIdx}"]`);
+    if (existingEl) existingEl.classList.remove('expanded');
 
     if (openPanelRowIdx === rowIdx) {
       openPanelRowIdx = null;
@@ -1236,9 +1360,9 @@ function toggleTop5Panel(rowIdx) {
 
   openPanelRowIdx = rowIdx;
 
-  // Mark cell as expanded
-  const cell = grid.querySelector(`.result-cell[data-row-idx="${rowIdx}"]`);
-  if (cell) cell.classList.add('expanded');
+  // Mark card/cell as expanded
+  const el = grid.querySelector(`.result-card[data-row-idx="${rowIdx}"], .result-cell[data-row-idx="${rowIdx}"]`);
+  if (el) el.classList.add('expanded');
 
   // Find or create the panel (inserted right after the grid-row)
   let panel = grid.querySelector(`.top5-panel[data-row-idx="${rowIdx}"]`);
