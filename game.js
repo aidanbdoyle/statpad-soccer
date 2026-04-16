@@ -1592,6 +1592,65 @@ function _init() {
   updateScoreDisplay();
   updateStreakDisplay();
   setupEventListeners();
+  populateDateSelect();
+}
+
+// ── Date selector ─────────────────────────────────────────────
+function populateDateSelect() {
+  const sel = document.getElementById('date-select');
+  if (!sel) return;
+  sel.innerHTML = '';
+
+  const startUTC = Date.UTC(2026, 3, 15);   // 2026-04-15
+  const now      = new Date();
+  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  const totalDays = Math.floor((todayUTC - startUTC) / (1000 * 60 * 60 * 24));
+
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  for (let d = totalDays; d >= 0; d--) {
+    const date = new Date(startUTC + d * 86400000);
+    const label = `${months[date.getUTCMonth()]} ${date.getUTCDate()}`;
+    const opt   = document.createElement('option');
+    opt.value   = d;
+    opt.textContent = d === totalDays ? `${label} ★` : label;  // star = today
+    if (d === totalDays) opt.selected = true;
+    sel.appendChild(opt);
+  }
+}
+
+function resetGame(daysSince) {
+  // Set the puzzle for this day
+  window.PUZZLE = PUZZLES[daysSince % PUZZLES.length];
+
+  // Reset all mutable state
+  state.rows = PUZZLE.rows.map(() => ({
+    submitted: false, givenUp: false,
+    player: null, season: null, statValue: null, percentile: null,
+  }));
+  state.totalScore   = 0;
+  state.totalGuesses = 0;
+  state.gameMode     = 'normal';
+  activeRow          = null;
+  selectedPlayer     = null;
+  rowValidAnswers    = [];
+
+  // Close any open panels
+  closeModal();
+  document.getElementById('htp-overlay').classList.add('hidden');
+
+  // Reset target button highlight
+  document.getElementById('btn-target').classList.remove('active-mode');
+
+  // Update category display
+  const mode = (PUZZLE.categoryMode || 'season') === 'career' ? 'CAREER' : 'SEASON';
+  document.getElementById('category-display').textContent = PUZZLE.category.toUpperCase();
+  document.getElementById('category-label').textContent   = mode;
+
+  // Re-render
+  renderGrid();
+  computeAllValidAnswers();
+  updateScoreDisplay();
 }
 
 function setupEventListeners() {
@@ -1660,6 +1719,11 @@ function setupEventListeners() {
 
   // Share
   document.getElementById('btn-share').addEventListener('click', handleShare);
+
+  // Date selector
+  document.getElementById('date-select').addEventListener('change', e => {
+    resetGame(parseInt(e.target.value, 10));
+  });
 
   // Keyboard: Escape closes any open modal
   document.addEventListener('keydown', e => {

@@ -53,16 +53,26 @@ input  { font-family: inherit; }
   gap: 8px;
 }
 
-.sport-badge {
+.date-select {
   background: #3a3a37;
   border: 1px solid #555;
   color: #ffffff;
   font-size: 0.85rem;
   font-weight: 700;
-  padding: 5px 12px;
+  padding: 5px 10px;
   border-radius: 6px;
-  letter-spacing: 0.05em;
-  user-select: none;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  appearance: auto;
+  max-width: 120px;
+}
+.date-select:focus {
+  outline: none;
+  border-color: #888;
+}
+.date-select option {
+  background: #2a2a27;
+  color: #ffffff;
 }
 
 /* ── Score Bar ── */
