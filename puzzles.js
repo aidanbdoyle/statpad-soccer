@@ -73,7 +73,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2006,
+        seasonEnd: 2008,
         qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "SEASON" }
       },
       {
