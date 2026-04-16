@@ -92,7 +92,7 @@ const PUZZLES = [
         clubs: ["Manchester City", "Manchester United"],
         seasonStart: 2010,
         seasonEnd: 2015,
-        qualifier: { type: "position", value: "DF", display: "DEFENDER", scopeDisplay: "SEASON" }
+        qualifier: { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "SEASON" }
       }
     ]
   },
@@ -283,7 +283,7 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "position", value: "MF", display: "MIDFIELDER", scopeDisplay: "CAREER" }
+        qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Chelsea"],
