@@ -165,6 +165,14 @@ const FLAG_MAP = {
   // Asia & Oceania
   "Japan":"🇯🇵","South Korea":"🇰🇷","China":"🇨🇳","Australia":"🇦🇺","New Zealand":"🇳🇿",
   "Pakistan":"🇵🇰","Oman":"🇴🇲","Bangladesh":"🇧🇩","India":"🇮🇳",
+  "Iran":"🇮🇷","Iraq":"🇮🇶","Syria":"🇸🇾","Indonesia":"🇮🇩","Philippines":"🇵🇭",
+  "Uzbekistan":"🇺🇿",
+  // Caribbean & Central America (DB entries not yet in map)
+  "Curacao":"🇨🇼","Curaçao":"🇨🇼","Costa Rica":"🇨🇷","Honduras":"🇭🇳","Guatemala":"🇬🇹",
+  "Haiti":"🇭🇹","Grenada":"🇬🇩","Guyana":"🇬🇾","Bermuda":"🇧🇲","Suriname":"🇸🇷",
+  "Dominican Republic":"🇩🇴",
+  // Africa additions
+  "Cape Verde":"🇨🇻","Malta":"🇲🇹",
 };
 
 // ── Continent groupings (for nationality qualifier) ──────────
@@ -957,6 +965,7 @@ function getScoringResult(validSeasons) {
     return { season: { _careerMode: true, _firstYear: years[0], _lastYear: years[years.length - 1] }, statValue: total };
   }
   const best = getBestSeason(validSeasons);
+  if (!best) return { season: null, statValue: 0 };
   return { season: best, statValue: best[PUZZLE.categoryKey] };
 }
 
