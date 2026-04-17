@@ -153,41 +153,47 @@ const PUZZLES = [
   {
     puzzleNumber: 4,
     date: "2026-04-18",
-    category: "Clean Sheets",
-    categoryKey: "clean_sheets",
-    categoryUnit: "clean sheet",
+    category: "Appearances",
+    categoryKey: "apps",
+    categoryUnit: "appearance",
     categoryMode: "career",
-    target: 225,
+    target: 950,
     rows: [
       {
-        clubs: ["Liverpool"],
+        clubs: ["Newcastle"],
         seasonStart: 1992,
-        seasonEnd: 2026,
-        qualifier: null
-      },
-      {
-        clubs: ["Chelsea"],
-        seasonStart: 2004,
-        seasonEnd: 2026,
-        qualifier: null
-      },
-      {
-        clubs: ["Manchester City"],
-        seasonStart: 2008,
-        seasonEnd: 2026,
-        qualifier: null
-      },
-      {
-        clubs: ["Arsenal"],
-        seasonStart: 1992,
-        seasonEnd: 2020,
+        seasonEnd: 2015,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2005,
-        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "nationality_one_of", values: ["Netherlands", "Denmark"], display: "DUTCH / DANISH", scopeDisplay: "CAREER" },
+          { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: ["Chelsea"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Brazil", display: "BRAZILIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Aston Villa"],
+        seasonStart: 2000,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "nationality", value: "Portugal", display: "PORTUGUESE", scopeDisplay: "CAREER" },
+          { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "CAREER" }
+        ]
       }
     ]
   },
@@ -360,6 +366,49 @@ const PUZZLES = [
         seasonStart: 2000,
         seasonEnd: 2020,
         qualifier: null
+      }
+    ]
+  },
+
+  // ── Puzzle 9 ────────────────────────────────────────────────
+  {
+    puzzleNumber: 9,
+    date: "2026-04-23",
+    category: "Clean Sheets",
+    categoryKey: "clean_sheets",
+    categoryUnit: "clean sheet",
+    categoryMode: "career",
+    target: 225,
+    rows: [
+      {
+        clubs: ["Liverpool"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: ["Chelsea"],
+        seasonStart: 2004,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: ["Manchester City"],
+        seasonStart: 2008,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: ["Arsenal"],
+        seasonStart: 1992,
+        seasonEnd: 2020,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2005,
+        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       }
     ]
   }
