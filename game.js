@@ -699,6 +699,21 @@ function saveResult() {
   saveHistory(history);
   updateStreakDisplay();
 
+  // Fire GA event on first completion only
+  if (isFirstCompletion && typeof gtag === 'function') {
+    const gaveUpCount = state.rows.filter(r => r.givenUp).length;
+    gtag('event', 'puzzle_complete', {
+      puzzle_number:   PUZZLE.puzzleNumber,
+      puzzle_category: PUZZLE.category,
+      puzzle_mode:     PUZZLE.categoryMode,
+      game_mode:       state.gameMode,          // 'normal' | 'target'
+      total_score:     state.totalScore,
+      avg_percentile:  avgPercentile,
+      gave_up_rows:    gaveUpCount,
+      guesses:         state.totalGuesses,
+    });
+  }
+
   // Auto-show stats modal the first time this puzzle is completed
   if (isFirstCompletion) setTimeout(openStatsModal, 1800);
 }
