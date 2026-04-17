@@ -1645,7 +1645,9 @@ function makePlayerAvatar(player) {
   const wrap = document.createElement('div');
   wrap.className = 'player-avatar';
 
-  const code = getFplPhotoCode(player);
+  // Extra photos (curated) take priority over FPL codes
+  const extraUrl = getExtraPhotoUrl(player);
+  const code = extraUrl ? null : getFplPhotoCode(player);
 
   function showInitials() {
     const initials = player.name
@@ -1658,8 +1660,6 @@ function makePlayerAvatar(player) {
     wrap.textContent = initials;
     wrap.classList.add('player-avatar-initials');
   }
-
-  const extraUrl = !code ? getExtraPhotoUrl(player) : null;
 
   if (code) {
     const img = document.createElement('img');
