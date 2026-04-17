@@ -895,10 +895,14 @@ function checkQualifier(player, season, qualifier) {
       const val = season[qualifier.key];
       return val !== null && val !== undefined && val <= qualifier.value;
     }
-    case 'nationality':
-      return (player.nationality || '').toLowerCase() === qualifier.value.toLowerCase();
-    case 'nationality_one_of':
-      return qualifier.values.some(v => v.toLowerCase() === (player.nationality || '').toLowerCase());
+    case 'nationality': {
+      const normNat = s => (s || '').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
+      return normNat(player.nationality) === normNat(qualifier.value);
+    }
+    case 'nationality_one_of': {
+      const normNat = s => (s || '').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
+      return qualifier.values.some(v => normNat(v) === normNat(player.nationality));
+    }
     case 'continent': {
       const playerContinent = CONTINENT_MAP[player.nationality] || '';
       return playerContinent.toLowerCase() === qualifier.value.toLowerCase();
