@@ -104,6 +104,55 @@ const PUZZLES = [
   {
     puzzleNumber: 3,
     date: "2026-04-17",
+    category: "Assists",
+    categoryKey: "assists",
+    categoryUnit: "assist",
+    categoryMode: "career",
+    target: 175,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Norway", display: "NORWEGIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Aston Villa", "Leicester", "Newcastle"],
+        seasonStart: 2012,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2000,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Ireland", "Cote D'Ivoire"], display: "IRISH / IVORIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2010,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "nationality_one_of", values: ["Ireland", "Northern Ireland", "Scotland", "Wales"], display: "IRISH / N. IRISH / SCOTTISH / WELSH", scopeDisplay: "CAREER" },
+          { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "nationality", value: "France", display: "FRENCH", scopeDisplay: "CAREER" },
+          { type: "max_stat", key: "goals", value: 10, scope: "season", display: "MAX 10 GOALS IN A SEASON", scopeDisplay: "SEASON" }
+        ]
+      }
+    ]
+  },
+
+  // ── Puzzle 4 ────────────────────────────────────────────────
+  {
+    puzzleNumber: 4,
+    date: "2026-04-18",
     category: "Clean Sheets",
     categoryKey: "clean_sheets",
     categoryUnit: "clean sheet",
@@ -143,10 +192,10 @@ const PUZZLES = [
     ]
   },
 
-  // ── Puzzle 4 ────────────────────────────────────────────────
+  // ── Puzzle 5 ────────────────────────────────────────────────
   {
-    puzzleNumber: 4,
-    date: "2026-04-18",
+    puzzleNumber: 5,
+    date: "2026-04-19",
     category: "Assists",
     categoryKey: "assists",
     categoryUnit: "assist",
@@ -186,10 +235,10 @@ const PUZZLES = [
     ]
   },
 
-  // ── Puzzle 5 ────────────────────────────────────────────────
+  // ── Puzzle 6 ────────────────────────────────────────────────
   {
-    puzzleNumber: 5,
-    date: "2026-04-19",
+    puzzleNumber: 6,
+    date: "2026-04-20",
     category: "Appearances",
     categoryKey: "apps",
     categoryUnit: "appearance",
@@ -212,7 +261,7 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "nationality", value: "Republic of Ireland", display: "IRISH", scopeDisplay: "CAREER" }
+        qualifier: { type: "nationality", value: "Ireland", display: "IRISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Aston Villa"],
@@ -229,10 +278,10 @@ const PUZZLES = [
     ]
   },
 
-  // ── Puzzle 6 ────────────────────────────────────────────────
+  // ── Puzzle 7 ────────────────────────────────────────────────
   {
-    puzzleNumber: 6,
-    date: "2026-04-20",
+    puzzleNumber: 7,
+    date: "2026-04-21",
     category: "Goals",
     categoryKey: "goals",
     categoryUnit: "goal",
@@ -272,10 +321,10 @@ const PUZZLES = [
     ]
   },
 
-  // ── Puzzle 7 ────────────────────────────────────────────────
+  // ── Puzzle 8 ────────────────────────────────────────────────
   {
-    puzzleNumber: 7,
-    date: "2026-04-21",
+    puzzleNumber: 8,
+    date: "2026-04-22",
     category: "Assists",
     categoryKey: "assists",
     categoryUnit: "assist",

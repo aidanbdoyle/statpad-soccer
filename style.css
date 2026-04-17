@@ -182,6 +182,15 @@ input  { font-family: inherit; }
   gap: 5px;
 }
 
+.any-club-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #888;
+  text-align: center;
+  line-height: 1.2;
+}
+
 .club-badge {
   display: flex;
   align-items: center;

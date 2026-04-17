@@ -1013,6 +1013,15 @@ function makeClubCell(rowConfig) {
   const wrap = document.createElement('div');
   wrap.className = `club-badges-wrap${rowConfig.clubs.length > 1 ? ' multi' : ''}`;
 
+  if (rowConfig.clubs.length === 0) {
+    const anyLabel = document.createElement('div');
+    anyLabel.className = 'any-club-label';
+    anyLabel.textContent = 'ANY CLUB';
+    wrap.appendChild(anyLabel);
+    cell.appendChild(wrap);
+    return cell;
+  }
+
   rowConfig.clubs.forEach(clubName => {
     const s = clubStyle(clubName);
     const logoUrl = CLUB_LOGOS[clubName];
