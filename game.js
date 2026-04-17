@@ -1081,6 +1081,21 @@ function makeSeasonCell(rowConfig) {
   return cell;
 }
 
+// Friendly display names for flag tooltips
+const FLAG_DISPLAY_NAMES = {
+  "Ireland":          "Republic of Ireland",
+  "Cote D'Ivoire":    "Ivory Coast",
+  "Cote D\u2019Ivoire": "Ivory Coast",
+  "Northern Ireland": "Northern Ireland",
+  "South Korea":      "South Korea",
+  "United States":    "United States",
+  "DR Congo":         "DR Congo",
+  "Bosnia and Herzegovina": "Bosnia & Herzegovina",
+};
+function flagDisplayName(nat) {
+  return FLAG_DISPLAY_NAMES[nat] || nat;
+}
+
 function qualifierFlags(q) {
   // Returns flag emoji string for nationality/nationality_one_of qualifiers, or null
   if (q.type === 'nationality') {
@@ -1108,10 +1123,32 @@ function makeQualifierCell(rowConfig) {
     main.className = 'qualifier-main';
 
     if (flags) {
-      // Show flag emoji(s) with tooltip on hover
       main.className += ' qualifier-flags';
-      main.textContent = flags;
-      main.title = q.display;   // hover tooltip shows full text
+      // Build individual flag chips so each shows its country on hover/tap
+      const flagEntries = q.type === 'nationality'
+        ? [{ flag: FLAG_MAP[q.value], country: flagDisplayName(q.value) }]
+        : (q.values || []).filter(v => FLAG_MAP[v])
+            .map(v => ({ flag: FLAG_MAP[v], country: flagDisplayName(v) }));
+
+      flagEntries.forEach(({ flag, country }) => {
+        const chip = document.createElement('span');
+        chip.className = 'flag-chip';
+        chip.textContent = flag;
+        chip.setAttribute('data-country', country);
+        chip.title = country;
+        // Tap on mobile toggles the label
+        chip.addEventListener('click', function (e) {
+          e.stopPropagation();
+          const wasActive = chip.classList.contains('active');
+          document.querySelectorAll('.flag-chip.active').forEach(c => c.classList.remove('active'));
+          if (!wasActive) chip.classList.add('active');
+        });
+        main.appendChild(chip);
+      });
+      // Tap anywhere else dismisses
+      document.addEventListener('click', () => {
+        document.querySelectorAll('.flag-chip.active').forEach(c => c.classList.remove('active'));
+      }, { once: false, capture: false });
     } else {
       main.textContent = q.display;
     }
