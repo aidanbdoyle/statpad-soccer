@@ -70,10 +70,10 @@
       </button>
       <button class="footer-btn" id="btn-how-to-play">
         <span class="footer-icon">?</span>
-        <span>HOW TO PLAY</span>
+        <span>RULES</span>
       </button>
       <button class="footer-btn" id="btn-stats">
-        <span class="footer-icon">📊</span>
+        <span class="footer-icon">≡</span>
         <span>STATS</span>
       </button>
       <button class="footer-btn" id="btn-share">
@@ -127,34 +127,34 @@
     <div id="htp-modal" role="dialog" aria-modal="true">
 
       <div class="modal-header">
-        <span class="modal-title">How to Play</span>
+        <span class="modal-title">Rules</span>
         <button class="modal-close-btn" id="htp-close-btn">Close</button>
       </div>
 
       <div class="htp-body">
         <h3>Objective</h3>
-        <p>Fill all 5 rows by picking Premier League players that match each row's constraints. Try to <strong>maximise your total score</strong> — or toggle <strong>TARGET mode</strong> and aim to hit a specific number instead.</p>
+        <p>Fill all 5 rows by naming Premier League players that match each row's constraints. Try to <strong>maximise your total score</strong> — or switch to <strong>TARGET</strong> mode and aim to land on a specific number instead.</p>
 
-        <h3>Each Row Has Three Constraints</h3>
+        <h3>Row Constraints</h3>
         <ul>
           <li><strong>Club(s)</strong> — the player must have appeared for that club in the Premier League. No club shown means any club counts.</li>
-          <li><strong>Season range</strong> — the player must have appeared within those years.</li>
-          <li><strong>Qualifier</strong> — an optional extra condition such as nationality, position, or award.</li>
+          <li><strong>Season range</strong> — the player must have appeared within those years (e.g. 2019 = the 2019–20 season).</li>
+          <li><strong>Qualifier</strong> — an optional extra condition such as nationality, position, or award. Qualifiers tagged <em>SAME SEASON</em> must be met in the same season they played for the club; qualifiers tagged <em>CAREER</em> just need to be true at any point in their PL career.</li>
         </ul>
-        <p>Qualifiers tagged <em>SAME SEASON</em> must be met in the season they played; qualifiers tagged <em>CAREER</em> must be met at any point in their PL career.</p>
 
         <h3>Scoring</h3>
-        <p>Each puzzle has a category (e.g. Appearances, Goals) and a mode:</p>
+        <p>Each puzzle has a stat category (Goals, Appearances, Assists, or Clean Sheets) and a mode:</p>
         <ul>
-          <li><strong>Season</strong> — your score for that row is the player's best single-season total within the constraints.</li>
-          <li><strong>Career</strong> — your score is the sum of that stat across every valid season.</li>
+          <li><strong>Season</strong> — your row score is the player's best single season within the constraints.</li>
+          <li><strong>Career</strong> — your row score is the sum of that stat across every valid season.</li>
         </ul>
+        <p>The game automatically picks the highest valid score for you — you just need to find the right player.</p>
 
         <h3>Target Mode</h3>
-        <p>Press <strong>TARGET</strong> in the footer to switch modes. Instead of maximising, try to get your total score as close as possible to the target number. The score bar shows how much you have remaining — or how far over you've gone.</p>
+        <p>Press <strong>TARGET</strong> in the footer to switch modes. Instead of maximising, try to get your total as close as possible to the target number. The score bar shows how much you have left — or how far over you've gone.</p>
 
         <h3>Percentile Tiers</h3>
-        <p>Each result is colour-coded based on how your answer ranks against all valid answers for that row:</p>
+        <p>Each answer is colour-coded against all valid players for that row:</p>
         <ul>
           <li><strong style="color:#7c3aed">■ Purple</strong> — 100th percentile (the single best answer)</li>
           <li><strong style="color:#2563eb">■ Blue</strong> — 95th–99th percentile</li>
@@ -165,10 +165,11 @@
 
         <h3>Tips</h3>
         <ul>
-          <li>You don't need to type accents — "Ruben" will find Rúben Dias.</li>
-          <li>The best valid season or career total is automatically selected for you.</li>
+          <li>You don't need to type accents — "Ruben" finds Rúben Dias.</li>
           <li>Use <strong>Give Up</strong> on a row if you're stuck — it won't count as a guess.</li>
-          <li>Hit <strong>SHARE</strong> after finishing to copy your results and send to friends.</li>
+          <li>Your answers are saved automatically — close the tab and come back any time.</li>
+          <li>Hit <strong>SHARE</strong> after finishing to copy your results to your clipboard.</li>
+          <li>Check <strong>STATS</strong> to see your streak, average percentile, and puzzle history.</li>
         </ul>
 
       </div>
