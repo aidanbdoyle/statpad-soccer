@@ -1873,7 +1873,7 @@ function handleShare() {
     if (avgPct !== null) lines.push(`Avg: ${avgPct}th percentile · ${guesses} guess${guesses !== 1 ? 'es' : ''}`);
   }
 
-  lines.push(`statoftheday.app`);
+  lines.push(`https://statoftheday.app`);
 
   const text = lines.join('\n');
   const label = document.getElementById('share-btn-label');
