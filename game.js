@@ -655,11 +655,18 @@ function saveResult() {
   // Track whether this is the very first completion of this puzzle
   const isFirstCompletion = !history[key];
 
+  // Compute average percentile across submitted (non-skipped) rows
+  const submittedRows = state.rows.filter(r => r.submitted && r.percentile !== null);
+  const avgPercentile = submittedRows.length
+    ? Math.round(submittedRows.reduce((sum, r) => sum + r.percentile, 0) / submittedRows.length)
+    : 0;
+
   // Initialise entry if first time completing this puzzle date
   if (!history[key]) {
     history[key] = {
       puzzleNumber: PUZZLE.puzzleNumber || '?',
       emojis,
+      avgPercentile,
       normal: null,
       target: null,
       completed: true,
@@ -1738,6 +1745,7 @@ function handleSubmit() {
 
   updateActionCell(activeRow);
   updateScoreDisplay();
+  saveGameState();
   if (isGameComplete()) saveResult();
   closeModal();
 }
@@ -1747,6 +1755,7 @@ function handleGiveUp() {
   state.rows[activeRow] = { submitted: false, givenUp: true, player: null, season: null, statValue: null, percentile: null };
   updateActionCell(activeRow);
   updateScoreDisplay();
+  saveGameState();
   if (isGameComplete()) saveResult();
   closeModal();
 }
@@ -1802,49 +1811,42 @@ function renderTargetModal() {
 
 // ── Share ─────────────────────────────────────────────────────
 function handleShare() {
-  const TIER_EMOJI = {
-    purple: '🟣',
-    blue:   '🔵',
-    gold:   '🟠',
-    silver: '⬜',
-    bronze: '🟫',
-    '':     '⬛',
-  };
+  const TIER_EMOJI = { purple:'🟣', blue:'🔵', gold:'🟡', silver:'🩶', bronze:'🟤', '':'⬛' };
 
   const puzzleNum = PUZZLE.puzzleNumber || '?';
   const mode      = (PUZZLE.categoryMode || 'season') === 'career' ? 'Career' : 'Season';
-  const score     = state.totalScore.toLocaleString();
   const guesses   = state.totalGuesses;
 
-  // Average percentile across submitted rows only
   const submitted = state.rows.filter(r => r.submitted && r.percentile !== null);
   const avgPct    = submitted.length
-    ? (submitted.reduce((s, r) => s + r.percentile, 0) / submitted.length).toFixed(1)
-    : '—';
+    ? Math.round(submitted.reduce((s, r) => s + r.percentile, 0) / submitted.length)
+    : null;
 
-  // One emoji per row
-  const emojis = state.rows.map(r => {
-    if (r.givenUp) return '❌';
-    if (!r.submitted) return '⬜';
+  const emojiRow = state.rows.map(r => {
+    if (r.givenUp)    return '❌';
+    if (!r.submitted) return '⬛';
     return TIER_EMOJI[getPercentileTier(r.percentile)] || '⬛';
   }).join('');
 
   const lines = [
-    `⚽ StatpadGame #${puzzleNum}`,
+    `⚽ Stat of the Day #${puzzleNum}`,
+    `${mode} ${PUZZLE.category}`,
     ``,
-    `Score: ${score} ${mode} ${PUZZLE.category}`,
+    emojiRow,
+    ``,
   ];
+
+  if (avgPct !== null) lines.push(`Avg: ${avgPct}th percentile · ${guesses} guess${guesses !== 1 ? 'es' : ''}`);
+
   if (state.gameMode === 'target' && PUZZLE.target != null) {
     const diff = PUZZLE.target - state.totalScore;
-    lines.push(`Target: ${PUZZLE.target.toLocaleString()}`);
-    lines.push(diff === 0 ? `Result: 🎯 Exact!` : `Off by: ${Math.abs(diff).toLocaleString()}${diff < 0 ? ' (over)' : ''}`);
+    const result = diff === 0 ? '🎯 Exact!' : diff > 0 ? `+${diff} remaining` : `${Math.abs(diff)} over`;
+    lines.push(`Target: ${result}`);
   }
-  lines.push(`Guesses: ${guesses}`);
-  lines.push(`Percentile: ${avgPct}%`);
-  lines.push(emojis);
-  lines.push(`https://aidanbdoyle.github.io/statpad-soccer/`);
-  const text = lines.join('\n');
 
+  lines.push(`statoftheday.app`);
+
+  const text = lines.join('\n');
   const label = document.getElementById('share-btn-label');
 
   if (navigator.clipboard) {
@@ -1853,9 +1855,61 @@ function handleShare() {
       setTimeout(() => { label.textContent = 'SHARE'; }, 2000);
     });
   } else {
-    // Fallback for browsers without clipboard API
     prompt('Copy your result:', text);
   }
+}
+
+// ── Game State Persistence ────────────────────────────────────
+function gameStateKey() {
+  return `statpad_game_${puzzleDateKey(currentDaySince)}`;
+}
+
+function saveGameState() {
+  const toSave = state.rows.map(r => {
+    if (!r.submitted && !r.givenUp) return null;
+    return {
+      submitted: r.submitted,
+      givenUp:   r.givenUp,
+      player:    r.player ? { name: r.player.name, nationality: r.player.nationality, position: r.player.position } : null,
+      season:    r.season,
+      statValue: r.statValue,
+      percentile: r.percentile,
+    };
+  });
+  try { localStorage.setItem(gameStateKey(), JSON.stringify(toSave)); } catch(e) {}
+}
+
+function loadGameState() {
+  try {
+    const raw = localStorage.getItem(gameStateKey());
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+function clearGameState(dateKey) {
+  try { localStorage.removeItem(`statpad_game_${dateKey}`); } catch(e) {}
+}
+
+function restoreGameState() {
+  const saved = loadGameState();
+  if (!saved) return;
+  saved.forEach((rowData, i) => {
+    if (!rowData || (!rowData.submitted && !rowData.givenUp)) return;
+    state.rows[i] = {
+      submitted:  rowData.submitted,
+      givenUp:    rowData.givenUp,
+      player:     rowData.player,
+      season:     rowData.season,
+      statValue:  rowData.statValue,
+      percentile: rowData.percentile,
+    };
+    if (rowData.submitted) {
+      state.totalScore   += rowData.statValue || 0;
+      state.totalGuesses += 1;
+    }
+    updateActionCell(i);
+  });
+  updateScoreDisplay();
 }
 
 // ── Stats Modal ───────────────────────────────────────────────
@@ -1886,6 +1940,13 @@ function nextPuzzleCountdown() {
   return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
+function avgPercentileFromEmojis(emojis) {
+  // Derive approximate avg percentile from emoji string for legacy history entries
+  const map = { '🟣': 100, '🔵': 97, '🟠': 87, '⬜': 75, '🟫': 65, '⬛': 50 };
+  const vals = [...(emojis || '')].map(e => map[e]).filter(v => v !== undefined);
+  return vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : null;
+}
+
 function renderStatsModal() {
   const el = document.getElementById('stats-content');
   if (!el) return;
@@ -1898,12 +1959,16 @@ function renderStatsModal() {
   const streak    = getStreak();
   const best      = getBestStreak();
 
-  // Score history: all puzzles with a normal score, newest first
-  const scoreHistory = Object.entries(history)
+  // Percentile history: all puzzles with a normal score, newest first
+  const pctHistory = Object.entries(history)
     .filter(([, d]) => d.normal)
     .sort(([a], [b]) => b.localeCompare(a))
     .slice(0, 8)
-    .map(([, d]) => ({ puzzleNumber: d.puzzleNumber, score: d.normal.score, emojis: d.emojis || '' }));
+    .map(([, d]) => ({
+      puzzleNumber: d.puzzleNumber,
+      avgPct: d.avgPercentile != null ? d.avgPercentile : avgPercentileFromEmojis(d.emojis),
+      emojis: d.emojis || '',
+    }));
 
   el.innerHTML = '';
 
@@ -1923,15 +1988,15 @@ function renderStatsModal() {
   });
   el.appendChild(grid);
 
-  // ── Score history bars ──
-  if (scoreHistory.length) {
+  // ── Percentile history bars ──
+  if (pctHistory.length) {
     const sec = document.createElement('div');
     sec.className = 'stats-section-title';
-    sec.textContent = 'SCORE HISTORY';
+    sec.textContent = 'AVG PERCENTILE BY PUZZLE';
     el.appendChild(sec);
 
-    const maxScore = Math.max(...scoreHistory.map(s => s.score), 1);
-    scoreHistory.forEach(entry => {
+    pctHistory.forEach(entry => {
+      const pct = entry.avgPct != null ? entry.avgPct : 0;
       const row = document.createElement('div');
       row.className = 'dist-row';
 
@@ -1948,15 +2013,14 @@ function renderStatsModal() {
 
       const cnt = document.createElement('div');
       cnt.className = 'dist-count';
-      cnt.textContent = entry.score.toLocaleString();
+      cnt.textContent = `${pct}th`;
 
       row.appendChild(lbl);
       row.appendChild(bg);
       row.appendChild(cnt);
       el.appendChild(row);
 
-      // Animate bar in
-      requestAnimationFrame(() => { fill.style.width = `${Math.max(4, Math.round((entry.score / maxScore) * 100))}%`; });
+      requestAnimationFrame(() => { fill.style.width = `${Math.max(4, pct)}%`; });
     });
   }
 
@@ -1984,6 +2048,85 @@ function renderStatsModal() {
     if (t) t.textContent = nextPuzzleCountdown();
     else { clearInterval(window._statsInterval); window._statsInterval = null; }
   }, 1000);
+
+  // ── History section (moved from HTP modal) ──
+  const histDivider = document.createElement('div');
+  histDivider.className = 'stats-divider';
+  el.appendChild(histDivider);
+
+  const histTitle = document.createElement('div');
+  histTitle.className = 'stats-section-title';
+  histTitle.textContent = 'PUZZLE HISTORY';
+  el.appendChild(histTitle);
+
+  const histEl = document.createElement('div');
+  histEl.id = 'stats-history-inner';
+  el.appendChild(histEl);
+  renderHistorySection(histEl);
+}
+
+function renderHistorySection(el) {
+  if (!el) return;
+  const history = loadHistory();
+
+  const startUTC = Date.UTC(2026, 3, 15);
+  const now = new Date();
+  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  const entries = [];
+  for (let i = 0; i < 30 && entries.length < 10; i++) {
+    const d = new Date(todayUTC - i * 86400000);
+    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+    if (history[key]) entries.push({ key, data: history[key] });
+  }
+
+  el.innerHTML = '';
+  if (!entries.length) {
+    el.innerHTML = '<p style="color:#888;font-size:0.82rem">No history yet — complete a puzzle to start tracking.</p>';
+    return;
+  }
+
+  entries.forEach(({ key, data }) => {
+    const [, mm, dd] = key.split('-');
+    const header = document.createElement('div');
+    header.className = 'htp-history-header';
+    header.innerHTML = `<span class="htp-history-date">${mm}/${dd}</span><span class="htp-history-emojis">${data.emojis || ''}</span><span class="htp-history-puzzle">#${data.puzzleNumber}</span>`;
+    el.appendChild(header);
+
+    const addScoreRow = (label, scoreData, mode) => {
+      if (!scoreData) return;
+      const row = document.createElement('div');
+      row.className = 'htp-history-score-row';
+      const lbl = document.createElement('span');
+      lbl.className = 'htp-history-mode-label';
+      lbl.textContent = label;
+      const val = document.createElement('span');
+      val.className = 'htp-history-score';
+      if (mode === 'normal') {
+        val.textContent = `${scoreData.score.toLocaleString()} pts · ${scoreData.guesses} guess${scoreData.guesses !== 1 ? 'es' : ''}`;
+      } else {
+        const sign = scoreData.diff === 0 ? '🎯 Exact' : scoreData.diff > 0 ? `+${scoreData.diff} remaining` : `${Math.abs(scoreData.diff)} over`;
+        val.textContent = `${scoreData.score.toLocaleString()} pts · ${sign}`;
+      }
+      const btn = document.createElement('button');
+      btn.className = 'htp-history-remove';
+      btn.textContent = '✕';
+      btn.title = 'Remove this score';
+      btn.addEventListener('click', () => {
+        removeHistoryScore(key, mode);
+        clearGameState(key);
+        const inner = document.getElementById('stats-history-inner');
+        if (inner) renderHistorySection(inner);
+        updateStreakDisplay();
+      });
+      row.appendChild(lbl);
+      row.appendChild(val);
+      row.appendChild(btn);
+      el.appendChild(row);
+    };
+
+    addScoreRow('STANDARD', data.normal, 'normal');
+    addScoreRow('TARGET',   data.target, 'target');
+  });
 }
 
 function openStatsModal() {
@@ -2026,6 +2169,7 @@ function _init() {
   // Render
   renderGrid();
   computeAllValidAnswers();
+  restoreGameState();
   updateScoreDisplay();
   updateStreakDisplay();
   setupEventListeners();
@@ -2088,6 +2232,7 @@ function resetGame(daysSince) {
   // Re-render
   renderGrid();
   computeAllValidAnswers();
+  restoreGameState();
   updateScoreDisplay();
 }
 

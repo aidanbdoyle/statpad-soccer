@@ -653,7 +653,7 @@ input  { font-family: inherit; }
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(0, 0, 0, 0.84);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -665,7 +665,8 @@ input  { font-family: inherit; }
 /* Shared modal box */
 #modal,
 #htp-modal,
-#target-modal {
+#target-modal,
+#stats-modal {
   background: #2e2c2a;
   border-radius: 14px;
   width: 100%;
