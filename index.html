@@ -5,7 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stat of the Day — Daily PL Puzzle</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="style.css">
+  <!-- ↓ Bump this number on every deploy to force cache refresh on all devices ↓ -->
+  <script>window.CACHE_VER = '1';</script>
+  <script>
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'style.css?v=' + window.CACHE_VER;
+    document.head.appendChild(l);
+  </script>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TDY0WDL286"></script>
   <script>
@@ -226,19 +233,34 @@
 
     Until scraper runs, a built-in sample dataset is used automatically.
   -->
-  <script src="puzzles.js"></script>
-  <script src="data/photo_codes.js"></script>
-  <script src="data/player_photos_extra.js"></script>
-  <script src="game.js"></script>
   <script>
-    // Load players_data.js and call init() as soon as it's ready.
-    // Falls back to the built-in sample dataset if the file doesn't exist.
+    // Load all scripts with cache-busting version string.
+    // To force a refresh on all devices after a deploy, bump CACHE_VER above.
     (function () {
-      var s = document.createElement('script');
-      s.src = 'data/players_data.js';
-      s.onload  = function () { if (typeof init === 'function') init(); };
-      s.onerror = function () { window.PLAYERS_DATA = null; if (typeof init === 'function') init(); };
-      document.head.appendChild(s);
+      var v = window.CACHE_VER;
+      function addScript(src, onload, onerror) {
+        var s = document.createElement('script');
+        s.src = src + '?v=' + v;
+        if (onload)  s.onload  = onload;
+        if (onerror) s.onerror = onerror;
+        document.head.appendChild(s);
+      }
+
+      // Load in dependency order: puzzles → photos → game → player data
+      addScript('puzzles.js', function () {
+        addScript('data/photo_codes.js', function () {
+          addScript('data/player_photos_extra.js', function () {
+            addScript('game.js', function () {
+              // Load player data last; call init() when ready
+              addScript(
+                'data/players_data.js',
+                function () { if (typeof init === 'function') init(); },
+                function () { window.PLAYERS_DATA = null; if (typeof init === 'function') init(); }
+              );
+            });
+          });
+        });
+      });
     })();
   </script>
 
