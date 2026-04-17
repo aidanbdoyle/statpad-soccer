@@ -1849,12 +1849,19 @@ function handleShare() {
     ``,
   ];
 
-  if (avgPct !== null) lines.push(`Avg: ${avgPct}th percentile · ${guesses} guess${guesses !== 1 ? 'es' : ''}`);
-
   if (state.gameMode === 'target' && PUZZLE.target != null) {
+    // Target mode: show score vs target
+    lines[1] = `${mode} ${PUZZLE.category} · Target: ${PUZZLE.target}`;
+    lines[0] = `⚽ Stat of the Day #${puzzleNum} — Target`;
     const diff = PUZZLE.target - state.totalScore;
-    const result = diff === 0 ? '🎯 Exact!' : diff > 0 ? `+${diff} remaining` : `${Math.abs(diff)} over`;
-    lines.push(`Target: ${result}`);
+    const result = diff === 0
+      ? '🎯 Exact!'
+      : diff > 0
+        ? `${diff} short of target`
+        : `${Math.abs(diff)} over target`;
+    lines.push(`Score: ${state.totalScore.toLocaleString()} · ${result}`);
+  } else {
+    if (avgPct !== null) lines.push(`Avg: ${avgPct}th percentile · ${guesses} guess${guesses !== 1 ? 'es' : ''}`);
   }
 
   lines.push(`statoftheday.app`);
@@ -1874,7 +1881,7 @@ function handleShare() {
 
 // ── Game State Persistence ────────────────────────────────────
 function gameStateKey() {
-  return `statpad_game_${puzzleDateKey(currentDaySince)}`;
+  return `statpad_game_${puzzleDateKey(currentDaySince)}_${state.gameMode}`;
 }
 
 function saveGameState() {
@@ -1899,8 +1906,13 @@ function loadGameState() {
   } catch(e) { return null; }
 }
 
-function clearGameState(dateKey) {
-  try { localStorage.removeItem(`statpad_game_${dateKey}`); } catch(e) {}
+function clearGameState(dateKey, mode) {
+  if (mode) {
+    try { localStorage.removeItem(`statpad_game_${dateKey}_${mode}`); } catch(e) {}
+  } else {
+    try { localStorage.removeItem(`statpad_game_${dateKey}_normal`); } catch(e) {}
+    try { localStorage.removeItem(`statpad_game_${dateKey}_target`); } catch(e) {}
+  }
 }
 
 function restoreGameState() {
@@ -2036,6 +2048,21 @@ function renderStatsModal() {
     });
   }
 
+  // ── Share with Friends ──
+  const shareDivider = document.createElement('div');
+  shareDivider.className = 'stats-divider';
+  el.appendChild(shareDivider);
+
+  const shareBtn = document.createElement('button');
+  shareBtn.className = 'stats-share-btn';
+  shareBtn.textContent = 'SHARE WITH FRIENDS  ⬆';
+  shareBtn.addEventListener('click', () => {
+    handleShare();
+    shareBtn.textContent = 'COPIED! ✓';
+    setTimeout(() => { shareBtn.textContent = 'SHARE WITH FRIENDS  ⬆'; }, 2000);
+  });
+  el.appendChild(shareBtn);
+
   // ── Countdown ──
   const divider = document.createElement('div');
   divider.className = 'stats-divider';
@@ -2104,10 +2131,10 @@ function renderHistorySection(el) {
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const dateLabel = `${months[parseInt(mm,10)-1]} ${parseInt(dd,10)}`;
 
-    // Completion % from emojis (❌ = gave up)
-    const emojiArr = Array.from(data.emojis || '');
-    const completedCount = emojiArr.filter(e => e !== '❌').length;
-    const completionPct = emojiArr.length ? Math.round(completedCount / emojiArr.length * 100) : 0;
+    // Avg percentile (use stored value or derive from emojis for legacy entries)
+    const avgPct = data.avgPercentile != null
+      ? data.avgPercentile
+      : avgPercentileFromEmojis(data.emojis || '');
 
     // ── Header row (clickable — navigates to that puzzle) ──
     const header = document.createElement('div');
@@ -2126,49 +2153,74 @@ function renderHistorySection(el) {
     });
     el.appendChild(header);
 
-    // ── Single score row: completion % + target result + ✕ ──
-    const row = document.createElement('div');
-    row.className = 'htp-history-score-row';
+    // ── Score columns: STANDARD | TARGET, each with own ✕ ──
+    const scoresRow = document.createElement('div');
+    scoresRow.className = 'htp-history-scores';
 
-    // Completion %
-    const pctSpan = document.createElement('span');
-    pctSpan.className = 'htp-history-pct';
-    pctSpan.textContent = `${completionPct}% complete`;
+    const makeCol = (label, content, onRemove) => {
+      const col = document.createElement('div');
+      col.className = 'htp-history-score-col';
 
-    // Target result (or em-dash if not played)
-    const targetSpan = document.createElement('span');
-    targetSpan.className = 'htp-history-target-result';
+      const colHeader = document.createElement('div');
+      colHeader.className = 'htp-history-col-header';
+
+      const colLabel = document.createElement('span');
+      colLabel.className = 'htp-history-col-label';
+      colLabel.textContent = label;
+
+      const xBtn = document.createElement('button');
+      xBtn.className = 'htp-history-remove';
+      xBtn.textContent = '✕';
+      xBtn.title = `Reset ${label.toLowerCase()} score`;
+      xBtn.disabled = !content;
+      xBtn.addEventListener('click', e => { e.stopPropagation(); onRemove(); });
+
+      colHeader.appendChild(colLabel);
+      colHeader.appendChild(xBtn);
+
+      const colValue = document.createElement('div');
+      colValue.className = 'htp-history-col-value' + (content ? '' : ' htp-history-col-empty');
+      colValue.textContent = content || '—';
+
+      col.appendChild(colHeader);
+      col.appendChild(colValue);
+      return col;
+    };
+
+    // Standard value
+    const stdContent = data.normal
+      ? `${avgPct != null ? avgPct + 'th pct avg' : '—'}`
+      : null;
+
+    // Target value
+    let tgtContent = null;
     if (data.target) {
       const t = data.target;
-      targetSpan.textContent = t.diff === 0
-        ? 'TARGET 🎯'
+      tgtContent = t.diff === 0
+        ? '🎯 Exact!'
         : t.diff > 0
-          ? `TARGET +${t.diff}`
-          : `TARGET −${Math.abs(t.diff)}`;
-    } else {
-      targetSpan.textContent = '—';
-      targetSpan.style.opacity = '0.3';
+          ? `${t.diff} short`
+          : `${Math.abs(t.diff)} over`;
     }
 
-    // ✕ remove button
-    const btn = document.createElement('button');
-    btn.className = 'htp-history-remove';
-    btn.textContent = '✕';
-    btn.title = 'Reset this puzzle';
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      removeHistoryScore(key, 'normal');
-      removeHistoryScore(key, 'target');
-      clearGameState(key);
+    const refreshHistory = () => {
       const inner = document.getElementById('stats-history-inner');
       if (inner) renderHistorySection(inner);
       updateStreakDisplay();
-    });
+    };
 
-    row.appendChild(pctSpan);
-    row.appendChild(targetSpan);
-    row.appendChild(btn);
-    el.appendChild(row);
+    scoresRow.appendChild(makeCol('STANDARD', stdContent, () => {
+      removeHistoryScore(key, 'normal');
+      clearGameState(key, 'normal');
+      refreshHistory();
+    }));
+    scoresRow.appendChild(makeCol('TARGET', tgtContent, () => {
+      removeHistoryScore(key, 'target');
+      clearGameState(key, 'target');
+      refreshHistory();
+    }));
+
+    el.appendChild(scoresRow);
   });
 }
 
@@ -2330,10 +2382,19 @@ function setupEventListeners() {
 
   // Target
   document.getElementById('btn-target').addEventListener('click', () => {
-    if (PUZZLE.target == null) return;   // no target configured — do nothing
+    if (PUZZLE.target == null) return;
+    saveGameState(); // persist current mode before switching
     state.gameMode = state.gameMode === 'target' ? 'normal' : 'target';
-    const btn = document.getElementById('btn-target');
-    btn.classList.toggle('active-mode', state.gameMode === 'target');
+    document.getElementById('btn-target').classList.toggle('active-mode', state.gameMode === 'target');
+    // Reset rows then restore saved state for the new mode
+    state.rows = PUZZLE.rows.map(() => ({
+      submitted: false, givenUp: false,
+      player: null, season: null, statValue: null, percentile: null,
+    }));
+    state.totalScore   = 0;
+    state.totalGuesses = 0;
+    renderGrid();
+    restoreGameState();
     updateScoreDisplay();
   });
 
