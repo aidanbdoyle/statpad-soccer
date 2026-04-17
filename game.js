@@ -1774,6 +1774,17 @@ function handleSubmit() {
   updateScoreDisplay();
   saveGameState();
   if (isGameComplete()) saveResult();
+
+  trackGA('player_submitted', {
+    puzzle_number: PUZZLE.puzzleNumber,
+    row_index:     activeRow + 1,
+    player_name:   selectedPlayer.name,
+    stat_value:    statValue,
+    percentile:    percentile,
+    tier:          getPercentileTier(percentile),
+    game_mode:     state.gameMode,
+  });
+
   closeModal();
 }
 
