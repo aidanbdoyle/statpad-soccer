@@ -642,7 +642,7 @@ function isGameComplete() {
 
 function saveResult() {
   if (!isGameComplete()) return;
-  const TIER_EMOJI = { purple:'🟣', blue:'🔵', gold:'🟠', silver:'⬜', bronze:'🟫', '':'⬛' };
+  const TIER_EMOJI = { purple:'🟣', blue:'🔵', gold:'🟡', silver:'⚪', bronze:'🟤', '':'⚫' };
   const emojis = state.rows.map(r => {
     if (r.givenUp)    return '❌';
     if (!r.submitted) return '⬜';
@@ -1811,7 +1811,7 @@ function renderTargetModal() {
 
 // ── Share ─────────────────────────────────────────────────────
 function handleShare() {
-  const TIER_EMOJI = { purple:'🟣', blue:'🔵', gold:'🟡', silver:'🩶', bronze:'🟤', '':'⬛' };
+  const TIER_EMOJI = { purple:'🟣', blue:'🔵', gold:'🟡', silver:'⚪', bronze:'🟤', '':'⚫' };
 
   const puzzleNum = PUZZLE.puzzleNumber || '?';
   const mode      = (PUZZLE.categoryMode || 'season') === 'career' ? 'Career' : 'Season';
