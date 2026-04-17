@@ -1102,7 +1102,7 @@ function makeQualifierCell(rowConfig) {
     : [rowConfig.qualifier];
 
   quals.forEach(q => {
-    const flags = qualifierFlags(q);
+    const flags = q.showAsText ? null : qualifierFlags(q);
 
     const main = document.createElement('div');
     main.className = 'qualifier-main';

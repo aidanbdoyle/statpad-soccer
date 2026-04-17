@@ -133,7 +133,7 @@ const PUZZLES = [
         seasonStart: 2010,
         seasonEnd: 2026,
         qualifier: [
-          { type: "nationality_one_of", values: ["Northern Ireland", "Scotland", "Wales"], display: "N. IRISH / SCOTTISH / WELSH", scopeDisplay: "CAREER" },
+          { type: "nationality_one_of", values: ["Northern Ireland", "Scotland", "Wales"], display: "N. IRISH / SCOTTISH / WELSH", scopeDisplay: "CAREER", showAsText: true },
           { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
         ]
       },
