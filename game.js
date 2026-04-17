@@ -1590,7 +1590,12 @@ function updateScoreDisplay() {
 // ── Player Search ─────────────────────────────────────────────
 // Strip accents so "Ruben" matches "Rúben", "Seamus" matches "Séamus", etc.
 function normaliseSearch(str) {
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  return str
+    .replace(/ø/gi, 'o').replace(/æ/gi, 'ae').replace(/œ/gi, 'oe')
+    .replace(/ð/gi, 'd').replace(/þ/gi, 'th').replace(/ß/gi, 'ss')
+    .replace(/ł/gi, 'l').replace(/đ/gi, 'd')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
 }
 
 // ── Player photo ─────────────────────────────────────────────
@@ -1598,7 +1603,12 @@ function normaliseSearch(str) {
 // a flat map of lowercased name/web_name → numeric FPL photo code.
 
 function normName(name) {
-  return name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  return name
+    .replace(/ø/gi, 'o').replace(/æ/gi, 'ae').replace(/œ/gi, 'oe')
+    .replace(/ð/gi, 'd').replace(/þ/gi, 'th').replace(/ß/gi, 'ss')
+    .replace(/ł/gi, 'l').replace(/đ/gi, 'd')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().trim();
 }
 
 function getFplPhotoCode(player) {
