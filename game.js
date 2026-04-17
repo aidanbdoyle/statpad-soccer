@@ -2012,7 +2012,10 @@ function restoreGameState() {
       player:     rowData.player,
       season:     rowData.season,
       statValue:  rowData.statValue,
-      percentile: rowData.percentile,
+      // Recompute percentile fresh so bug fixes take effect without replaying
+      percentile: rowData.submitted && rowData.statValue != null
+        ? getPercentile(i, rowData.statValue)
+        : rowData.percentile,
     };
     if (rowData.submitted) {
       state.totalScore   += rowData.statValue || 0;
