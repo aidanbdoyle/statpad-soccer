@@ -1852,7 +1852,7 @@ function handleShare() {
 
   const lines = [
     `⚽ Stat of the Day #${puzzleNum}`,
-    `${mode} ${PUZZLE.category}`,
+    `${mode} ${PUZZLE.category} (${state.totalScore.toLocaleString()})`,
     ``,
     emojiRow,
     ``,
@@ -1860,7 +1860,7 @@ function handleShare() {
 
   if (state.gameMode === 'target' && PUZZLE.target != null) {
     // Target mode: show score vs target
-    lines[1] = `${mode} ${PUZZLE.category} · Target: ${PUZZLE.target}`;
+    lines[1] = `${mode} ${PUZZLE.category} (${state.totalScore.toLocaleString()}) · Target: ${PUZZLE.target}`;
     lines[0] = `⚽ Stat of the Day #${puzzleNum} — Target`;
     const diff = PUZZLE.target - state.totalScore;
     const result = diff === 0
