@@ -739,7 +739,7 @@ function updateStreakDisplay() {
   const streak = getStreak();
   const el = document.getElementById('streak-display');
   if (!el) return;
-  el.textContent = streak > 0 ? `🔥 ${streak}` : '';
+  el.textContent = '';
   el.title = streak === 1 ? '1 day streak' : `${streak} day streak`;
 }
 
