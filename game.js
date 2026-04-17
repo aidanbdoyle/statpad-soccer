@@ -1975,11 +1975,12 @@ function renderStatsModal() {
   const el = document.getElementById('stats-content');
   if (!el) return;
 
-  const history   = loadHistory();
-  const entries   = Object.values(history);
-  const played    = entries.length;
-  const completed = entries.filter(e => e.completed).length;
-  const pct       = played ? Math.round((completed / played) * 100) : 0;
+  const history        = loadHistory();
+  const entries        = Object.values(history);
+  const played         = entries.length;
+  const completed      = entries.filter(e => e.completed).length;
+  const totalAvailable = todaysDaySince() + 1;
+  const pct            = Math.round((completed / totalAvailable) * 100);
   const streak    = getStreak();
   const best      = getBestStreak();
 
