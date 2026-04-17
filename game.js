@@ -620,10 +620,17 @@ const state = {
 // ── History & Streak (localStorage) ──────────────────────────
 const HISTORY_KEY = 'statpad_history';
 
-// Returns YYYY-MM-DD for the puzzle currently being played (keyed by daysSince)
+// Puzzles roll over at noon EST = 17:00 UTC each day.
+const PUZZLE_ROLLOVER_MS = Date.UTC(2026, 3, 15, 17, 0, 0); // April 15 2026 12:00 EST
+
+// How many puzzle days have elapsed since launch (determines which puzzle is active).
+function todaysDaySince() {
+  return Math.max(0, Math.floor((Date.now() - PUZZLE_ROLLOVER_MS) / 86400000));
+}
+
+// Returns YYYY-MM-DD for a given puzzle day index.
 function puzzleDateKey(daySince) {
-  const startUTC = Date.UTC(2026, 3, 15);
-  const d = new Date(startUTC + daySince * 86400000);
+  const d = new Date(Date.UTC(2026, 3, 15) + daySince * 86400000);
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
 }
 
@@ -697,19 +704,13 @@ function saveResult() {
 }
 
 function getStreak() {
-  const history = loadHistory();
+  const history  = loadHistory();
+  const daySince = todaysDaySince();
   let streak = 0;
-  const startUTC = Date.UTC(2026, 3, 15);
-  const now = new Date();
-  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(todayUTC - i * 86400000);
-    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
-    if (history[key] && history[key].completed) {
-      streak++;
-    } else {
-      break;
-    }
+  for (let i = 0; i <= daySince; i++) {
+    const key = puzzleDateKey(daySince - i);
+    if (history[key] && history[key].completed) { streak++; }
+    else { break; }
   }
   return streak;
 }
@@ -740,14 +741,11 @@ function renderHistoryInModal() {
   if (!el) return;
   const history = loadHistory();
 
-  // Collect last 10 days that have any data
-  const startUTC = Date.UTC(2026, 3, 15);
-  const now = new Date();
-  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  // Collect last 10 puzzle days that have any data
+  const daySince = todaysDaySince();
   const entries = [];
-  for (let i = 0; i < 30 && entries.length < 10; i++) {
-    const d = new Date(todayUTC - i * 86400000);
-    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+  for (let i = 0; i <= daySince && entries.length < 10; i++) {
+    const key = puzzleDateKey(daySince - i);
     if (history[key]) entries.push({ key, data: history[key] });
   }
 
@@ -1916,14 +1914,10 @@ function restoreGameState() {
 
 function getBestStreak() {
   const history  = loadHistory();
-  const startUTC = Date.UTC(2026, 3, 15);
-  const now      = new Date();
-  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-  const totalDays = Math.floor((todayUTC - startUTC) / 86400000) + 1;
+  const daySince = todaysDaySince();
   let best = 0, run = 0;
-  for (let i = 0; i < totalDays; i++) {
-    const d   = new Date(startUTC + i * 86400000);
-    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+  for (let i = 0; i <= daySince; i++) {
+    const key = puzzleDateKey(i);
     if (history[key] && history[key].completed) { run++; best = Math.max(best, run); }
     else { run = 0; }
   }
@@ -1931,9 +1925,12 @@ function getBestStreak() {
 }
 
 function nextPuzzleCountdown() {
-  const now      = new Date();
-  const midnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1) + 15 * 3600000);
-  const ms       = midnight - now;
+  const now    = new Date();
+  const nowMs  = now.getTime();
+  // Next rollover = today at 17:00 UTC (noon EST), or tomorrow's if already past
+  const todayNoon = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 17, 0, 0);
+  const target    = nowMs < todayNoon ? todayNoon : todayNoon + 86400000;
+  const ms = target - nowMs;
   const h = Math.floor(ms / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);
   const s = Math.floor((ms % 60000) / 1000);
@@ -2069,13 +2066,10 @@ function renderHistorySection(el) {
   if (!el) return;
   const history = loadHistory();
 
-  const startUTC = Date.UTC(2026, 3, 15);
-  const now = new Date();
-  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  const daySince = todaysDaySince();
   const entries = [];
-  for (let i = 0; i < 30 && entries.length < 10; i++) {
-    const d = new Date(todayUTC - i * 86400000);
-    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+  for (let i = 0; i <= daySince && entries.length < 10; i++) {
+    const key = puzzleDateKey(daySince - i);
     if (history[key]) entries.push({ key, data: history[key] });
   }
 
@@ -2149,11 +2143,8 @@ function _init() {
     console.info('StatpadGame: using built-in sample dataset. Run scraper.py to load full data.');
   }
 
-  // Set currentDaySince from today
-  const now = new Date();
-  const todayUTC  = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-  const startUTC  = Date.UTC(2026, 3, 15);
-  currentDaySince = Math.max(0, Math.floor((todayUTC - startUTC) / 86400000));
+  // Set currentDaySince from today (rolls over at noon EST = 17:00 UTC)
+  currentDaySince = todaysDaySince();
 
   // Initialise row state
   state.rows = PUZZLE.rows.map(() => ({
@@ -2182,16 +2173,13 @@ function populateDateSelect() {
   if (!sel) return;
   sel.innerHTML = '';
 
-  const startUTC = Date.UTC(2026, 3, 15);   // 2026-04-15
-  const now      = new Date();
-  const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-  const totalDays = Math.floor((todayUTC - startUTC) / (1000 * 60 * 60 * 24));
-
+  const totalDays = todaysDaySince();
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   for (let d = totalDays; d >= 0; d--) {
-    const date = new Date(startUTC + d * 86400000);
-    const label = `${months[date.getUTCMonth()]} ${date.getUTCDate()}`;
+    const dateStr = puzzleDateKey(d);
+    const [, mm, dd] = dateStr.split('-');
+    const label = `${months[parseInt(mm, 10) - 1]} ${parseInt(dd, 10)}`;
     const opt   = document.createElement('option');
     opt.value   = d;
     opt.textContent = d === totalDays ? `${label} ★` : label;  // star = today

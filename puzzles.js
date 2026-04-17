@@ -318,11 +318,10 @@ const PUZZLES = [
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
+// Puzzles roll over at noon EST (17:00 UTC) each day.
 (function () {
-  const msPerDay   = 1000 * 60 * 60 * 24;
-  const today      = new Date();
-  const todayUTC   = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
-  const startUTC   = Date.UTC(2026, 3, 15);   // 2026-04-15
-  const daysSince  = Math.max(0, Math.floor((todayUTC - startUTC) / msPerDay));
-  window.PUZZLE    = PUZZLES[daysSince % PUZZLES.length];
+  const msPerDay  = 1000 * 60 * 60 * 24;
+  const rollover  = Date.UTC(2026, 3, 15, 17, 0, 0); // April 15 2026 12:00 EST = 17:00 UTC
+  const daysSince = Math.max(0, Math.floor((Date.now() - rollover) / msPerDay));
+  window.PUZZLE   = PUZZLES[daysSince % PUZZLES.length];
 })();
