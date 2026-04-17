@@ -2071,6 +2071,11 @@ function renderStatsModal() {
   histTitle.textContent = 'PUZZLE HISTORY';
   el.appendChild(histTitle);
 
+  const histHint = document.createElement('p');
+  histHint.className = 'stats-history-hint';
+  histHint.textContent = 'To reset a puzzle, click the ✕ on the right.';
+  el.appendChild(histHint);
+
   const histEl = document.createElement('div');
   histEl.id = 'stats-history-inner';
   el.appendChild(histEl);
@@ -2085,7 +2090,7 @@ function renderHistorySection(el) {
   const entries = [];
   for (let i = 0; i <= daySince && entries.length < 10; i++) {
     const key = puzzleDateKey(daySince - i);
-    if (history[key]) entries.push({ key, data: history[key] });
+    if (history[key]) entries.push({ key, data: history[key], dayIdx: daySince - i });
   }
 
   el.innerHTML = '';
@@ -2094,47 +2099,76 @@ function renderHistorySection(el) {
     return;
   }
 
-  entries.forEach(({ key, data }) => {
+  entries.forEach(({ key, data, dayIdx }) => {
     const [, mm, dd] = key.split('-');
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const dateLabel = `${months[parseInt(mm,10)-1]} ${parseInt(dd,10)}`;
+
+    // Completion % from emojis (❌ = gave up)
+    const emojiArr = Array.from(data.emojis || '');
+    const completedCount = emojiArr.filter(e => e !== '❌').length;
+    const completionPct = emojiArr.length ? Math.round(completedCount / emojiArr.length * 100) : 0;
+
+    // ── Header row (clickable — navigates to that puzzle) ──
     const header = document.createElement('div');
-    header.className = 'htp-history-header';
-    header.innerHTML = `<span class="htp-history-date">${mm}/${dd}</span><span class="htp-history-emojis">${data.emojis || ''}</span><span class="htp-history-puzzle">#${data.puzzleNumber}</span>`;
+    header.className = 'htp-history-header htp-history-clickable';
+    header.title = `Play puzzle #${data.puzzleNumber}`;
+    header.innerHTML =
+      `<span class="htp-history-date">${dateLabel}</span>` +
+      `<span class="htp-history-emojis">${data.emojis || ''}</span>` +
+      `<span class="htp-history-puzzle">#${data.puzzleNumber}</span>` +
+      `<span class="htp-history-arrow">↗</span>`;
+    header.addEventListener('click', () => {
+      document.getElementById('stats-overlay').classList.add('hidden');
+      const sel = document.getElementById('date-select');
+      if (sel) sel.value = dayIdx;
+      resetGame(dayIdx);
+    });
     el.appendChild(header);
 
-    const addScoreRow = (label, scoreData, mode) => {
-      if (!scoreData) return;
-      const row = document.createElement('div');
-      row.className = 'htp-history-score-row';
-      const lbl = document.createElement('span');
-      lbl.className = 'htp-history-mode-label';
-      lbl.textContent = label;
-      const val = document.createElement('span');
-      val.className = 'htp-history-score';
-      if (mode === 'normal') {
-        val.textContent = `${scoreData.score.toLocaleString()} pts · ${scoreData.guesses} guess${scoreData.guesses !== 1 ? 'es' : ''}`;
-      } else {
-        const sign = scoreData.diff === 0 ? '🎯 Exact' : scoreData.diff > 0 ? `+${scoreData.diff} remaining` : `${Math.abs(scoreData.diff)} over`;
-        val.textContent = `${scoreData.score.toLocaleString()} pts · ${sign}`;
-      }
-      const btn = document.createElement('button');
-      btn.className = 'htp-history-remove';
-      btn.textContent = '✕';
-      btn.title = 'Remove this score';
-      btn.addEventListener('click', () => {
-        removeHistoryScore(key, mode);
-        clearGameState(key);
-        const inner = document.getElementById('stats-history-inner');
-        if (inner) renderHistorySection(inner);
-        updateStreakDisplay();
-      });
-      row.appendChild(lbl);
-      row.appendChild(val);
-      row.appendChild(btn);
-      el.appendChild(row);
-    };
+    // ── Single score row: completion % + target result + ✕ ──
+    const row = document.createElement('div');
+    row.className = 'htp-history-score-row';
 
-    addScoreRow('STANDARD', data.normal, 'normal');
-    addScoreRow('TARGET',   data.target, 'target');
+    // Completion %
+    const pctSpan = document.createElement('span');
+    pctSpan.className = 'htp-history-pct';
+    pctSpan.textContent = `${completionPct}% complete`;
+
+    // Target result (or em-dash if not played)
+    const targetSpan = document.createElement('span');
+    targetSpan.className = 'htp-history-target-result';
+    if (data.target) {
+      const t = data.target;
+      targetSpan.textContent = t.diff === 0
+        ? 'TARGET 🎯'
+        : t.diff > 0
+          ? `TARGET +${t.diff}`
+          : `TARGET −${Math.abs(t.diff)}`;
+    } else {
+      targetSpan.textContent = '—';
+      targetSpan.style.opacity = '0.3';
+    }
+
+    // ✕ remove button
+    const btn = document.createElement('button');
+    btn.className = 'htp-history-remove';
+    btn.textContent = '✕';
+    btn.title = 'Reset this puzzle';
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      removeHistoryScore(key, 'normal');
+      removeHistoryScore(key, 'target');
+      clearGameState(key);
+      const inner = document.getElementById('stats-history-inner');
+      if (inner) renderHistorySection(inner);
+      updateStreakDisplay();
+    });
+
+    row.appendChild(pctSpan);
+    row.appendChild(targetSpan);
+    row.appendChild(btn);
+    el.appendChild(row);
   });
 }
 

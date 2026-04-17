@@ -981,7 +981,7 @@ input  { font-family: inherit; }
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 0 4px;
+  padding: 8px 4px 4px;
   border-top: 1px solid rgba(255,255,255,0.08);
   margin-top: 4px;
 }
@@ -1003,25 +1003,39 @@ input  { font-family: inherit; }
   font-size: 0.75rem;
 }
 
+.htp-history-clickable {
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+.htp-history-clickable:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.htp-history-arrow {
+  color: #555;
+  font-size: 0.8rem;
+  margin-left: auto;
+  padding-left: 6px;
+}
+
 .htp-history-score-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 3px 0 3px 32px;
-  font-size: 0.82rem;
+  gap: 10px;
+  padding: 3px 0 6px 0;
+  font-size: 0.8rem;
 }
 
-.htp-history-mode-label {
-  color: #666;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  min-width: 58px;
-}
-
-.htp-history-score {
-  color: #ddd;
+.htp-history-pct {
+  color: #cbd5e1;
   flex: 1;
+}
+
+.htp-history-target-result {
+  color: #94a3b8;
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .htp-history-remove {
@@ -1039,9 +1053,11 @@ input  { font-family: inherit; }
   color: #ef4444;
 }
 
-.htp-history-score {
-  color: #94a3b8;
-  font-variant-numeric: tabular-nums;
+.stats-history-hint {
+  font-size: 0.72rem;
+  color: #666;
+  margin: -6px 0 10px;
+  font-style: italic;
 }
 
 /* ══════════════════════════════════════════
