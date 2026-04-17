@@ -617,6 +617,11 @@ const state = {
   gameMode: 'normal',   // 'normal' = maximise | 'target' = hit the target
 };
 
+// ── Analytics helper ─────────────────────────────────────────
+function trackGA(eventName, params) {
+  if (typeof gtag === 'function') gtag('event', eventName, params);
+}
+
 // ── History & Streak (localStorage) ──────────────────────────
 const HISTORY_KEY = 'statpad_history';
 
@@ -1770,6 +1775,10 @@ function handleGiveUp() {
   updateScoreDisplay();
   saveGameState();
   if (isGameComplete()) saveResult();
+  trackGA('give_up', {
+    puzzle_number: PUZZLE.puzzleNumber,
+    row_index:     activeRow + 1,   // 1-based for readability in GA
+  });
   closeModal();
 }
 
@@ -1868,6 +1877,12 @@ function handleShare() {
 
   const text = lines.join('\n');
   const label = document.getElementById('share-btn-label');
+
+  trackGA('share', {
+    puzzle_number: PUZZLE.puzzleNumber,
+    game_mode:     state.gameMode,
+    is_complete:   isGameComplete(),
+  });
 
   if (navigator.clipboard) {
     navigator.clipboard.writeText(text).then(() => {
@@ -2267,6 +2282,13 @@ function _init() {
   updateStreakDisplay();
   setupEventListeners();
   populateDateSelect();
+
+  trackGA('puzzle_viewed', {
+    puzzle_number:   PUZZLE.puzzleNumber,
+    puzzle_category: PUZZLE.category,
+    puzzle_mode:     PUZZLE.categoryMode,
+    is_today_puzzle: true,
+  });
 }
 
 // ── Date selector ─────────────────────────────────────────────
@@ -2324,6 +2346,13 @@ function resetGame(daysSince) {
   computeAllValidAnswers();
   restoreGameState();
   updateScoreDisplay();
+
+  trackGA('puzzle_viewed', {
+    puzzle_number:   PUZZLE.puzzleNumber,
+    puzzle_category: PUZZLE.category,
+    puzzle_mode:     PUZZLE.categoryMode,
+    is_today_puzzle: daysSince === todaysDaySince(),
+  });
 }
 
 function setupEventListeners() {
@@ -2387,6 +2416,9 @@ function setupEventListeners() {
     saveGameState(); // persist current mode before switching
     state.gameMode = state.gameMode === 'target' ? 'normal' : 'target';
     document.getElementById('btn-target').classList.toggle('active-mode', state.gameMode === 'target');
+    if (state.gameMode === 'target') {
+      trackGA('target_mode_activated', { puzzle_number: PUZZLE.puzzleNumber });
+    }
     // Reset rows then restore saved state for the new mode
     state.rows = PUZZLE.rows.map(() => ({
       submitted: false, givenUp: false,
