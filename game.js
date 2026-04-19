@@ -1669,34 +1669,30 @@ function makePlayerAvatar(player) {
   const wrap = document.createElement('div');
   wrap.className = 'player-avatar';
 
-  // Priority: curated extra > FPL code > auto-wiki > initials
+  // Priority: curated extra > FPL code > auto-wiki > silhouette
   const extraUrl = getExtraPhotoUrl(player);
   const code     = extraUrl ? null : getFplPhotoCode(player);
 
-  function showInitials() {
-    const initials = player.name
-      .split(' ')
-      .map(w => w[0])
-      .filter(Boolean)
-      .slice(0, 2)
-      .join('')
-      .toUpperCase();
-    wrap.textContent = initials;
-    wrap.classList.add('player-avatar-initials');
+  function showSilhouette() {
+    const img = document.createElement('img');
+    img.src       = 'data/silhouette.svg';
+    img.alt       = player.name;
+    img.className = 'player-avatar-img';
+    wrap.appendChild(img);
   }
 
-  // Final fallback: try Wikipedia auto-photo then initials
-  function tryWikiOrInitials() {
+  // Final fallback: try Wikipedia auto-photo then silhouette
+  function tryWikiOrSilhouette() {
     const wikiUrl = getWikiPhotoUrl(player);
     if (wikiUrl) {
       const img = document.createElement('img');
       img.src       = wikiUrl;
       img.alt       = player.name;
       img.className = 'player-avatar-img';
-      img.onerror   = () => { img.remove(); showInitials(); };
+      img.onerror   = () => { img.remove(); showSilhouette(); };
       wrap.appendChild(img);
     } else {
-      showInitials();
+      showSilhouette();
     }
   }
 
@@ -1713,10 +1709,10 @@ function makePlayerAvatar(player) {
         img2.src      = fallbackUrl;
         img2.alt      = player.name;
         img2.className = 'player-avatar-img';
-        img2.onerror  = () => { img2.remove(); tryWikiOrInitials(); };
+        img2.onerror  = () => { img2.remove(); tryWikiOrSilhouette(); };
         wrap.appendChild(img2);
       } else {
-        tryWikiOrInitials();
+        tryWikiOrSilhouette();
       }
     };
     wrap.appendChild(img);
@@ -1725,10 +1721,10 @@ function makePlayerAvatar(player) {
     img.src       = extraUrl;
     img.alt       = player.name;
     img.className = 'player-avatar-img';
-    img.onerror   = () => { img.remove(); tryWikiOrInitials(); };
+    img.onerror   = () => { img.remove(); tryWikiOrSilhouette(); };
     wrap.appendChild(img);
   } else {
-    tryWikiOrInitials();
+    tryWikiOrSilhouette();
   }
 
   return wrap;

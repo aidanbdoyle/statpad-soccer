@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 140">
+  <!-- Background -->
+  <rect width="110" height="140" fill="#3a3a38"/>
+  <!-- Head -->
+  <circle cx="55" cy="48" r="26" fill="#5e5e5b"/>
+  <!-- Shoulders -->
+  <path d="M0,140 L0,112 Q0,86 55,86 Q110,86 110,112 L110,140 Z" fill="#5e5e5b"/>
+</svg>
