@@ -202,27 +202,27 @@ const PUZZLES = [
   {
     puzzleNumber: 5,
     date: "2026-04-19",
-    category: "Assists",
-    categoryKey: "assists",
-    categoryUnit: "assist",
-    categoryMode: "season",
-    target: 55,
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "career",
+    target: 225,
     rows: [
       {
-        clubs: ["Arsenal"],
-        seasonStart: 2000,
-        seasonEnd: 2015,
+        clubs: [],
+        seasonStart: 2005,
+        seasonEnd: 2009,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "nationality", value: "Belgium", display: "BELGIAN", scopeDisplay: "CAREER" }
+        qualifier: { type: "nationality", value: "Germany", display: "GERMAN", scopeDisplay: "CAREER" }
       },
       {
-        clubs: ["Manchester City"],
-        seasonStart: 2015,
+        clubs: ["Sunderland", "Leeds United"],
+        seasonStart: 1992,
         seasonEnd: 2026,
         qualifier: null
       },
@@ -230,13 +230,16 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "nationality", value: "Wales", display: "WELSH", scopeDisplay: "CAREER" }
+        qualifier: { type: "last_name_starts_with", value: "W", display: "LAST NAME STARTS WITH W", scopeDisplay: "CAREER" }
       },
       {
-        clubs: ["Chelsea"],
-        seasonStart: 2010,
+        clubs: [],
+        seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: null
+        qualifier: [
+          { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPS", scopeDisplay: "CAREER" },
+          { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" }
+        ]
       }
     ]
   },

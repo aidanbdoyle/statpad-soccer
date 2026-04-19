@@ -930,6 +930,11 @@ function checkQualifier(player, season, qualifier) {
       const pos = (player.position || '').toUpperCase();
       return pos !== 'G' && pos !== 'GK';
     }
+    case 'last_name_starts_with': {
+      const parts = player.name.trim().split(/\s+/);
+      const lastName = normName(parts[parts.length - 1]);
+      return lastName.startsWith(qualifier.value.toLowerCase());
+    }
     default:
       return true;
   }
