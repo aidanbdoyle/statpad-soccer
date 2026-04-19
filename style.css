@@ -152,7 +152,7 @@ input  { font-family: inherit; }
 .grid-row {
   display: grid;
   grid-template-columns: 160px 140px 1fr 170px;
-  min-height: 80px;
+  height: 88px;
   background: #2e2e2b;
   border-radius: 12px;
   overflow: hidden;
@@ -165,7 +165,9 @@ input  { font-family: inherit; }
   justify-content: center;
   padding: 10px 8px;
   position: relative;
+  border-right: 1px solid rgba(255,255,255,0.06);
 }
+.grid-cell:last-child { border-right: none; }
 
 /* ── Club Cell ── */
 .club-cell {
@@ -381,7 +383,7 @@ input  { font-family: inherit; }
   border-radius: 12px;
   cursor: pointer;
   transition: filter 0.15s;
-  min-height: 80px;
+  height: 88px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -941,6 +943,7 @@ input  { font-family: inherit; }
 @media (max-width: 600px) {
   .grid-row {
     grid-template-columns: 84px 100px 1fr 90px;
+    height: 82px;
   }
   .club-badge {
     width: 34px;

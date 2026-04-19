@@ -1171,12 +1171,15 @@ function makeQualifierCell(rowConfig) {
       main.textContent = q.display;
     }
 
-    const scope = document.createElement('div');
-    scope.className = 'qualifier-scope';
-    scope.textContent = q.scopeDisplay;
-
     cell.appendChild(main);
-    cell.appendChild(scope);
+
+    // Only show the CAREER / SEASON / SAME SEASON scope tag for awards and relegation
+    if (q.type === 'award' || q.type === 'relegated') {
+      const scope = document.createElement('div');
+      scope.className = 'qualifier-scope';
+      scope.textContent = q.scopeDisplay;
+      cell.appendChild(scope);
+    }
   });
 
   return cell;
