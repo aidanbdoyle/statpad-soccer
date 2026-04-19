@@ -9,7 +9,7 @@
   <title>Stat of the Day — Daily PL Puzzle</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <!-- ↓ Bump this number on every deploy to force cache refresh on all devices ↓ -->
-  <script>window.CACHE_VER = '4';</script>
+  <script>window.CACHE_VER = '5';</script>
   <script>
     var l = document.createElement('link');
     l.rel = 'stylesheet';
@@ -249,22 +249,29 @@
         document.head.appendChild(s);
       }
 
-      // Load in dependency order: puzzles → photos → wiki photos → game → player data
+      // Load in dependency order: puzzles → pl photo IDs → extra photos → game → player data
       addScript('puzzles.js', function () {
-        addScript('data/photo_codes.js', function () {
+        addScript('data/pl_photo_ids.js', function () {
           addScript('data/player_photos_extra.js', function () {
-            // Wiki photos are auto-generated — load if present, continue either way
-            function loadGame() {
-              addScript('game.js', function () {
-                // Load player data last; call init() when ready
-                addScript(
-                  'data/players_data.js',
-                  function () { if (typeof init === 'function') init(); },
-                  function () { window.PLAYERS_DATA = null; if (typeof init === 'function') init(); }
-                );
-              });
-            }
-            addScript('data/player_photos_wiki.js', loadGame, loadGame);
+            addScript('game.js', function () {
+              // Load player data last; call init() when ready
+              addScript(
+                'data/players_data.js',
+                function () { if (typeof init === 'function') init(); },
+                function () { window.PLAYERS_DATA = null; if (typeof init === 'function') init(); }
+              );
+            });
+          });
+        }, function () {
+          // pl_photo_ids.js missing (first deploy) — continue without it
+          addScript('data/player_photos_extra.js', function () {
+            addScript('game.js', function () {
+              addScript(
+                'data/players_data.js',
+                function () { if (typeof init === 'function') init(); },
+                function () { window.PLAYERS_DATA = null; if (typeof init === 'function') init(); }
+              );
+            });
           });
         });
       });

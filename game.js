@@ -1642,26 +1642,31 @@ function getFplPhotoCode(player) {
   return null;
 }
 
+// Returns the PL player ID (number) for a player, used to build the photo CDN URL.
+// Looks up window.PL_PLAYER_IDS (from pl_photo_ids.js) by normalised name.
+function getPLPlayerId(player) {
+  const ids = window.PL_PLAYER_IDS;
+  if (!ids) return null;
+  const key = normName(player.name);
+  if (ids[key]) return ids[key];
+  // Try without suffix words like "(GK)" or middle initials dropped
+  const parts = player.name.trim().split(/\s+/);
+  if (parts.length > 1) {
+    const firstLast = normName(parts[0] + ' ' + parts[parts.length - 1]);
+    if (ids[firstLast]) return ids[firstLast];
+  }
+  return null;
+}
+
+// Legacy: curated Wikipedia/external URLs for players not in PL photo system.
 function getExtraPhotoUrl(player) {
   const extra = window.EXTRA_PLAYER_PHOTOS;
   if (!extra) return null;
   const key = normName(player.name);
   if (extra[key]) return extra[key];
-  // Try last name only
   const parts = player.name.trim().split(/\s+/);
   const last = normName(parts[parts.length - 1]);
   if (extra[last]) return extra[last];
-  return null;
-}
-
-function getWikiPhotoUrl(player) {
-  const wiki = window.WIKI_PLAYER_PHOTOS;
-  if (!wiki) return null;
-  const key = normName(player.name);
-  if (wiki[key]) return wiki[key];
-  const parts = player.name.trim().split(/\s+/);
-  const last = normName(parts[parts.length - 1]);
-  if (wiki[last]) return wiki[last];
   return null;
 }
 
@@ -1669,9 +1674,11 @@ function makePlayerAvatar(player) {
   const wrap = document.createElement('div');
   wrap.className = 'player-avatar';
 
-  // Priority: curated extra > FPL code > auto-wiki > silhouette
-  const extraUrl = getExtraPhotoUrl(player);
-  const code     = extraUrl ? null : getFplPhotoCode(player);
+  // Photo priority:
+  //   1. PL official photo  (pl_photo_ids.js  → resources.premierleague.com CDN)
+  //   2. Curated extra URL  (player_photos_extra.js — legacy hand-picked legends)
+  //   3. Grey silhouette    (data/silhouette.svg)
+  // Each step falls through via onerror if the image is missing / 404.
 
   function showSilhouette() {
     const img = document.createElement('img');
@@ -1681,12 +1688,11 @@ function makePlayerAvatar(player) {
     wrap.appendChild(img);
   }
 
-  // Final fallback: try Wikipedia auto-photo then silhouette
-  function tryWikiOrSilhouette() {
-    const wikiUrl = getWikiPhotoUrl(player);
-    if (wikiUrl) {
+  function tryExtraOrSilhouette() {
+    const extraUrl = getExtraPhotoUrl(player);
+    if (extraUrl) {
       const img = document.createElement('img');
-      img.src       = wikiUrl;
+      img.src       = extraUrl;
       img.alt       = player.name;
       img.className = 'player-avatar-img';
       img.onerror   = () => { img.remove(); showSilhouette(); };
@@ -1696,35 +1702,16 @@ function makePlayerAvatar(player) {
     }
   }
 
-  if (code) {
+  const plId = getPLPlayerId(player);
+  if (plId) {
     const img = document.createElement('img');
-    img.src       = `https://resources.premierleague.com/premierleague/photos/players/110x140/p${code}.png`;
+    img.src       = `https://resources.premierleague.com/premierleague/photos/players/110x140/p${plId}.png`;
     img.alt       = player.name;
     img.className = 'player-avatar-img';
-    img.onerror   = () => {
-      img.remove();
-      const fallbackUrl = getExtraPhotoUrl(player);
-      if (fallbackUrl) {
-        const img2 = document.createElement('img');
-        img2.src      = fallbackUrl;
-        img2.alt      = player.name;
-        img2.className = 'player-avatar-img';
-        img2.onerror  = () => { img2.remove(); tryWikiOrSilhouette(); };
-        wrap.appendChild(img2);
-      } else {
-        tryWikiOrSilhouette();
-      }
-    };
-    wrap.appendChild(img);
-  } else if (extraUrl) {
-    const img = document.createElement('img');
-    img.src       = extraUrl;
-    img.alt       = player.name;
-    img.className = 'player-avatar-img';
-    img.onerror   = () => { img.remove(); tryWikiOrSilhouette(); };
+    img.onerror   = () => { img.remove(); tryExtraOrSilhouette(); };
     wrap.appendChild(img);
   } else {
-    tryWikiOrSilhouette();
+    tryExtraOrSilhouette();
   }
 
   return wrap;
