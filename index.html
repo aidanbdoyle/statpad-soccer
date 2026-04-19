@@ -249,18 +249,22 @@
         document.head.appendChild(s);
       }
 
-      // Load in dependency order: puzzles → photos → game → player data
+      // Load in dependency order: puzzles → photos → wiki photos → game → player data
       addScript('puzzles.js', function () {
         addScript('data/photo_codes.js', function () {
           addScript('data/player_photos_extra.js', function () {
-            addScript('game.js', function () {
-              // Load player data last; call init() when ready
-              addScript(
-                'data/players_data.js',
-                function () { if (typeof init === 'function') init(); },
-                function () { window.PLAYERS_DATA = null; if (typeof init === 'function') init(); }
-              );
-            });
+            // Wiki photos are auto-generated — load if present, continue either way
+            function loadGame() {
+              addScript('game.js', function () {
+                // Load player data last; call init() when ready
+                addScript(
+                  'data/players_data.js',
+                  function () { if (typeof init === 'function') init(); },
+                  function () { window.PLAYERS_DATA = null; if (typeof init === 'function') init(); }
+                );
+              });
+            }
+            addScript('data/player_photos_wiki.js', loadGame, loadGame);
           });
         });
       });

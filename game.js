@@ -1654,13 +1654,24 @@ function getExtraPhotoUrl(player) {
   return null;
 }
 
+function getWikiPhotoUrl(player) {
+  const wiki = window.WIKI_PLAYER_PHOTOS;
+  if (!wiki) return null;
+  const key = normName(player.name);
+  if (wiki[key]) return wiki[key];
+  const parts = player.name.trim().split(/\s+/);
+  const last = normName(parts[parts.length - 1]);
+  if (wiki[last]) return wiki[last];
+  return null;
+}
+
 function makePlayerAvatar(player) {
   const wrap = document.createElement('div');
   wrap.className = 'player-avatar';
 
-  // Extra photos (curated) take priority over FPL codes
+  // Priority: curated extra > FPL code > auto-wiki > initials
   const extraUrl = getExtraPhotoUrl(player);
-  const code = extraUrl ? null : getFplPhotoCode(player);
+  const code     = extraUrl ? null : getFplPhotoCode(player);
 
   function showInitials() {
     const initials = player.name
@@ -1674,6 +1685,21 @@ function makePlayerAvatar(player) {
     wrap.classList.add('player-avatar-initials');
   }
 
+  // Final fallback: try Wikipedia auto-photo then initials
+  function tryWikiOrInitials() {
+    const wikiUrl = getWikiPhotoUrl(player);
+    if (wikiUrl) {
+      const img = document.createElement('img');
+      img.src       = wikiUrl;
+      img.alt       = player.name;
+      img.className = 'player-avatar-img';
+      img.onerror   = () => { img.remove(); showInitials(); };
+      wrap.appendChild(img);
+    } else {
+      showInitials();
+    }
+  }
+
   if (code) {
     const img = document.createElement('img');
     img.src       = `https://resources.premierleague.com/premierleague/photos/players/110x140/p${code}.png`;
@@ -1681,17 +1707,16 @@ function makePlayerAvatar(player) {
     img.className = 'player-avatar-img';
     img.onerror   = () => {
       img.remove();
-      // Try supplemental map before falling back to initials
       const fallbackUrl = getExtraPhotoUrl(player);
       if (fallbackUrl) {
         const img2 = document.createElement('img');
-        img2.src = fallbackUrl;
-        img2.alt = player.name;
+        img2.src      = fallbackUrl;
+        img2.alt      = player.name;
         img2.className = 'player-avatar-img';
-        img2.onerror = () => { img2.remove(); showInitials(); };
+        img2.onerror  = () => { img2.remove(); tryWikiOrInitials(); };
         wrap.appendChild(img2);
       } else {
-        showInitials();
+        tryWikiOrInitials();
       }
     };
     wrap.appendChild(img);
@@ -1700,10 +1725,10 @@ function makePlayerAvatar(player) {
     img.src       = extraUrl;
     img.alt       = player.name;
     img.className = 'player-avatar-img';
-    img.onerror   = () => { img.remove(); showInitials(); };
+    img.onerror   = () => { img.remove(); tryWikiOrInitials(); };
     wrap.appendChild(img);
   } else {
-    showInitials();
+    tryWikiOrInitials();
   }
 
   return wrap;
