@@ -954,6 +954,21 @@ input  { font-family: inherit; }
     width: 30px;
     height: 30px;
   }
+  /* Multi-club rows: shrink badges so 3 fit side-by-side in the 84px column */
+  .club-badges-wrap.multi .club-badge {
+    width: 24px;
+    height: 24px;
+    font-size: 0.42rem;
+  }
+  .club-badges-wrap.multi .club-crest-img {
+    width: 20px;
+    height: 20px;
+  }
+  /* Safety net: if badges still wrap, let the row grow rather than clip */
+  .grid-row:has(.club-badges-wrap.multi) {
+    height: auto;
+    min-height: 82px;
+  }
   .season-text { font-size: 0.95rem; }
   .score-value { font-size: 1.6rem; }
   .site-title  { font-size: 1.2rem; }
@@ -967,6 +982,16 @@ input  { font-family: inherit; }
 @media (max-width: 420px) {
   .grid-row {
     grid-template-columns: 72px 84px 1fr 80px;
+  }
+  /* 72px column — shrink further so 3 badges still fit in one row */
+  .club-badges-wrap.multi .club-badge {
+    width: 20px;
+    height: 20px;
+    font-size: 0.38rem;
+  }
+  .club-badges-wrap.multi .club-crest-img {
+    width: 16px;
+    height: 16px;
   }
   .qualifier-main { font-size: 0.75rem; }
   .qualifier-flags { font-size: 1.2rem; }
