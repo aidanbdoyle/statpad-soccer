@@ -283,6 +283,16 @@ def scrape_season(season_id, season_key, season_year):
     title_winner = PL_TITLE_WINNERS.get(season_key, "TBD")
 
     # Build records — one per (player, club) stint
+    #
+    # Season-level stats (goals, assists, etc.) come from a ranked endpoint
+    # that returns TOTALS across all clubs for the season.  If a player
+    # transferred mid-season they appear under multiple clubs, so we must
+    # assign these totals to only ONE club entry (the primary — most apps)
+    # and zero them out for secondary entries.  This prevents double- or
+    # triple-counting in career totals.
+    #
+    # Per-club stats (apps, clean_sheets) are already correct because they
+    # come directly from the squad endpoint for each individual club.
     records = []
     for pid, pdata in squad_map.items():
         name = pdata["name"]
@@ -300,7 +310,15 @@ def scrape_season(season_id, season_key, season_year):
         hw = lookup(wood_id,    wood_name,    pid, name)
         ap = lookup(pass_id,    pass_name,    pid, name)
 
-        for club_entry in pdata["clubs"]:
+        clubs = pdata["clubs"]
+
+        # Find primary club index (most appearances; first club wins ties)
+        primary_idx = max(range(len(clubs)), key=lambda i: clubs[i]["apps"])
+
+        for i, club_entry in enumerate(clubs):
+            # Season-total stats go to the primary club only.
+            # Secondary clubs get zeros so career sums are not inflated.
+            is_primary = (i == primary_idx)
             records.append({
                 "id":           pid,
                 "name":         pdata["name"],
@@ -310,19 +328,19 @@ def scrape_season(season_id, season_key, season_year):
                 "seasonYear":   season_year,
                 "club":         club_entry["club"],
                 "apps":         club_entry["apps"],
-                "goals":              g,
-                "assists":            a,
-                "yellow_cards":       y,
-                "red_cards":          r,
-                "shots":              sh,
-                "saves":              sv,
-                "tackles_won":        tw,
-                "interceptions":      it,
-                "clearances":         cl,
-                "big_chances_created":bc,
-                "penalties_scored":   ps,
-                "hit_woodwork":       hw,
-                "accurate_passes":    ap,
+                "goals":              g  if is_primary else 0,
+                "assists":            a  if is_primary else 0,
+                "yellow_cards":       y  if is_primary else 0,
+                "red_cards":          r  if is_primary else 0,
+                "shots":              sh if is_primary else 0,
+                "saves":              sv if is_primary else 0,
+                "tackles_won":        tw if is_primary else 0,
+                "interceptions":      it if is_primary else 0,
+                "clearances":         cl if is_primary else 0,
+                "big_chances_created":bc if is_primary else 0,
+                "penalties_scored":   ps if is_primary else 0,
+                "hit_woodwork":       hw if is_primary else 0,
+                "accurate_passes":    ap if is_primary else 0,
                 "clean_sheets": club_entry["clean_sheets"] or None,
                 "won_pl_title": club_entry["club"] == title_winner,
             })
