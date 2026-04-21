@@ -291,41 +291,41 @@ const PUZZLES = [
   {
     puzzleNumber: 7,
     date: "2026-04-21",
-    category: "Goals",
-    categoryKey: "goals",
-    categoryUnit: "goal",
-    categoryMode: "season",
-    target: 80,
+    category: "Saves",
+    categoryKey: "saves",
+    categoryUnit: "save",
+    categoryMode: "career",
+    target: 2000,
     rows: [
       {
-        clubs: [],
+        clubs: ["Arsenal", "Southampton"],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "CAREER" }
-      },
-      {
-        clubs: ["Arsenal"],
-        seasonStart: 1992,
-        seasonEnd: 2015,
-        qualifier: null
-      },
-      {
-        clubs: ["Manchester United"],
-        seasonStart: 1992,
-        seasonEnd: 2014,
         qualifier: null
       },
       {
         clubs: [],
-        seasonStart: 2010,
+        seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
+        qualifier: { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2020,
+        seasonEnd: 2026,
+        qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2002,
+        seasonEnd: 2026,
         qualifier: { type: "award", award: "pl_title", scope: "season", display: "WON PL TITLE", scopeDisplay: "SAME SEASON" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Norway", "Sweden", "Denmark", "Finland"], display: "SCANDINAVIAN", scopeDisplay: "CAREER" }
       }
     ]
   },

@@ -915,6 +915,10 @@ function checkQualifier(player, season, qualifier) {
       const playerContinent = CONTINENT_MAP[player.nationality] || '';
       return playerContinent.toLowerCase() === qualifier.value.toLowerCase();
     }
+    case 'non_european': {
+      const playerContinent = CONTINENT_MAP[player.nationality] || '';
+      return playerContinent.toLowerCase() !== 'european';
+    }
     case 'relegated': {
       const relegated = RELEGATED[season.season] || [];
       return relegated.includes(season.club);
