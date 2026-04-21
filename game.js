@@ -1429,11 +1429,11 @@ function makeResultCard(rowIdx) {
   photo.alt = player.name;
   if (photoUrl) {
     photo.src = photoUrl;
-    photo.onerror = () => { photo.src = 'data/silhouette.svg'; };
+    photo.onerror = () => { photo.src = 'data/silhouette_PL.png'; };
   } else {
     const extraUrl = getExtraPhotoUrl(player);
-    photo.src = extraUrl || 'data/silhouette.svg';
-    if (extraUrl) photo.onerror = () => { photo.src = 'data/silhouette.svg'; };
+    photo.src = extraUrl || 'data/silhouette_PL.png';
+    if (extraUrl) photo.onerror = () => { photo.src = 'data/silhouette_PL.png'; };
   }
 
   visual.appendChild(badge);
@@ -1498,7 +1498,7 @@ function makeGaveUpCard(rowIdx) {
 
   const photo = document.createElement('img');
   photo.className = 'rc-photo';
-  photo.src = 'data/silhouette.svg';
+  photo.src = 'data/silhouette_PL.png';
   photo.alt = '';
 
   visual.appendChild(badge);
@@ -1792,7 +1792,7 @@ function makePlayerAvatar(player) {
   // Photo priority:
   //   1. FPL/PL CDN photo  (photo_codes.js → resources.premierleague.com)
   //   2. Curated extra URL  (player_photos_extra.js — hand-picked legends)
-  //   3. Grey silhouette   (data/silhouette.svg)
+  //   3. Grey silhouette   (data/silhouette_PL.png)
   // Each step falls through via onerror if the image is missing / 404.
 
   const extraUrl = getExtraPhotoUrl(player);
@@ -1800,7 +1800,7 @@ function makePlayerAvatar(player) {
 
   function showSilhouette() {
     const img = document.createElement('img');
-    img.src       = 'data/silhouette.svg';
+    img.src       = 'data/silhouette_PL.png';
     img.alt       = player.name;
     img.className = 'player-avatar-img';
     wrap.appendChild(img);
