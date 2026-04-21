@@ -892,6 +892,10 @@ function checkQualifier(player, season, qualifier) {
       return false;
     }
     case 'min_stat': {
+      if (qualifier.scope === 'career') {
+        const total = player.seasons.reduce((sum, s) => sum + (s[qualifier.key] || 0), 0);
+        return total >= qualifier.value;
+      }
       const val = season[qualifier.key];
       return val !== null && val !== undefined && val >= qualifier.value;
     }

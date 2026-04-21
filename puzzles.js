@@ -248,41 +248,41 @@ const PUZZLES = [
   {
     puzzleNumber: 6,
     date: "2026-04-20",
-    category: "Appearances",
-    categoryKey: "apps",
-    categoryUnit: "appearance",
+    category: "Assists",
+    categoryKey: "assists",
+    categoryUnit: "assist",
     categoryMode: "career",
-    target: 900,
+    target: 175,
     rows: [
       {
-        clubs: ["Everton"],
+        clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 1999,
         qualifier: null
       },
       {
-        clubs: ["West Ham"],
+        clubs: ["Crystal Palace", "Swansea"],
         seasonStart: 1992,
-        seasonEnd: 2015,
+        seasonEnd: 2026,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "nationality", value: "Ireland", display: "IRISH", scopeDisplay: "CAREER" }
+        qualifier: { type: "continent", value: "North American", display: "NORTH AMERICAN", scopeDisplay: "CAREER" }
       },
       {
-        clubs: ["Aston Villa"],
-        seasonStart: 1992,
-        seasonEnd: 2016,
+        clubs: ["Fulham"],
+        seasonStart: 2020,
+        seasonEnd: 2026,
         qualifier: null
       },
       {
-        clubs: ["Newcastle"],
+        clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2020,
-        qualifier: null
+        seasonEnd: 2026,
+        qualifier: { type: "min_stat", key: "red_cards", value: 2, scope: "career", display: "MIN 2 CAREER RED CARDS", scopeDisplay: "CAREER" }
       }
     ]
   },
