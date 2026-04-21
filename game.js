@@ -1389,10 +1389,21 @@ function makeRowSubtitle(rowConfig) {
   return [clubStr, cat, timeStr].filter(Boolean).join(' ');
 }
 
-// Tier colour for the percentile label
+// Tier colour for the percentile label (bright, used for text)
 function tierColor(tier) {
   return { purple:'#a78bfa', blue:'#60a5fa', gold:'#fbbf24', silver:'#94a3b8', bronze:'#cd7f32' }[tier]
     || 'rgba(255,255,255,0.5)';
+}
+
+// Deep/dark version of the tier colour — used as the card gradient start
+function tierGradientColor(tier) {
+  return {
+    purple: '#3b0764',
+    blue:   '#1e3a8a',
+    gold:   '#78350f',
+    silver: '#1e293b',
+    bronze: '#3c1a0a',
+  }[tier] || '#1a1a1a';
 }
 
 // ── Full-width Result Card (replaces entire row when answered) ─
@@ -1401,8 +1412,8 @@ function makeResultCard(rowIdx) {
   const rowConfig = PUZZLE.rows[rowIdx];
   const tier = getPercentileTier(percentile);
 
-  // Gradient colour from club
-  const gradColor = getCardGradientColor(player);
+  // Gradient colour from tier (matches the percentile colour shown on the card)
+  const gradColor = tierGradientColor(tier);
   const badgeUrl  = getCardBadgeUrl(player);
   const photoCode = getFplPhotoCode(player);
   const photoUrl  = photoCode
