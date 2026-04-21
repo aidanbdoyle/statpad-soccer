@@ -423,9 +423,9 @@ input  { font-family: inherit; }
   z-index: 2;
 }
 
-/* Silhouette: fully opaque so the figure is prominent; badge is faint behind it */
+/* Silhouette: slightly transparent so the gradient/badge breathes through */
 .rc-photo--silhouette {
-  filter: brightness(0.8);
+  opacity: 0.8;
 }
 /* Keep badge very subtle when a silhouette is present */
 .rc-visual:has(.rc-photo--silhouette) .rc-badge {
