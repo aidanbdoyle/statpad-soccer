@@ -423,19 +423,20 @@ input  { font-family: inherit; }
   z-index: 2;
 }
 
-/* Silhouette: multiply blend removes the white background so the PL badge shows through */
+/* Silhouette: fully opaque so the figure is prominent; badge is faint behind it */
 .rc-photo--silhouette {
-  mix-blend-mode: multiply;
+  /* no blend mode — silhouette stays fully opaque and dominant */
 }
-/* Boost badge opacity when a silhouette is present (badge was hidden behind opaque white) */
+/* Keep badge very subtle when a silhouette is present */
 .rc-visual:has(.rc-photo--silhouette) .rc-badge {
-  opacity: 0.65;
+  opacity: 0.18;
 }
 
 /* ── Centre info: name + subtitle ── */
 .rc-info {
   flex: 1;
   min-width: 0;
+  text-align: center;
 }
 
 .rc-name {
@@ -461,7 +462,7 @@ input  { font-family: inherit; }
 
 /* ── Right score block ── */
 .rc-score-block {
-  text-align: right;
+  text-align: center;
   flex-shrink: 0;
 }
 
