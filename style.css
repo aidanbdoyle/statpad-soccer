@@ -410,16 +410,16 @@ input  { font-family: inherit; }
   z-index: 1;
 }
 
-/* Player photo — taller than card, anchored to bottom, in front of badge */
+/* Player photo — taller than card, anchored to top so head shows; feet cut off at bottom */
 .rc-photo {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 10px;
   height: 108px;
   width: auto;
   max-width: 80px;
   object-fit: contain;
-  object-position: bottom center;
+  object-position: top center;
   z-index: 2;
 }
 
@@ -440,7 +440,7 @@ input  { font-family: inherit; }
 }
 
 .rc-name {
-  font-size: 1.05rem;
+  font-size: 1.425rem;
   font-weight: 800;
   color: #ffffff;
   text-transform: uppercase;
@@ -452,7 +452,7 @@ input  { font-family: inherit; }
 }
 
 .rc-subtitle {
-  font-size: 0.72rem;
+  font-size: 1.095rem;
   color: rgba(255,255,255,0.65);
   margin-top: 3px;
   white-space: nowrap;
@@ -946,7 +946,8 @@ input  { font-family: inherit; }
   .site-title  { font-size: 1.2rem; }
   .result-stat-value { font-size: 1.2rem; }
   /* Result card on mobile */
-  .rc-name { font-size: 0.92rem; }
+  .rc-name { font-size: 1.15rem; }
+  .rc-subtitle { font-size: 0.85rem; }
   .rc-score-val { font-size: 1.4rem; }
   .qualifier-main { font-size: 0.82rem; }
 }
@@ -970,7 +971,8 @@ input  { font-family: inherit; }
   #main-footer { gap: 6px; }
   .footer-btn { padding: 8px 14px; }
   /* Result card on small mobile */
-  .rc-name { font-size: 0.88rem; }
+  .rc-name { font-size: 1.05rem; }
+  .rc-subtitle { font-size: 0.78rem; }
   .rc-score-val { font-size: 1.5rem; }
   .rc-visual { width: 72px; }
   .rc-badge { width: 54px; height: 54px; }
