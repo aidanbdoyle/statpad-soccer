@@ -1356,15 +1356,14 @@ function getCardGradientColor(player) {
   return (club && CLUB_STYLES[club]) ? CLUB_STYLES[club].bg : '#37003c';
 }
 
-// Badge URL: club crest if active, PL logo if not
+// Badge URL: club crest if active, local PL logo if not
 function getCardBadgeUrl(player) {
   if (!isActivePlayer(player)) {
-    return 'https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg';
+    return 'data/pl_logo.png';
   }
   const sorted = [...player.seasons].sort((a, b) => b.seasonYear - a.seasonYear);
   const club = sorted[0]?.club;
-  return (club && CLUB_LOGOS[club]) ? CLUB_LOGOS[club]
-    : 'https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg';
+  return (club && CLUB_LOGOS[club]) ? CLUB_LOGOS[club] : 'data/pl_logo.png';
 }
 
 // Human-readable subtitle from row config
@@ -1438,13 +1437,23 @@ function makeResultCard(rowIdx) {
   const photo = document.createElement('img');
   photo.className = 'rc-photo';
   photo.alt = player.name;
+
+  function useSilhouette() {
+    photo.src = 'data/silhouette_PL.png';
+    photo.classList.add('rc-photo--silhouette');
+  }
+
   if (photoUrl) {
     photo.src = photoUrl;
-    photo.onerror = () => { photo.src = 'data/silhouette_PL.png'; };
+    photo.onerror = useSilhouette;
   } else {
     const extraUrl = getExtraPhotoUrl(player);
-    photo.src = extraUrl || 'data/silhouette_PL.png';
-    if (extraUrl) photo.onerror = () => { photo.src = 'data/silhouette_PL.png'; };
+    if (extraUrl) {
+      photo.src = extraUrl;
+      photo.onerror = useSilhouette;
+    } else {
+      useSilhouette();
+    }
   }
 
   visual.appendChild(badge);
@@ -1503,12 +1512,12 @@ function makeGaveUpCard(rowIdx) {
 
   const badge = document.createElement('img');
   badge.className = 'rc-badge';
-  badge.src = 'https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg';
+  badge.src = 'data/pl_logo.png';
   badge.alt = '';
   badge.onerror = () => { badge.style.display = 'none'; };
 
   const photo = document.createElement('img');
-  photo.className = 'rc-photo';
+  photo.className = 'rc-photo rc-photo--silhouette';
   photo.src = 'data/silhouette_PL.png';
   photo.alt = '';
 
