@@ -369,135 +369,111 @@ input  { font-family: inherit; }
 
 /* ── Full-row answered state ── */
 .grid-row-answered {
-  display: block;   /* override the 4-column grid */
+  display: block;
 }
 
-/* ── Full-row Result Card ── */
-.result-card {
+/* ── Result Card (full-row, answered) ── */
+.result-card,
+.gave-up-card {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px 12px 16px;
-  background: #2e2e2b;
-  border-left: 4px solid transparent;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: filter 0.15s;
   height: 88px;
-  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 0 18px 0 0;
+  gap: 12px;
+  cursor: pointer;
   box-sizing: border-box;
+  transition: filter 0.15s;
 }
-.result-card:hover { filter: brightness(1.15); }
+.result-card:hover,
+.gave-up-card:hover { filter: brightness(1.1); }
 
-/* Percentile tier colours — gradient + left border */
-.result-cell.tier-purple,
-.result-card.tier-purple {
-  border-left-color: #7c3aed;
-  background: linear-gradient(to right, rgba(124,58,237,0.45), rgba(124,58,237,0.12) 55%, rgba(124,58,237,0.04));
-}
-.result-cell.tier-blue,
-.result-card.tier-blue {
-  border-left-color: #2563eb;
-  background: linear-gradient(to right, rgba(37,99,235,0.45), rgba(37,99,235,0.12) 55%, rgba(37,99,235,0.04));
-}
-.result-cell.tier-gold,
-.result-card.tier-gold {
-  border-left-color: #d97706;
-  background: linear-gradient(to right, rgba(217,119,6,0.45), rgba(217,119,6,0.12) 55%, rgba(217,119,6,0.04));
-}
-.result-cell.tier-silver,
-.result-card.tier-silver {
-  border-left-color: #94a3b8;
-  background: linear-gradient(to right, rgba(148,163,184,0.35), rgba(148,163,184,0.09) 55%, rgba(148,163,184,0.03));
-}
-.result-cell.tier-bronze,
-.result-card.tier-bronze {
-  border-left-color: #b45309;
-  background: linear-gradient(to right, rgba(180,83,9,0.45), rgba(180,83,9,0.12) 55%, rgba(180,83,9,0.04));
-}
-
-.tier-purple .percentile-bar-fill { background: #7c3aed; }
-.tier-blue   .percentile-bar-fill { background: #2563eb; }
-.tier-gold   .percentile-bar-fill { background: #d97706; }
-.tier-silver .percentile-bar-fill { background: #94a3b8; }
-.tier-bronze .percentile-bar-fill { background: #b45309; }
-
-/* ── Result card: left section (avatar + name) ── */
-.rc-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  min-width: 0;
-}
-
-.rc-name-block {
-  min-width: 0;
-  flex: 1;
-}
-
-.rc-player-name {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #ffffff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.rc-season {
-  font-size: 0.72rem;
-  color: #aaaaaa;
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* ── Result card: right section (stat + percentile) ── */
-.rc-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+/* ── Left visual: overlapping badge + photo ── */
+.rc-visual {
+  position: relative;
+  width: 88px;
+  height: 88px;
   flex-shrink: 0;
-  gap: 4px;
 }
 
-.rc-stat-row {
-  display: flex;
-  align-items: baseline;
-  gap: 5px;
+/* Club/PL badge — large, behind the player */
+.rc-badge {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  opacity: 0.35;
+  z-index: 1;
 }
 
-.rc-stat-value {
-  font-size: 1.8rem;
-  font-weight: 700;
+/* Player photo — taller than card, anchored to bottom, in front of badge */
+.rc-photo {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  height: 108px;
+  width: auto;
+  max-width: 80px;
+  object-fit: contain;
+  object-position: bottom center;
+  z-index: 2;
+}
+
+/* ── Centre info: name + subtitle ── */
+.rc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rc-name {
+  font-size: 1.05rem;
+  font-weight: 800;
   color: #ffffff;
-  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
 }
 
-.rc-stat-unit {
+.rc-subtitle {
   font-size: 0.72rem;
-  color: #aaaaaa;
+  color: rgba(255,255,255,0.65);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.rc-percentile-wrap {
-  min-width: 80px;
+/* ── Right score block ── */
+.rc-score-block {
   text-align: right;
+  flex-shrink: 0;
 }
 
-/* ── Expand chevron for result card ── */
-.rc-expand-btn {
-  font-size: 0.65rem;
-  color: #666;
-  transition: transform 0.2s, color 0.15s;
-  flex-shrink: 0;
+.rc-score-val {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
   line-height: 1;
-  padding: 2px 0 2px 4px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
 }
-.result-card.expanded .rc-expand-btn {
-  transform: rotate(180deg);
-  color: #aaa;
+
+.rc-score-pct {
+  font-size: 0.72rem;
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+/* ── Gave-up card tweaks ── */
+.gave-up-card .rc-name {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
 }
 
 /* Legacy expand chevron (result-cell) */
@@ -631,20 +607,6 @@ input  { font-family: inherit; }
   align-items: center;
   gap: 4px;
 }
-
-/* Full-width gave-up card */
-.gave-up-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background: #2a2a27;
-  min-height: 80px;
-  width: 100%;
-  box-sizing: border-box;
-  border-left: 4px solid #444440;
-}
-
 .gave-up-label {
   font-size: 0.75rem;
   color: #666;
@@ -974,8 +936,8 @@ input  { font-family: inherit; }
   .site-title  { font-size: 1.2rem; }
   .result-stat-value { font-size: 1.2rem; }
   /* Result card on mobile */
-  .rc-stat-value { font-size: 1.4rem; }
-  .rc-player-name { font-size: 0.92rem; }
+  .rc-name { font-size: 0.92rem; }
+  .rc-score-val { font-size: 1.4rem; }
   .qualifier-main { font-size: 0.82rem; }
 }
 
@@ -998,9 +960,11 @@ input  { font-family: inherit; }
   #main-footer { gap: 6px; }
   .footer-btn { padding: 8px 14px; }
   /* Result card on small mobile */
-  .rc-stat-value { font-size: 1.3rem; }
-  .rc-player-name { font-size: 0.88rem; }
-  .rc-right { min-width: 72px; }
+  .rc-name { font-size: 0.88rem; }
+  .rc-score-val { font-size: 1.5rem; }
+  .rc-visual { width: 72px; }
+  .rc-badge { width: 54px; height: 54px; }
+  .rc-photo { height: 90px; max-width: 65px; }
 }
 
 /* ── Player avatar in result card ── */

@@ -1341,96 +1341,138 @@ function makeResultCell(rowIdx) {
   return cell;
 }
 
+// ── Helper functions for result cards ─────────────────────────
+
+// Is this player active (played in 2024-25 or 2025-26)?
+function isActivePlayer(player) {
+  return player.seasons.some(s => s.seasonYear >= 2024);
+}
+
+// Gradient start color: club bg color if active, PL purple if not
+function getCardGradientColor(player) {
+  if (!isActivePlayer(player)) return '#37003c';
+  const sorted = [...player.seasons].sort((a, b) => b.seasonYear - a.seasonYear);
+  const club = sorted[0]?.club;
+  return (club && CLUB_STYLES[club]) ? CLUB_STYLES[club].bg : '#37003c';
+}
+
+// Badge URL: club crest if active, PL logo if not
+function getCardBadgeUrl(player) {
+  if (!isActivePlayer(player)) {
+    return 'https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg';
+  }
+  const sorted = [...player.seasons].sort((a, b) => b.seasonYear - a.seasonYear);
+  const club = sorted[0]?.club;
+  return (club && CLUB_LOGOS[club]) ? CLUB_LOGOS[club]
+    : 'https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg';
+}
+
+// Human-readable subtitle from row config
+function makeRowSubtitle(rowConfig) {
+  const cat = PUZZLE.category;
+  const clubs = rowConfig.clubs;
+  const start = rowConfig.seasonStart;
+  const end   = rowConfig.seasonEnd;
+
+  let clubStr = '';
+  if (clubs.length === 1) clubStr = clubs[0];
+  else if (clubs.length === 2) clubStr = (CLUB_STYLES[clubs[0]] || {abbr: clubs[0].slice(0,3).toUpperCase()}).abbr
+    + ' / ' + (CLUB_STYLES[clubs[1]] || {abbr: clubs[1].slice(0,3).toUpperCase()}).abbr;
+
+  const allStart = start <= 1992;
+  const allEnd   = end   >= 2026;
+  const timeStr  = (allStart && allEnd) ? 'All-Time'
+    : allStart ? `Before ${end}`
+    : allEnd   ? `Since ${start}`
+    : `Between ${start} – ${end}`;
+
+  return [clubStr, cat, timeStr].filter(Boolean).join(' ');
+}
+
+// Tier colour for the percentile label
+function tierColor(tier) {
+  return { purple:'#a78bfa', blue:'#60a5fa', gold:'#fbbf24', silver:'#94a3b8', bronze:'#cd7f32' }[tier]
+    || 'rgba(255,255,255,0.5)';
+}
+
 // ── Full-width Result Card (replaces entire row when answered) ─
 function makeResultCard(rowIdx) {
   const { player, season, statValue, percentile } = state.rows[rowIdx];
+  const rowConfig = PUZZLE.rows[rowIdx];
   const tier = getPercentileTier(percentile);
 
+  // Gradient colour from club
+  const gradColor = getCardGradientColor(player);
+  const badgeUrl  = getCardBadgeUrl(player);
+  const photoCode = getFplPhotoCode(player);
+  const photoUrl  = photoCode
+    ? `https://resources.premierleague.com/premierleague/photos/players/110x140/p${photoCode}.png`
+    : null;
+
   const card = document.createElement('div');
-  card.className = `result-card${tier ? ' tier-' + tier : ''}`;
+  card.className = 'result-card';
   card.dataset.rowIdx = rowIdx;
+  card.style.background = `linear-gradient(90deg, ${gradColor} 0%, #0d0d0d 100%)`;
 
-  // ── Left: avatar + name block ──
-  const left = document.createElement('div');
-  left.className = 'rc-left';
+  // ── Visual: badge + player photo ──
+  const visual = document.createElement('div');
+  visual.className = 'rc-visual';
 
-  const avatar = makePlayerAvatar(player);
+  const badge = document.createElement('img');
+  badge.className = 'rc-badge';
+  badge.src = badgeUrl;
+  badge.alt = '';
+  badge.onerror = () => { badge.style.display = 'none'; };
 
-  const nameBlock = document.createElement('div');
-  nameBlock.className = 'rc-name-block';
-
-  const nameEl = document.createElement('div');
-  nameEl.className = 'rc-player-name';
-  nameEl.textContent = player.name;
-
-  const seasonEl = document.createElement('div');
-  seasonEl.className = 'rc-season';
-  if (season._careerMode) {
-    const endYr = season._lastYear + 1;
-    seasonEl.textContent = season._firstYear === season._lastYear
-      ? `${season._firstYear}–${String(season._firstYear + 1).slice(-2)} · Career`
-      : `${season._firstYear}–${endYr} · Career`;
+  const photo = document.createElement('img');
+  photo.className = 'rc-photo';
+  photo.alt = player.name;
+  if (photoUrl) {
+    photo.src = photoUrl;
+    photo.onerror = () => { photo.src = 'data/silhouette.svg'; };
   } else {
-    seasonEl.textContent = `${season.season} · ${season.club}`;
+    const extraUrl = getExtraPhotoUrl(player);
+    photo.src = extraUrl || 'data/silhouette.svg';
+    if (extraUrl) photo.onerror = () => { photo.src = 'data/silhouette.svg'; };
   }
 
-  nameBlock.appendChild(nameEl);
-  nameBlock.appendChild(seasonEl);
-  left.appendChild(avatar);
-  left.appendChild(nameBlock);
+  visual.appendChild(badge);
+  visual.appendChild(photo);
 
-  // ── Right: stat value + percentile bar ──
-  const right = document.createElement('div');
-  right.className = 'rc-right';
+  // ── Info: name + subtitle ──
+  const info = document.createElement('div');
+  info.className = 'rc-info';
 
-  const statRow = document.createElement('div');
-  statRow.className = 'rc-stat-row';
+  const nameEl = document.createElement('div');
+  nameEl.className = 'rc-name';
+  nameEl.textContent = player.name.toUpperCase();
 
-  const val = document.createElement('div');
-  val.className = 'rc-stat-value';
-  val.textContent = statValue;
+  const subtitle = document.createElement('div');
+  subtitle.className = 'rc-subtitle';
+  subtitle.textContent = makeRowSubtitle(rowConfig);
 
-  const unit = document.createElement('div');
-  unit.className = 'rc-stat-unit';
-  unit.textContent = PUZZLE.categoryUnit + (statValue !== 1 ? 's' : '');
+  info.appendChild(nameEl);
+  info.appendChild(subtitle);
 
-  statRow.appendChild(val);
-  statRow.appendChild(unit);
+  // ── Score block: value + percentile % ──
+  const scoreBlock = document.createElement('div');
+  scoreBlock.className = 'rc-score-block';
 
-  // Percentile bar
-  const pWrap = document.createElement('div');
-  pWrap.className = 'rc-percentile-wrap';
+  const scoreVal = document.createElement('div');
+  scoreVal.className = 'rc-score-val';
+  scoreVal.textContent = statValue;
 
-  const pBg = document.createElement('div');
-  pBg.className = 'percentile-bar-bg';
-  const pFill = document.createElement('div');
-  pFill.className = 'percentile-bar-fill';
-  pFill.style.width = `${percentile}%`;
-  pBg.appendChild(pFill);
+  const scorePct = document.createElement('div');
+  scorePct.className = 'rc-score-pct';
+  scorePct.textContent = `${percentile}%`;
+  scorePct.style.color = tierColor(tier);
 
-  const pLabel = document.createElement('div');
-  pLabel.className = 'percentile-label';
-  const ordinal = (n) => {
-    if (n >= 11 && n <= 13) return 'th';
-    const s = ['th','st','nd','rd'];
-    return s[n % 10] || 'th';
-  };
-  pLabel.textContent = `${percentile}${ordinal(percentile)} PCTILE`;
+  scoreBlock.appendChild(scoreVal);
+  scoreBlock.appendChild(scorePct);
 
-  pWrap.appendChild(pBg);
-  pWrap.appendChild(pLabel);
-
-  right.appendChild(statRow);
-  right.appendChild(pWrap);
-
-  // ── Expand chevron ──
-  const chevron = document.createElement('div');
-  chevron.className = 'rc-expand-btn';
-  chevron.textContent = '▼';
-
-  card.appendChild(left);
-  card.appendChild(right);
-  card.appendChild(chevron);
+  card.appendChild(visual);
+  card.appendChild(info);
+  card.appendChild(scoreBlock);
 
   card.addEventListener('click', () => toggleTop5Panel(rowIdx));
   return card;
@@ -1438,23 +1480,75 @@ function makeResultCard(rowIdx) {
 
 // ── Full-width Gave-Up Card ────────────────────────────────────
 function makeGaveUpCard(rowIdx) {
+  const rowConfig = PUZZLE.rows[rowIdx];
   const card = document.createElement('div');
   card.className = 'gave-up-card';
+  card.dataset.rowIdx = rowIdx;
+  card.style.background = 'linear-gradient(90deg, #37003c 0%, #0d0d0d 100%)';
 
-  const label = document.createElement('div');
-  label.className = 'gave-up-label';
-  label.textContent = 'SKIPPED';
+  // Visual
+  const visual = document.createElement('div');
+  visual.className = 'rc-visual';
 
-  card.appendChild(label);
+  const badge = document.createElement('img');
+  badge.className = 'rc-badge';
+  badge.src = 'https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg';
+  badge.alt = '';
+  badge.onerror = () => { badge.style.display = 'none'; };
+
+  const photo = document.createElement('img');
+  photo.className = 'rc-photo';
+  photo.src = 'data/silhouette.svg';
+  photo.alt = '';
+
+  visual.appendChild(badge);
+  visual.appendChild(photo);
+
+  // Info
+  const info = document.createElement('div');
+  info.className = 'rc-info';
+
+  const nameEl = document.createElement('div');
+  nameEl.className = 'rc-name';
+  nameEl.textContent = 'SKIPPED';
+
+  const subtitle = document.createElement('div');
+  subtitle.className = 'rc-subtitle';
+  subtitle.textContent = makeRowSubtitle(rowConfig);
+
+  info.appendChild(nameEl);
+  info.appendChild(subtitle);
+
+  // Score block: best possible
+  const scoreBlock = document.createElement('div');
+  scoreBlock.className = 'rc-score-block';
 
   const best = getBestPossible(rowIdx);
   if (best) {
-    const hint = document.createElement('div');
-    hint.className = 'gave-up-best';
-    hint.textContent = `Best: ${best.player.name} (${best.statValue})`;
-    card.appendChild(hint);
+    const bestVal = document.createElement('div');
+    bestVal.className = 'rc-score-val';
+    bestVal.style.fontSize = '1.1rem';
+    bestVal.textContent = best.statValue;
+
+    const bestLabel = document.createElement('div');
+    bestLabel.className = 'rc-score-pct';
+    bestLabel.textContent = 'best';
+
+    const bestName = document.createElement('div');
+    bestName.className = 'rc-score-pct';
+    bestName.style.fontSize = '0.6rem';
+    bestName.textContent = best.player.name;
+
+    scoreBlock.appendChild(bestVal);
+    scoreBlock.appendChild(bestLabel);
+    scoreBlock.appendChild(bestName);
   }
 
+  card.appendChild(visual);
+  card.appendChild(info);
+  card.appendChild(scoreBlock);
+
+  card.addEventListener('click', () => toggleTop5Panel(rowIdx));
   return card;
 }
 
@@ -1669,6 +1763,12 @@ function getFplPhotoCode(player) {
   // Strip hyphens (e.g. "Son Heung-min" → "son heungmin")
   const noHyphen = full.replace(/-/g, '');
   if (codes[noHyphen]) return codes[noHyphen];
+  // initial.lastname style (e.g. "Bruno Fernandes" → "b.fernandes")
+  const initialLast = normName(parts[0][0] + '.' + parts[parts.length - 1]);
+  if (codes[initialLast]) return codes[initialLast];
+  // First + last only (for players with middle names stored as "First Middle Last")
+  const firstLast = normName(parts[0] + ' ' + parts[parts.length - 1]);
+  if (codes[firstLast] && parts.length > 2) return codes[firstLast];
   return null;
 }
 
@@ -1685,17 +1785,6 @@ function getExtraPhotoUrl(player) {
   return null;
 }
 
-function getWikiPhotoUrl(player) {
-  const wiki = window.WIKI_PLAYER_PHOTOS;
-  if (!wiki) return null;
-  const key = normName(player.name);
-  if (wiki[key]) return wiki[key];
-  const parts = player.name.trim().split(/\s+/);
-  const last = normName(parts[parts.length - 1]);
-  if (wiki[last]) return wiki[last];
-  return null;
-}
-
 function makePlayerAvatar(player) {
   const wrap = document.createElement('div');
   wrap.className = 'player-avatar';
@@ -1703,8 +1792,7 @@ function makePlayerAvatar(player) {
   // Photo priority:
   //   1. FPL/PL CDN photo  (photo_codes.js → resources.premierleague.com)
   //   2. Curated extra URL  (player_photos_extra.js — hand-picked legends)
-  //   3. Wikipedia auto    (player_photos_wiki.js — auto-scraped)
-  //   4. Grey silhouette   (data/silhouette.svg)
+  //   3. Grey silhouette   (data/silhouette.svg)
   // Each step falls through via onerror if the image is missing / 404.
 
   const extraUrl = getExtraPhotoUrl(player);
@@ -1718,31 +1806,17 @@ function makePlayerAvatar(player) {
     wrap.appendChild(img);
   }
 
-  function tryWikiOrSilhouette() {
-    const wikiUrl = getWikiPhotoUrl(player);
-    if (wikiUrl) {
-      const img = document.createElement('img');
-      img.src       = wikiUrl;
-      img.alt       = player.name;
-      img.className = 'player-avatar-img';
-      img.onerror   = () => { img.remove(); showSilhouette(); };
-      wrap.appendChild(img);
-    } else {
-      showSilhouette();
-    }
-  }
-
-  function tryExtraOrWiki() {
+  function tryExtraOrSilhouette() {
     const fallbackUrl = getExtraPhotoUrl(player);
     if (fallbackUrl) {
       const img2 = document.createElement('img');
       img2.src       = fallbackUrl;
       img2.alt       = player.name;
       img2.className = 'player-avatar-img';
-      img2.onerror   = () => { img2.remove(); tryWikiOrSilhouette(); };
+      img2.onerror   = () => { img2.remove(); showSilhouette(); };
       wrap.appendChild(img2);
     } else {
-      tryWikiOrSilhouette();
+      showSilhouette();
     }
   }
 
@@ -1751,17 +1825,17 @@ function makePlayerAvatar(player) {
     img.src       = `https://resources.premierleague.com/premierleague/photos/players/110x140/p${code}.png`;
     img.alt       = player.name;
     img.className = 'player-avatar-img';
-    img.onerror   = () => { img.remove(); tryExtraOrWiki(); };
+    img.onerror   = () => { img.remove(); tryExtraOrSilhouette(); };
     wrap.appendChild(img);
   } else if (extraUrl) {
     const img = document.createElement('img');
     img.src       = extraUrl;
     img.alt       = player.name;
     img.className = 'player-avatar-img';
-    img.onerror   = () => { img.remove(); tryWikiOrSilhouette(); };
+    img.onerror   = () => { img.remove(); showSilhouette(); };
     wrap.appendChild(img);
   } else {
-    tryWikiOrSilhouette();
+    showSilhouette();
   }
 
   return wrap;
