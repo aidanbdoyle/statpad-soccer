@@ -58,9 +58,26 @@ Players fill 5 rows by naming PL players that match each row's constraints (club
 |---|---|---|
 | `puzzleNumber` | number | Sequential, shown in history and share text |
 | `date` | string | `"YYYY-MM-DD"` — for reference only, not used by game logic |
-| `category` | string | Display name: `"Goals"`, `"Appearances"`, `"Assists"`, `"Clean Sheets"` |
-| `categoryKey` | string | DB key: `"goals"`, `"apps"`, `"assists"`, `"clean_sheets"` |
-| `categoryUnit` | string | Singular unit: `"goal"`, `"appearance"`, `"assist"`, `"clean sheet"` |
+| `category` | string | Display name — see full list below |
+| `categoryKey` | string | DB key — see full list below |
+| `categoryUnit` | string | Singular unit — see full list below |
+
+### All available categories
+
+| `category` (display) | `categoryKey` | `categoryUnit` | Notes |
+|---|---|---|---|
+| `"Goals"` | `"goals"` | `"goal"` | |
+| `"Appearances"` | `"apps"` | `"appearance"` | |
+| `"Assists"` | `"assists"` | `"assist"` | |
+| `"Clean Sheets"` | `"clean_sheets"` | `"clean sheet"` | GK-focused |
+| `"Shots"` | `"shots"` | `"shot"` | |
+| `"Saves"` | `"saves"` | `"save"` | GK-focused |
+| `"Tackles Won"` | `"tackles_won"` | `"tackle won"` | |
+| `"Penalties Scored"` | `"penalties_scored"` | `"penalty"` | |
+| `"Accurate Passes"` | `"accurate_passes"` | `"accurate pass"` | Very large numbers |
+| `"Yellow Cards"` | `"yellow_cards"` | `"yellow card"` | |
+| `"Red Cards"` | `"red_cards"` | `"red card"` | Small numbers |
+| `"PL Titles"` | `"won_pl_title"` | `"title"` | Boolean field — career mode only; counts seasons with a title win |
 | `categoryMode` | string | `"season"` (best single season) or `"career"` (sum of all valid seasons) |
 | `target` | number | Target Mode number (set to a round achievable total) |
 

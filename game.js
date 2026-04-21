@@ -940,6 +940,16 @@ function checkQualifier(player, season, qualifier) {
   }
 }
 
+// ── Stat value helper ─────────────────────────────────────────
+// Normalises boolean fields (e.g. won_pl_title) to 0/1 so all stat
+// arithmetic works uniformly across numeric and boolean category keys.
+function getStatValue(season, key) {
+  const v = season[key];
+  if (v === null || v === undefined) return null;
+  if (typeof v === 'boolean') return v ? 1 : 0;
+  return v;
+}
+
 // ── Player Matching ───────────────────────────────────────────
 function getValidSeasons(player, rowConfig) {
   return player.seasons.filter(s => {
@@ -947,14 +957,18 @@ function getValidSeasons(player, rowConfig) {
     if (s.seasonYear < rowConfig.seasonStart) return false;
     if (s.seasonYear > rowConfig.seasonEnd)   return false;
     if (!checkQualifier(player, s, rowConfig.qualifier)) return false;
-    const statVal = s[PUZZLE.categoryKey];
-    return statVal !== null && statVal !== undefined;
+    const statVal = getStatValue(s, PUZZLE.categoryKey);
+    if (statVal === null) return false;
+    // For boolean-backed stats (e.g. won_pl_title), only count seasons
+    // where the player actually achieved it (value = 1).
+    if (typeof s[PUZZLE.categoryKey] === 'boolean') return statVal > 0;
+    return true;
   });
 }
 
 function getBestSeason(validSeasons) {
   return validSeasons.reduce((best, s) => {
-    return (!best || s[PUZZLE.categoryKey] > best[PUZZLE.categoryKey]) ? s : best;
+    return (!best || getStatValue(s, PUZZLE.categoryKey) > getStatValue(best, PUZZLE.categoryKey)) ? s : best;
   }, null);
 }
 
@@ -964,14 +978,14 @@ function getBestSeason(validSeasons) {
 function getScoringResult(validSeasons) {
   const mode = (PUZZLE.categoryMode || 'season');
   if (mode === 'career') {
-    const total = validSeasons.reduce((sum, s) => sum + (s[PUZZLE.categoryKey] || 0), 0);
+    const total = validSeasons.reduce((sum, s) => sum + (getStatValue(s, PUZZLE.categoryKey) || 0), 0);
     // Attach the year range for display purposes
     const years = validSeasons.map(s => s.seasonYear).sort((a, b) => a - b);
     return { season: { _careerMode: true, _firstYear: years[0], _lastYear: years[years.length - 1] }, statValue: total };
   }
   const best = getBestSeason(validSeasons);
   if (!best) return { season: null, statValue: 0 };
-  return { season: best, statValue: best[PUZZLE.categoryKey] };
+  return { season: best, statValue: getStatValue(best, PUZZLE.categoryKey) };
 }
 
 // ── Pre-compute Valid Answers (for percentile) ────────────────
