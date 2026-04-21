@@ -71,6 +71,8 @@
     'michael carrick':        BASE + 'Michael_Carrick.jpg'            + W,
     'louis saha':             BASE + 'Louis_Saha.jpg'                 + W,
     'darius vassell':         BASE + 'Darius_Vassell.jpg'             + W,
+    // ── 2010s legends ──────────────────────────────────────────
+    'david silva':            'https://resources.premierleague.com/premierleague/photos/players/110x140/p20664.png',
     // ── Duplicate-name overrides (ensure correct player gets correct photo) ──
     'aaron ramsey':           BASE + 'Aaron_Ramsey_2018.jpg'          + W,
   };
