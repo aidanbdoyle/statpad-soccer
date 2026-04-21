@@ -1367,25 +1367,61 @@ function getCardBadgeUrl(player) {
 }
 
 // Human-readable subtitle from row config
+function toTitleCase(str) {
+  return str.toLowerCase()
+    .replace(/\b\w/g, c => c.toUpperCase())
+    .replace(/ \/ /g, '/');
+}
+
+function qualifierLabel(q) {
+  switch (q.type) {
+    case 'award':
+      if (q.award === 'golden_boot') return 'Golden Boot Winner';
+      if (q.award === 'pl_title')    return 'PL Title Winner';
+      return toTitleCase(q.display);
+    case 'outfield':          return 'Outfield';
+    case 'non_european':      return 'Non-European';
+    case 'relegated':         return 'Relegated';
+    case 'last_name_starts_with': return 'Last Name: ' + q.value;
+    case 'max_stat':
+    case 'min_stat':          return toTitleCase(q.display);
+    default:
+      // nationality, nationality_one_of, continent, position
+      return toTitleCase(q.display);
+  }
+}
+
+// Human-readable subtitle from row config — includes qualifier info
 function makeRowSubtitle(rowConfig) {
-  const cat = PUZZLE.category;
+  const cat   = PUZZLE.category;
   const clubs = rowConfig.clubs;
   const start = rowConfig.seasonStart;
   const end   = rowConfig.seasonEnd;
 
+  // Club prefix: full name for 1 club, abbreviations for 2
   let clubStr = '';
   if (clubs.length === 1) clubStr = clubs[0];
-  else if (clubs.length === 2) clubStr = (CLUB_STYLES[clubs[0]] || {abbr: clubs[0].slice(0,3).toUpperCase()}).abbr
-    + ' / ' + (CLUB_STYLES[clubs[1]] || {abbr: clubs[1].slice(0,3).toUpperCase()}).abbr;
+  else if (clubs.length === 2) {
+    const a = CLUB_STYLES[clubs[0]] || { abbr: clubs[0].slice(0,3).toUpperCase() };
+    const b = CLUB_STYLES[clubs[1]] || { abbr: clubs[1].slice(0,3).toUpperCase() };
+    clubStr = a.abbr + '/' + b.abbr;
+  }
 
+  // Time
   const allStart = start <= 1992;
   const allEnd   = end   >= 2026;
   const timeStr  = (allStart && allEnd) ? 'All-Time'
     : allStart ? `Before ${end}`
     : allEnd   ? `Since ${start}`
-    : `Between ${start} – ${end}`;
+    : `${start}–${end}`;
 
-  return [clubStr, cat, timeStr].filter(Boolean).join(' ');
+  // Qualifier prefix (nationality, position, award, etc.)
+  const quals   = !rowConfig.qualifier ? []
+    : Array.isArray(rowConfig.qualifier) ? rowConfig.qualifier
+    : [rowConfig.qualifier];
+  const qualStr = quals.map(qualifierLabel).join(' ');
+
+  return [clubStr, qualStr, cat, timeStr].filter(Boolean).join(' ');
 }
 
 // Tier colour for the percentile label (bright, used for text)
@@ -1414,10 +1450,16 @@ function makeResultCard(rowIdx) {
   // Gradient colour from tier (matches the percentile colour shown on the card)
   const gradColor = tierGradientColor(tier);
   const badgeUrl  = getCardBadgeUrl(player);
-  const photoCode = getFplPhotoCode(player);
-  const photoUrl  = photoCode
-    ? `https://resources.premierleague.com/premierleague/photos/players/110x140/p${photoCode}.png`
-    : null;
+  // Check curated extras first (player_photos_extra.js) — these are hand-picked
+  // identity-correct URLs that must win over any FPL code match.
+  // FPL codes are checked second; they can false-positive on shared surnames.
+  const extraUrl  = getExtraPhotoUrl(player);
+  const photoCode = extraUrl ? null : getFplPhotoCode(player);
+  const photoUrl  = extraUrl
+    ? extraUrl
+    : (photoCode
+      ? `https://resources.premierleague.com/premierleague/photos/players/110x140/p${photoCode}.png`
+      : null);
 
   const card = document.createElement('div');
   card.className = 'result-card';
@@ -1447,13 +1489,7 @@ function makeResultCard(rowIdx) {
     photo.src = photoUrl;
     photo.onerror = useSilhouette;
   } else {
-    const extraUrl = getExtraPhotoUrl(player);
-    if (extraUrl) {
-      photo.src = extraUrl;
-      photo.onerror = useSilhouette;
-    } else {
-      useSilhouette();
-    }
+    useSilhouette();
   }
 
   visual.appendChild(badge);
@@ -1774,9 +1810,16 @@ function getFplPhotoCode(player) {
   const full = normName(player.name);
   if (codes[full]) return codes[full];
   const parts = player.name.trim().split(/\s+/);
-  // Last name only (FPL web_name style)
+  // Last name only (FPL web_name style) — but guard against false positives:
+  // only accept if at least one FPL entry with this code shares the player's
+  // first initial (prevents e.g. "Austin" matching Brandon Austin for Charlie Austin).
   const last = normName(parts[parts.length - 1]);
-  if (codes[last]) return codes[last];
+  if (codes[last]) {
+    const firstChar = full[0];
+    const codeVal   = codes[last];
+    const plausible = Object.keys(codes).some(k => codes[k] === codeVal && k[0] === firstChar);
+    if (plausible) return codeVal;
+  }
   // First name only (single-name players: Robinho, Emerson, etc.)
   const first = normName(parts[0]);
   if (codes[first] && parts.length === 1) return codes[first];
