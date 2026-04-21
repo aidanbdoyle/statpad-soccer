@@ -1345,7 +1345,7 @@ function makeResultCell(rowIdx) {
 
 // Is this player active (played in 2024-25 or 2025-26)?
 function isActivePlayer(player) {
-  return player.seasons.some(s => s.seasonYear >= 2024);
+  return !!(player && player.seasons && player.seasons.some(s => s.seasonYear >= 2024));
 }
 
 // Gradient start color: club bg color if active, PL purple if not
@@ -2147,10 +2147,17 @@ function restoreGameState() {
   if (!saved) return;
   saved.forEach((rowData, i) => {
     if (!rowData || (!rowData.submitted && !rowData.givenUp)) return;
+
+    // saveGameState() stores only {name, nationality, position} to save space.
+    // Look up the full player object (with seasons) from the loaded players array.
+    const fullPlayer = rowData.player
+      ? (players.find(p => p.name === rowData.player.name) || rowData.player)
+      : null;
+
     state.rows[i] = {
       submitted:  rowData.submitted,
       givenUp:    rowData.givenUp,
-      player:     rowData.player,
+      player:     fullPlayer,
       season:     rowData.season,
       statValue:  rowData.statValue,
       // Recompute percentile fresh so bug fixes take effect without replaying
