@@ -425,7 +425,7 @@ input  { font-family: inherit; }
 
 /* Silhouette: fully opaque so the figure is prominent; badge is faint behind it */
 .rc-photo--silhouette {
-  /* no blend mode — silhouette stays fully opaque and dominant */
+  filter: brightness(0.9);
 }
 /* Keep badge very subtle when a silhouette is present */
 .rc-visual:has(.rc-photo--silhouette) .rc-badge {
