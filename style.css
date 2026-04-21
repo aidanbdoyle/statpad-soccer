@@ -860,7 +860,7 @@ input  { font-family: inherit; }
 .btn-give-up:hover { background: #a82626; }
 
 .btn-submit {
-  background: #3d6b4a;
+  background: #22a84a;
   color: #ffffff;
   font-size: 0.95rem;
   font-weight: 700;
@@ -869,7 +869,7 @@ input  { font-family: inherit; }
   flex: 1;
   transition: background 0.15s, opacity 0.15s;
 }
-.btn-submit:hover:not(:disabled) { background: #4a7d58; }
+.btn-submit:hover:not(:disabled) { background: #29c457; }
 .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* ── How To Play ── */
