@@ -330,14 +330,14 @@ input  { font-family: inherit; }
 
 /* ── Add Player Cell ── */
 .add-player-cell {
-  background: #1adb4e;
+  background: #1DB954;
   flex-direction: column;
   gap: 4px;
   transition: background 0.15s;
   cursor: pointer;
 }
-.add-player-cell:hover { background: #00ff55; }
-.add-player-cell:active { background: #13b840; }
+.add-player-cell:hover { background: #25d160; }
+.add-player-cell:active { background: #18a048; }
 
 .add-player-icon {
   font-size: 1.6rem;
@@ -860,7 +860,7 @@ input  { font-family: inherit; }
 .btn-give-up:hover { background: #a82626; }
 
 .btn-submit {
-  background: #1adb4e;
+  background: #1DB954;
   color: #000000;
   font-size: 0.95rem;
   font-weight: 700;
@@ -869,7 +869,7 @@ input  { font-family: inherit; }
   flex: 1;
   transition: background 0.15s, opacity 0.15s;
 }
-.btn-submit:hover:not(:disabled) { background: #00ff55; }
+.btn-submit:hover:not(:disabled) { background: #25d160; }
 .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* ── How To Play ── */
