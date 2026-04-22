@@ -1806,32 +1806,53 @@ function normName(name) {
 
 function getFplPhotoCode(player) {
   const codes = window.FPL_PHOTO_CODES;
-  if (!codes) return null;
-  const full = normName(player.name);
-  if (codes[full]) return codes[full];
+  const hist  = window.HISTORICAL_PHOTO_CODES;
+  if (!codes && !hist) return null;
+
+  const full  = normName(player.name);
   const parts = player.name.trim().split(/\s+/);
-  // Last name only (FPL web_name style) — but guard against false positives:
-  // only accept if at least one FPL entry with this code shares the player's
-  // first initial (prevents e.g. "Austin" matching Brandon Austin for Charlie Austin).
-  const last = normName(parts[parts.length - 1]);
-  if (codes[last]) {
-    const firstChar = full[0];
-    const codeVal   = codes[last];
-    const plausible = Object.keys(codes).some(k => codes[k] === codeVal && k[0] === firstChar);
-    if (plausible) return codeVal;
+
+  // Helper: check a key against both maps
+  function lookup(key) {
+    return (codes && codes[key]) || (hist && hist[key]) || null;
   }
-  // First name only (single-name players: Robinho, Emerson, etc.)
+
+  // 1. Full normalised name
+  const byFull = lookup(full);
+  if (byFull) return byFull;
+
+  // 2. Last name only (FPL web_name style) — guard against false positives with
+  //    first-initial check (prevents e.g. "Austin"→Brandon Austin for Charlie Austin).
+  const last = normName(parts[parts.length - 1]);
+  const byLast = lookup(last);
+  if (byLast) {
+    const firstChar = full[0];
+    const allCodes  = Object.assign({}, hist, codes); // codes wins on conflict
+    const plausible = Object.keys(allCodes).some(k => allCodes[k] === byLast && k[0] === firstChar);
+    if (plausible) return byLast;
+  }
+
+  // 3. First name only (single-name players: Robinho, Emerson, etc.)
   const first = normName(parts[0]);
-  if (codes[first] && parts.length === 1) return codes[first];
-  // Strip hyphens (e.g. "Son Heung-min" → "son heungmin")
+  if (parts.length === 1) { const v = lookup(first); if (v) return v; }
+
+  // 4. Strip hyphens (e.g. "Son Heung-min" → "son heungmin")
   const noHyphen = full.replace(/-/g, '');
-  if (codes[noHyphen]) return codes[noHyphen];
-  // initial.lastname style (e.g. "Bruno Fernandes" → "b.fernandes")
+  const byNoHyph = lookup(noHyphen);
+  if (byNoHyph) return byNoHyph;
+
+  // 5. initial.lastname style (e.g. "Bruno Fernandes" → "b.fernandes")
   const initialLast = normName(parts[0][0] + '.' + parts[parts.length - 1]);
-  if (codes[initialLast]) return codes[initialLast];
-  // First + last only (for players with middle names stored as "First Middle Last")
-  const firstLast = normName(parts[0] + ' ' + parts[parts.length - 1]);
-  if (codes[firstLast] && parts.length > 2) return codes[firstLast];
+  const byInit = lookup(initialLast);
+  if (byInit) return byInit;
+
+  // 6. First + last only (for "First Middle Last" stored names)
+  if (parts.length > 2) {
+    const firstLast = normName(parts[0] + ' ' + parts[parts.length - 1]);
+    const byFL = lookup(firstLast);
+    if (byFL) return byFL;
+  }
+
   return null;
 }
 
