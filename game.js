@@ -1970,6 +1970,10 @@ function openModal(rowIdx) {
   if (state.rows[rowIdx].submitted || state.rows[rowIdx].givenUp) return;
   activeRow = rowIdx;
   selectedPlayer = null;
+  trackGA('row_opened', {
+    puzzle_number: PUZZLE.puzzleNumber,
+    row_index:     rowIdx + 1,
+  });
 
   const overlay = document.getElementById('modal-overlay');
   overlay.classList.remove('hidden');
@@ -2013,6 +2017,11 @@ function handleSubmit() {
     const qualArr = !rowConfig.qualifier ? [] : Array.isArray(rowConfig.qualifier) ? rowConfig.qualifier : [rowConfig.qualifier];
     const qual  = qualArr.length ? ` and meets the "${qualArr.map(q => q.display).join(' + ')}" requirement` : '';
     showError(`${selectedPlayer.name} didn't play for ${clubs} in that season range${qual}.`);
+    trackGA('player_rejected', {
+      puzzle_number: PUZZLE.puzzleNumber,
+      row_index:     activeRow + 1,
+      player_name:   selectedPlayer.name,
+    });
     return;
   }
 
@@ -2690,6 +2699,7 @@ function setupEventListeners() {
 
   // How To Play
   document.getElementById('btn-how-to-play').addEventListener('click', () => {
+    trackGA('rules_opened', { puzzle_number: PUZZLE.puzzleNumber });
     renderHistoryInModal();
     document.getElementById('htp-overlay').classList.remove('hidden');
   });
@@ -2707,9 +2717,10 @@ function setupEventListeners() {
     saveGameState(); // persist current mode before switching
     state.gameMode = state.gameMode === 'target' ? 'normal' : 'target';
     document.getElementById('btn-target').classList.toggle('active-mode', state.gameMode === 'target');
-    if (state.gameMode === 'target') {
-      trackGA('target_mode_activated', { puzzle_number: PUZZLE.puzzleNumber });
-    }
+    trackGA('target_mode_toggled', {
+      puzzle_number: PUZZLE.puzzleNumber,
+      mode:          state.gameMode,   // 'target' or 'normal'
+    });
     // Reset rows then restore saved state for the new mode
     state.rows = PUZZLE.rows.map(() => ({
       submitted: false, givenUp: false,
@@ -2723,7 +2734,10 @@ function setupEventListeners() {
   });
 
   // Stats
-  document.getElementById('btn-stats').addEventListener('click', openStatsModal);
+  document.getElementById('btn-stats').addEventListener('click', () => {
+    trackGA('stats_opened', { puzzle_number: PUZZLE.puzzleNumber });
+    openStatsModal();
+  });
   document.getElementById('stats-close-btn').addEventListener('click', closeStatsModal);
   document.getElementById('stats-overlay').addEventListener('click', e => {
     if (e.target === document.getElementById('stats-overlay')) closeStatsModal();
@@ -2734,7 +2748,11 @@ function setupEventListeners() {
 
   // Date selector
   document.getElementById('date-select').addEventListener('change', e => {
-    resetGame(parseInt(e.target.value, 10));
+    const daysSince = parseInt(e.target.value, 10);
+    trackGA('date_changed', {
+      puzzle_number: PUZZLES[daysSince % PUZZLES.length].puzzleNumber,
+    });
+    resetGame(daysSince);
   });
 
   // Keyboard: Escape closes any open modal
