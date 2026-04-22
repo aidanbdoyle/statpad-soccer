@@ -131,7 +131,7 @@ const CLUB_LOGOS = {
 // ── Flag emoji map (nationality → flag emoji) ─────────────────
 const FLAG_MAP = {
   // British Isles
-  "England":"🏴󠁧󠁢󠁥󠁮󠁧󁿢","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󁿢","Wales":"🏴󠁧󠁢󠁷󠁬󠁳󁿢",
+  "England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","Wales":"🏴󠁧󠁢󠁷󠁬󠁳󠁿",
   "Northern Ireland":"🇬🇧","Republic of Ireland":"🇮🇪","Ireland":"🇮🇪",
   // Europe
   "France":"🇫🇷","Germany":"🇩🇪","Spain":"🇪🇸","Italy":"🇮🇹","Portugal":"🇵🇹",
