@@ -1450,12 +1450,15 @@ function makeResultCard(rowIdx) {
   // Gradient colour from tier (matches the percentile colour shown on the card)
   const gradColor = tierGradientColor(tier);
   const badgeUrl  = getCardBadgeUrl(player);
-  // Check curated extras first (player_photos_extra.js) — these are hand-picked
-  // identity-correct URLs that must win over any FPL code match.
-  // FPL codes are checked second; they can false-positive on shared surnames.
+  // Only PL CDN photos are shown (resources.premierleague.com).
+  // Extras in player_photos_extra.js that are PL CDN URLs take priority over
+  // FPL code lookups (identity-correct overrides for shared surnames, etc.).
+  // Anything that isn't a PL CDN URL falls through to silhouette.
+  const PL_CDN    = 'https://resources.premierleague.com/';
   const extraUrl  = getExtraPhotoUrl(player);
-  const photoCode = extraUrl ? null : getFplPhotoCode(player);
-  const photoUrl  = extraUrl
+  const extraIsCdn = extraUrl && extraUrl.startsWith(PL_CDN);
+  const photoCode = extraIsCdn ? null : getFplPhotoCode(player);
+  const photoUrl  = extraIsCdn
     ? extraUrl
     : (photoCode
       ? `https://resources.premierleague.com/premierleague/photos/players/110x140/p${photoCode}.png`
@@ -1488,13 +1491,6 @@ function makeResultCard(rowIdx) {
   if (photoUrl) {
     photo.src = photoUrl;
     photo.onerror = useSilhouette;
-    photo.onload = function () {
-      // Reject square or landscape images (Wikipedia action shots).
-      // Proper headshots (PL CDN = 110×140, ratio ~0.79) always pass.
-      if (photo.naturalWidth > 0 && photo.naturalWidth / photo.naturalHeight >= 0.9) {
-        useSilhouette();
-      }
-    };
   } else {
     useSilhouette();
   }
@@ -1880,14 +1876,17 @@ function makePlayerAvatar(player) {
   const wrap = document.createElement('div');
   wrap.className = 'player-avatar';
 
-  // Photo priority:
-  //   1. FPL/PL CDN photo  (photo_codes.js → resources.premierleague.com)
-  //   2. Curated extra URL  (player_photos_extra.js — hand-picked legends)
-  //   3. Grey silhouette   (data/silhouette_PL.png)
-  // Each step falls through via onerror if the image is missing / 404.
-
-  const extraUrl = getExtraPhotoUrl(player);
-  const code     = extraUrl ? null : getFplPhotoCode(player);
+  // Only PL CDN photos are shown. Extras that are PL CDN URLs take priority
+  // over FPL code lookups; everything else falls through to silhouette.
+  const PL_CDN_AV   = 'https://resources.premierleague.com/';
+  const extraUrlAV  = getExtraPhotoUrl(player);
+  const extraIsCdnAV = extraUrlAV && extraUrlAV.startsWith(PL_CDN_AV);
+  const code        = extraIsCdnAV ? null : getFplPhotoCode(player);
+  const avatarUrl   = extraIsCdnAV
+    ? extraUrlAV
+    : (code
+      ? `https://resources.premierleague.com/premierleague/photos/players/110x140/p${code}.png`
+      : null);
 
   function showSilhouette() {
     const img = document.createElement('img');
@@ -1897,43 +1896,12 @@ function makePlayerAvatar(player) {
     wrap.appendChild(img);
   }
 
-  function tryExtraOrSilhouette() {
-    const fallbackUrl = getExtraPhotoUrl(player);
-    if (fallbackUrl) {
-      const img2 = document.createElement('img');
-      img2.src       = fallbackUrl;
-      img2.alt       = player.name;
-      img2.className = 'player-avatar-img';
-      img2.onerror   = () => { img2.remove(); showSilhouette(); };
-      img2.onload    = function () {
-        if (img2.naturalWidth > 0 && img2.naturalWidth / img2.naturalHeight >= 0.9) {
-          img2.remove(); showSilhouette();
-        }
-      };
-      wrap.appendChild(img2);
-    } else {
-      showSilhouette();
-    }
-  }
-
-  if (code) {
+  if (avatarUrl) {
     const img = document.createElement('img');
-    img.src       = `https://resources.premierleague.com/premierleague/photos/players/110x140/p${code}.png`;
-    img.alt       = player.name;
-    img.className = 'player-avatar-img';
-    img.onerror   = () => { img.remove(); tryExtraOrSilhouette(); };
-    wrap.appendChild(img);
-  } else if (extraUrl) {
-    const img = document.createElement('img');
-    img.src       = extraUrl;
+    img.src       = avatarUrl;
     img.alt       = player.name;
     img.className = 'player-avatar-img';
     img.onerror   = () => { img.remove(); showSilhouette(); };
-    img.onload    = function () {
-      if (img.naturalWidth > 0 && img.naturalWidth / img.naturalHeight >= 0.9) {
-        img.remove(); showSilhouette();
-      }
-    };
     wrap.appendChild(img);
   } else {
     showSilhouette();
