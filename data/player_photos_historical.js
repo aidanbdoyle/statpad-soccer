@@ -2,6 +2,17 @@
 /* Plus manual codes for players not in vaastav (pre-2016 era or single-name). */
 /* CDN URL: https://resources.premierleague.com/premierleague/photos/players/110x140/p{code}.png */
 window.HISTORICAL_PHOTO_CODES = {
+/* ── Manual additions: single-name / long-name players missing from auto-gen ── */
+"jorginho": 85955,
+"rodri": 220566,
+"fernandinho": 27789,
+"fabinho": 116643,
+"oriol romeu": 78056,
+"ruben neves": 171317,
+"joao moutinho": 19624,
+"nelson semedo": 200402,
+"johann gudmundsson": 60586,
+"lucas moura": 95715,
 "aaron connolly": 233425,
 "aaron cresswell": 55459,
 "aaron lennon": 17349,
