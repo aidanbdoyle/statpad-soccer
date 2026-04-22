@@ -1488,6 +1488,13 @@ function makeResultCard(rowIdx) {
   if (photoUrl) {
     photo.src = photoUrl;
     photo.onerror = useSilhouette;
+    photo.onload = function () {
+      // Reject square or landscape images (Wikipedia action shots).
+      // Proper headshots (PL CDN = 110×140, ratio ~0.79) always pass.
+      if (photo.naturalWidth > 0 && photo.naturalWidth / photo.naturalHeight >= 0.9) {
+        useSilhouette();
+      }
+    };
   } else {
     useSilhouette();
   }
@@ -1898,6 +1905,11 @@ function makePlayerAvatar(player) {
       img2.alt       = player.name;
       img2.className = 'player-avatar-img';
       img2.onerror   = () => { img2.remove(); showSilhouette(); };
+      img2.onload    = function () {
+        if (img2.naturalWidth > 0 && img2.naturalWidth / img2.naturalHeight >= 0.9) {
+          img2.remove(); showSilhouette();
+        }
+      };
       wrap.appendChild(img2);
     } else {
       showSilhouette();
@@ -1917,6 +1929,11 @@ function makePlayerAvatar(player) {
     img.alt       = player.name;
     img.className = 'player-avatar-img';
     img.onerror   = () => { img.remove(); showSilhouette(); };
+    img.onload    = function () {
+      if (img.naturalWidth > 0 && img.naturalWidth / img.naturalHeight >= 0.9) {
+        img.remove(); showSilhouette();
+      }
+    };
     wrap.appendChild(img);
   } else {
     showSilhouette();
