@@ -996,7 +996,6 @@ window.HISTORICAL_PHOTO_CODES = {
 "shane long": 20452,
 "shaun macdonald": 20669,
 "shaun maloney": 9110,
-"shay given": 1822,
 "shea charles": 463210,
 "shinji okazaki": 78412,
 "shkodran mustafi": 69140,
