@@ -1399,13 +1399,11 @@ function makeRowSubtitle(rowConfig) {
   const start = rowConfig.seasonStart;
   const end   = rowConfig.seasonEnd;
 
-  // Club prefix: full name for 1 club, abbreviations for 2
+  // Club prefix: full name for 1 club, abbreviations for 2+
   let clubStr = '';
   if (clubs.length === 1) clubStr = clubs[0];
-  else if (clubs.length === 2) {
-    const a = CLUB_STYLES[clubs[0]] || { abbr: clubs[0].slice(0,3).toUpperCase() };
-    const b = CLUB_STYLES[clubs[1]] || { abbr: clubs[1].slice(0,3).toUpperCase() };
-    clubStr = a.abbr + '/' + b.abbr;
+  else if (clubs.length >= 2) {
+    clubStr = clubs.map(c => (CLUB_STYLES[c] || { abbr: c.slice(0,3).toUpperCase() }).abbr).join('/');
   }
 
   // Time
@@ -1420,7 +1418,9 @@ function makeRowSubtitle(rowConfig) {
   const quals   = !rowConfig.qualifier ? []
     : Array.isArray(rowConfig.qualifier) ? rowConfig.qualifier
     : [rowConfig.qualifier];
-  const qualStr = quals.map(qualifierLabel).join(' ');
+  // GK position is implied by Saves/Clean Sheets category — omit from subtitle
+  const filteredQuals = quals.filter(q => !(q.type === 'position' && q.value === 'GK'));
+  const qualStr = filteredQuals.map(qualifierLabel).join(' ');
 
   return [clubStr, qualStr, cat, timeStr].filter(Boolean).join(' ');
 }
