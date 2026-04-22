@@ -343,41 +343,44 @@ const PUZZLES = [
   {
     puzzleNumber: 8,
     date: "2026-04-22",
-    category: "Assists",
-    categoryKey: "assists",
-    categoryUnit: "assist",
-    categoryMode: "career",
-    target: 160,
+    category: "Shots",
+    categoryKey: "shots",
+    categoryUnit: "shot",
+    categoryMode: "season",
+    target: 450,
     rows: [
       {
-        clubs: [],
-        seasonStart: 1992,
-        seasonEnd: 2026,
-        qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
-      },
-      {
-        clubs: ["Chelsea"],
-        seasonStart: 2003,
-        seasonEnd: 2020,
-        qualifier: null
-      },
-      {
-        clubs: ["Liverpool"],
-        seasonStart: 2015,
-        seasonEnd: 2026,
-        qualifier: null
+        clubs: ["Arsenal", "Tottenham"],
+        seasonStart: 2010,
+        seasonEnd: 2019,
+        qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "SEASON" }
       },
       {
         clubs: [],
-        seasonStart: 1992,
+        seasonStart: 2020,
         seasonEnd: 2026,
-        qualifier: { type: "continent", value: "European", display: "EUROPEAN", scopeDisplay: "CAREER" }
+        qualifier: { type: "relegated", display: "RELEGATED", scopeDisplay: "SEASON" }
       },
       {
-        clubs: ["Tottenham"],
-        seasonStart: 2000,
-        seasonEnd: 2020,
+        clubs: ["Leicester", "West Ham", "Aston Villa"],
+        seasonStart: 2006,
+        seasonEnd: 2026,
         qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2016,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "SEASON" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "nationality", value: "England", display: "ENGLISH", scopeDisplay: "SEASON" },
+          { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "SEASON" }
+        ]
       }
     ]
   },
