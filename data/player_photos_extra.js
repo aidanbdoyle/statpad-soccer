@@ -74,6 +74,6 @@
     // ── 2010s legends ──────────────────────────────────────────
     'david silva':            'https://resources.premierleague.com/premierleague/photos/players/110x140/p20664.png',
     // ── Duplicate-name overrides (ensure correct player gets correct photo) ──
-    'aaron ramsey':           BASE + 'Aaron_Ramsey_2018.jpg'          + W,
+    'aaron ramsey':           'https://resources.premierleague.com/premierleague/photos/players/110x140/p41792.png',
   };
 })();

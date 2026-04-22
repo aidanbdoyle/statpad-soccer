@@ -299,33 +299,42 @@ const PUZZLES = [
     rows: [
       {
         clubs: ["Arsenal", "Southampton"],
-        seasonStart: 1992,
+        seasonStart: 2006,
         seasonEnd: 2026,
-        qualifier: null
+        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
-        seasonStart: 1992,
+        seasonStart: 2006,
         seasonEnd: 2026,
-        qualifier: { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" }
+        qualifier: [
+          { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" },
+          { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" }
+        ]
       },
       {
         clubs: [],
         seasonStart: 2020,
         seasonEnd: 2026,
-        qualifier: null
+        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
-        seasonStart: 1992,
+        seasonStart: 2006,
         seasonEnd: 2026,
-        qualifier: { type: "award", award: "pl_title", scope: "season", display: "WON PL TITLE", scopeDisplay: "SAME SEASON" }
+        qualifier: [
+          { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" },
+          { type: "award", award: "pl_title", scope: "season", display: "WON PL TITLE", scopeDisplay: "SAME SEASON" }
+        ]
       },
       {
         clubs: [],
-        seasonStart: 1992,
+        seasonStart: 2006,
         seasonEnd: 2026,
-        qualifier: { type: "nationality_one_of", values: ["Norway", "Sweden", "Denmark", "Finland"], display: "SCANDINAVIAN", scopeDisplay: "CAREER" }
+        qualifier: [
+          { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" },
+          { type: "nationality_one_of", values: ["Norway", "Sweden", "Denmark", "Finland"], display: "SCANDINAVIAN", scopeDisplay: "CAREER" }
+        ]
       }
     ]
   },
