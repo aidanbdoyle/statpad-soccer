@@ -421,8 +421,8 @@ const PUZZLES = [
       },
       {
         clubs: [],
-        seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonStart: 2010,
+        seasonEnd: 2019,
         qualifier: [
           { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" },
           { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" }
