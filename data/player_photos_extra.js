@@ -13,5 +13,8 @@
     'david silva':  'https://resources.premierleague.com/premierleague/photos/players/110x140/p20664.png',
     // Tim Howard — pre-vaastav era, manually added
     'tim howard':   'https://resources.premierleague.com/premierleague/photos/players/110x140/p15337.png',
+    // Alisson — PL CDN uses premierleague25 path (no 'p' prefix) for this player
+    'alisson':        'https://resources.premierleague.com/premierleague25/photos/players/110x140/116535.png',
+    'alisson becker': 'https://resources.premierleague.com/premierleague25/photos/players/110x140/116535.png',
   };
 })();
