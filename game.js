@@ -940,8 +940,15 @@ function checkQualifier(player, season, qualifier) {
       return pos !== 'G' && pos !== 'GK';
     }
     case 'last_name_starts_with': {
+      const NAME_ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
       const parts = player.name.trim().split(/\s+/);
-      const lastName = normName(parts[parts.length - 1]);
+      // If a name article appears after the first name, treat everything from
+      // that article onward as the last name (e.g. "van Persie" → V, "de Bruyne" → D)
+      let lastNameStart = parts.length - 1;
+      for (let i = 1; i < parts.length - 1; i++) {
+        if (NAME_ARTICLES.has(parts[i].toLowerCase())) { lastNameStart = i; break; }
+      }
+      const lastName = normName(parts.slice(lastNameStart).join(' '));
       return lastName.startsWith(qualifier.value.toLowerCase());
     }
     default:
