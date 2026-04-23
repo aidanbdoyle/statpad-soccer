@@ -103,7 +103,7 @@ const CLUB_LOGOS = {
   "Sheffield United":    "https://upload.wikimedia.org/wikipedia/en/9/9c/Sheffield_United_FC_logo.svg",
   "Sheffield Wednesday": "https://upload.wikimedia.org/wikipedia/en/6/6a/Sheffield_Wednesday_logo.svg",
   "Coventry":            "https://upload.wikimedia.org/wikipedia/en/8/8e/Coventry_City_FC_logo.svg",
-  "Middlesbrough":       "https://upload.wikimedia.org/wikipedia/en/b/b2/Middlesbrough_FC_crest.svg",
+  "Middlesbrough":       "https://upload.wikimedia.org/wikipedia/en/2/2c/Middlesbrough_FC_crest.svg",
   "Sunderland":          "https://upload.wikimedia.org/wikipedia/en/7/77/Logo_Sunderland.svg",
   "Derby":               "https://upload.wikimedia.org/wikipedia/en/4/4a/Derby_County_Football_Club.svg",
   "Bolton":              "https://upload.wikimedia.org/wikipedia/en/3/3a/Bolton_Wanderers_FC_logo.svg",

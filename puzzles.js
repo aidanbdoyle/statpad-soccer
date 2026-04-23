@@ -389,6 +389,52 @@ const PUZZLES = [
   {
     puzzleNumber: 9,
     date: "2026-04-23",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "career",
+    target: 350,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Czech Republic", display: "CZECH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "max_stat", key: "assists", value: 25, scope: "career", display: "MAX 25 CAREER ASSISTS", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "V", display: "LAST NAME STARTS WITH V", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Stoke", "Middlesbrough"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" },
+          { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" }
+        ]
+      }
+    ]
+  },
+
+  // ── Puzzle 10 ────────────────────────────────────────────────
+  {
+    puzzleNumber: 10,
+    date: "2026-04-24",
     category: "Clean Sheets",
     categoryKey: "clean_sheets",
     categoryUnit: "clean sheet",
