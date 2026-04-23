@@ -410,14 +410,14 @@ input  { font-family: inherit; }
   z-index: 1;
 }
 
-/* Player photo — taller than card, anchored to top so head shows; feet cut off at bottom */
+/* Player photo — 25% larger, offset down so head has breathing room */
 .rc-photo {
   position: absolute;
-  top: 0;
+  top: 8px;
   left: 10px;
-  height: 108px;
+  height: 135px;
   width: auto;
-  max-width: 80px;
+  max-width: 90px;
   object-fit: contain;
   object-position: top center;
   z-index: 2;
@@ -976,7 +976,7 @@ input  { font-family: inherit; }
   .rc-score-val { font-size: 1.5rem; }
   .rc-visual { width: 72px; }
   .rc-badge { width: 54px; height: 54px; }
-  .rc-photo { height: 90px; max-width: 65px; }
+  .rc-photo { height: 110px; max-width: 65px; top: 6px; }
 }
 
 /* ── Player avatar in result card ── */

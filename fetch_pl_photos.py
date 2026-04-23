@@ -87,7 +87,7 @@ def fetch_season(season_id, season_label):
             break
 
         for p in content:
-            pid  = p.get('playerId')
+            pid  = p.get('id')       # CDN-compatible photo ID (NOT playerId)
             name = (p.get('name') or {}).get('display', '')
             if pid and name:
                 normed = norm_name(name)
