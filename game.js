@@ -1426,7 +1426,7 @@ function makeRowSubtitle(rowConfig) {
     : Array.isArray(rowConfig.qualifier) ? rowConfig.qualifier
     : [rowConfig.qualifier];
   // GK position is implied by Saves/Clean Sheets category — omit from subtitle
-  const filteredQuals = quals.filter(q => !(q.type === 'position' && q.value === 'GK'));
+  const filteredQuals = quals.filter(q => !(q.type === 'position' && q.value === 'GK') && q.type !== 'outfield');
   const qualStr = filteredQuals.map(qualifierLabel).join(' ');
 
   return [clubStr, qualStr, cat, timeStr].filter(Boolean).join(' ');
