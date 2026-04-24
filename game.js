@@ -731,7 +731,6 @@ function saveResult() {
   // Auto-show stats modal the first time this puzzle is completed
   if (isFirstCompletion) setTimeout(openStatsModal, 1800);
 
-  showChallengeComparison();
 }
 
 function getStreak() {
@@ -2692,8 +2691,6 @@ function _init() {
   updateStreakDisplay();
   setupEventListeners();
   populateDateSelect();
-  initChallenge();
-
   trackGA('puzzle_viewed', {
     puzzle_number:   PUZZLE.puzzleNumber,
     puzzle_category: PUZZLE.category,
@@ -2857,15 +2854,6 @@ function setupEventListeners() {
   // Share
   document.getElementById('btn-share').addEventListener('click', handleShare);
 
-  // Challenge / Duel
-  document.getElementById('btn-challenge').addEventListener('click', handleChallengeBtn);
-  document.getElementById('challenge-close-btn').addEventListener('click', () => {
-    document.getElementById('challenge-overlay').classList.add('hidden');
-  });
-  document.getElementById('challenge-overlay').addEventListener('click', e => {
-    if (e.target === document.getElementById('challenge-overlay'))
-      document.getElementById('challenge-overlay').classList.add('hidden');
-  });
 
   // Date selector
   document.getElementById('date-select').addEventListener('change', e => {
@@ -2887,152 +2875,6 @@ function setupEventListeners() {
   });
 }
 
-// ── Challenge / Duel Link ─────────────────────────────────────
-
-let _challengeData = null;
-
-function initChallenge() {
-  // The banner shows ONLY when ?challenge= is present in the URL.
-  // No sessionStorage — avoids any false positives on plain page loads.
-  const params  = new URLSearchParams(window.location.search);
-  const encoded = params.get('challenge');
-  if (!encoded) return;
-
-  try {
-    const data = JSON.parse(decodeURIComponent(atob(encoded)));
-    if (data && data.p && data.r) {
-      _challengeData = data;
-    }
-  } catch(e) { return; }
-
-  if (!_challengeData) return;
-
-  // Discard if it's for a different puzzle or the game is already finished
-  if (_challengeData.p !== PUZZLE.puzzleNumber || isGameComplete()) {
-    _challengeData = null;
-    return;
-  }
-
-  const banner = document.getElementById('challenge-banner');
-  if (!banner) return;
-  banner.classList.remove('hidden');
-
-  // Dismiss ×
-  const x = banner.querySelector('.ch-banner-dismiss');
-  if (x) x.addEventListener('click', () => {
-    banner.classList.add('hidden');
-    _challengeData = null;
-  });
-}
-
-function generateChallengeUrl() {
-  const data = {
-    p: PUZZLE.puzzleNumber,
-    r: state.rows.map(r => ({
-      n: r.givenUp ? null : (r.player ? r.player.name : null),
-      v: r.statValue || 0,
-      t: r.percentile !== null ? getPercentileTier(r.percentile) : '',
-      g: r.givenUp ? 1 : 0,
-    })),
-  };
-  const encoded = btoa(encodeURIComponent(JSON.stringify(data)));
-  const url = new URL(window.location.origin + window.location.pathname);
-  url.searchParams.set('challenge', encoded);
-  return url.toString();
-}
-
-function handleChallengeBtn() {
-  if (!isGameComplete()) {
-    // Flash the label to indicate it's not ready yet
-    const label = document.getElementById('challenge-btn-label');
-    if (label) {
-      label.textContent = 'FINISH FIRST';
-      setTimeout(() => { label.textContent = 'DUEL'; }, 1800);
-    }
-    return;
-  }
-  const url = generateChallengeUrl();
-  const label = document.getElementById('challenge-btn-label');
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(url).then(() => {
-      if (label) {
-        label.textContent = 'COPIED!';
-        setTimeout(() => { label.textContent = 'DUEL'; }, 2000);
-      }
-    });
-  } else {
-    prompt('Copy your challenge link:', url);
-  }
-  trackGA('challenge_link_generated', { puzzle_number: PUZZLE.puzzleNumber });
-}
-
-function showChallengeComparison() {
-  if (!_challengeData) return;
-  const overlay = document.getElementById('challenge-overlay');
-  const content = document.getElementById('challenge-content');
-  if (!overlay || !content) return;
-
-  if (_challengeData.p !== PUZZLE.puzzleNumber) {
-    content.innerHTML = `<p class="ch-mismatch">This challenge was for Puzzle #${_challengeData.p}, not today's puzzle (#${PUZZLE.puzzleNumber}).</p>`;
-    overlay.classList.remove('hidden');
-    return;
-  }
-
-  const TIER_EMOJI = { purple:'🟣', blue:'🔵', gold:'🟡', silver:'⚪', bronze:'🟤', '':'⚫' };
-  let myTotal = 0, theirTotal = 0;
-
-  const rowsHtml = PUZZLE.rows.map((_, i) => {
-    const mine   = state.rows[i] || {};
-    const theirs = (_challengeData.r || [])[i] || {};
-
-    const myScore    = mine.statValue || 0;
-    const theirScore = theirs.v || 0;
-    myTotal    += myScore;
-    theirTotal += theirScore;
-
-    const myName    = mine.givenUp   ? 'Gave Up' : (mine.player ? mine.player.name : '—');
-    const theirName = theirs.g       ? 'Gave Up' : (theirs.n || '—');
-    const myEmoji   = mine.givenUp   ? '❌' : mine.submitted ? (TIER_EMOJI[getPercentileTier(mine.percentile)] || '⚫') : '⬛';
-    const theirEmoji = theirs.g      ? '❌' : (TIER_EMOJI[theirs.t] || '⬛');
-
-    const myWins    = myScore > theirScore;
-    const theirWins = theirScore > myScore;
-
-    return `<div class="ch-row">
-      <div class="ch-cell${theirWins ? ' ch-winner' : ''}">
-        <span class="ch-emoji">${theirEmoji}</span>
-        <span class="ch-name">${theirName}</span>
-        <span class="ch-score">${theirScore}</span>
-      </div>
-      <div class="ch-divider">vs</div>
-      <div class="ch-cell ch-cell-right${myWins ? ' ch-winner' : ''}">
-        <span class="ch-score">${myScore}</span>
-        <span class="ch-name">${myName}</span>
-        <span class="ch-emoji">${myEmoji}</span>
-      </div>
-    </div>`;
-  }).join('');
-
-  const myWins = myTotal > theirTotal;
-  const tie    = myTotal === theirTotal;
-  const result = tie ? "It's a tie! 🤝" : myWins ? 'You win! 🎉' : 'They win! 💪';
-
-  content.innerHTML = `
-    <div class="ch-header-row">
-      <div>CHALLENGER</div>
-      <div></div>
-      <div>YOU</div>
-    </div>
-    ${rowsHtml}
-    <div class="ch-total-row">
-      <div class="ch-total${!myWins && !tie ? ' ch-winner' : ''}">${theirTotal}</div>
-      <div class="ch-result">${result}</div>
-      <div class="ch-total${myWins ? ' ch-winner' : ''}">${myTotal}</div>
-    </div>`;
-
-  overlay.classList.remove('hidden');
-  document.getElementById('challenge-banner')?.classList.add('hidden');
-}
 
 // ── Entry Point ───────────────────────────────────────────────
 // init() is called by the players_data.js onload/onerror handler in index.html.
