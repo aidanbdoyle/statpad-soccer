@@ -730,6 +730,8 @@ function saveResult() {
 
   // Auto-show stats modal the first time this puzzle is completed
   if (isFirstCompletion) setTimeout(openStatsModal, 1800);
+
+  showChallengeComparison();
 }
 
 function getStreak() {
@@ -2013,6 +2015,109 @@ function clearError() {
   document.getElementById('search-error').classList.add('hidden');
 }
 
+function getRejectionReason(player, rowConfig) {
+  const { clubs, seasonStart: start, seasonEnd: end, qualifier } = rowConfig;
+  const quals = !qualifier ? [] : Array.isArray(qualifier) ? qualifier : [qualifier];
+  const STAT_LABELS = { goals:'goals', assists:'assists', apps:'appearances', clean_sheets:'clean sheets', red_cards:'red cards', yellow_cards:'yellow cards' };
+  const POS_LABELS  = { G:'Goalkeeper', D:'Defender', M:'Midfielder', F:'Forward', GK:'Goalkeeper' };
+
+  // 1. Player-level qualifiers (checked before club/season)
+  for (const q of quals) {
+    if (q.type === 'nationality') {
+      if ((player.nationality||'').toLowerCase() !== (q.value||'').toLowerCase())
+        return `${player.name} is ${player.nationality||'unknown'} — this row requires ${q.display}.`;
+    }
+    if (q.type === 'nationality_one_of') {
+      const norm = s => (s||'').toLowerCase();
+      if (!q.values.some(v => norm(v) === norm(player.nationality)))
+        return `${player.name} is ${player.nationality||'unknown'} — this row requires ${q.display}.`;
+    }
+    if (q.type === 'continent') {
+      const pc = CONTINENT_MAP[player.nationality] || 'Unknown';
+      if (pc.toLowerCase() !== q.value.toLowerCase())
+        return `${player.name} is ${pc} — this row requires ${q.display}.`;
+    }
+    if (q.type === 'non_european') {
+      const pc = CONTINENT_MAP[player.nationality] || '';
+      if (pc.toLowerCase() === 'european')
+        return `${player.name} is European (${player.nationality}).`;
+    }
+    if (q.type === 'position') {
+      const pos = (player.position||'').toUpperCase();
+      const val = q.value.toUpperCase();
+      const valid = val === 'GK' ? (pos === 'G' || pos === 'GK') : pos.startsWith(val);
+      if (!valid)
+        return `${player.name} is a ${POS_LABELS[pos]||pos} — this row requires a ${q.display.toLowerCase()}.`;
+    }
+    if (q.type === 'outfield') {
+      const pos = (player.position||'').toUpperCase();
+      if (pos === 'G' || pos === 'GK')
+        return `${player.name} is a goalkeeper — this row requires an outfield player.`;
+    }
+    if (q.type === 'last_name_starts_with') {
+      const ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
+      const parts = player.name.trim().split(/\s+/);
+      let idx = parts.length - 1;
+      for (let i = 1; i < parts.length - 1; i++) { if (ARTICLES.has(parts[i].toLowerCase())) { idx = i; break; } }
+      const actual = parts[idx][0].toUpperCase();
+      if (actual !== q.value.toUpperCase())
+        return `${player.name}'s last name starts with ${actual}, not ${q.value}.`;
+    }
+    if (q.type === 'max_stat' && q.scope === 'career') {
+      const total = player.seasons.reduce((s, ss) => s + (ss[q.key]||0), 0);
+      if (total > q.value)
+        return `${player.name} has ${total} career ${STAT_LABELS[q.key]||q.key} — this row requires max ${q.value}.`;
+    }
+    if (q.type === 'min_stat' && q.scope === 'career') {
+      const total = player.seasons.reduce((s, ss) => s + (ss[q.key]||0), 0);
+      if (total < q.value)
+        return `${player.name} has ${total} career ${STAT_LABELS[q.key]||q.key} — this row requires at least ${q.value}.`;
+    }
+    if (q.type === 'award' && q.scope === 'career') {
+      if (q.award === 'golden_boot' && !playerWonGoldenBoot(player))
+        return `${player.name} never won the Golden Boot.`;
+      if (q.award === 'pl_title' && !playerWonPLTitle(player))
+        return `${player.name} never won the Premier League title.`;
+    }
+  }
+
+  // 2. Club membership
+  if (clubs.length > 0) {
+    const clubSeasons = player.seasons.filter(s => clubs.includes(s.club));
+    if (!clubSeasons.length) {
+      const clubStr = clubs.length === 1 ? clubs[0] : clubs.join(' or ');
+      return `${player.name} never played for ${clubStr} in the Premier League.`;
+    }
+    // Right club, wrong era
+    const inRange = clubSeasons.some(s => s.seasonYear >= start && s.seasonYear <= end);
+    if (!inRange) {
+      const years = clubSeasons.map(s => s.seasonYear).sort((a,b) => a-b);
+      const clubStr = clubs.length === 1 ? clubs[0] : clubs.join('/');
+      return `${player.name} played for ${clubStr} between ${years[0]}–${years[years.length-1]+1}, outside the ${start}–${end} window.`;
+    }
+  } else {
+    // No club restriction — check year range
+    const inRange = player.seasons.some(s => s.seasonYear >= start && s.seasonYear <= end);
+    if (!inRange && player.seasons.length) {
+      const years = player.seasons.map(s => s.seasonYear).sort((a,b) => a-b);
+      return `${player.name} played in the PL between ${years[0]}–${years[years.length-1]+1}, outside the ${start}–${end} window.`;
+    }
+  }
+
+  // 3. Season-level qualifiers
+  for (const q of quals) {
+    if (q.type === 'award' && q.scope !== 'career') {
+      if (q.award === 'golden_boot') return `${player.name} didn't win the Golden Boot during the required seasons.`;
+      if (q.award === 'pl_title')    return `${player.name} didn't win the PL title during the required seasons.`;
+    }
+    if (q.type === 'relegated') return `${player.name} wasn't relegated with their club during the required seasons.`;
+    if (q.type === 'max_stat' && q.scope === 'season') return `${player.name} exceeded the ${q.display} limit in the required season.`;
+    if (q.type === 'min_stat' && q.scope === 'season') return `${player.name} didn't reach the ${q.display} requirement in the required season.`;
+  }
+
+  return `${player.name} doesn't meet all the requirements for this row.`;
+}
+
 function handleSubmit() {
   if (!selectedPlayer || activeRow === null) return;
   clearError();
@@ -2021,10 +2126,7 @@ function handleSubmit() {
   const validSeasons = getValidSeasons(selectedPlayer, rowConfig);
 
   if (!validSeasons.length) {
-    const clubs = rowConfig.clubs.length ? rowConfig.clubs.join(' / ') : 'any Premier League club';
-    const qualArr = !rowConfig.qualifier ? [] : Array.isArray(rowConfig.qualifier) ? rowConfig.qualifier : [rowConfig.qualifier];
-    const qual  = qualArr.length ? ` and meets the "${qualArr.map(q => q.display).join(' + ')}" requirement` : '';
-    showError(`${selectedPlayer.name} didn't play for ${clubs} in that season range${qual}.`);
+    showError(getRejectionReason(selectedPlayer, rowConfig));
     trackGA('player_rejected', {
       puzzle_number: PUZZLE.puzzleNumber,
       row_index:     activeRow + 1,
@@ -2590,6 +2692,7 @@ function _init() {
   updateStreakDisplay();
   setupEventListeners();
   populateDateSelect();
+  initChallenge();
 
   trackGA('puzzle_viewed', {
     puzzle_number:   PUZZLE.puzzleNumber,
@@ -2754,6 +2857,16 @@ function setupEventListeners() {
   // Share
   document.getElementById('btn-share').addEventListener('click', handleShare);
 
+  // Challenge / Duel
+  document.getElementById('btn-challenge').addEventListener('click', handleChallengeBtn);
+  document.getElementById('challenge-close-btn').addEventListener('click', () => {
+    document.getElementById('challenge-overlay').classList.add('hidden');
+  });
+  document.getElementById('challenge-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('challenge-overlay'))
+      document.getElementById('challenge-overlay').classList.add('hidden');
+  });
+
   // Date selector
   document.getElementById('date-select').addEventListener('change', e => {
     const daysSince = parseInt(e.target.value, 10);
@@ -2769,8 +2882,150 @@ function setupEventListeners() {
       closeModal();
       document.getElementById('htp-overlay').classList.add('hidden');
       closeStatsModal();
+      document.getElementById('challenge-overlay').classList.add('hidden');
     }
   });
+}
+
+// ── Challenge / Duel Link ─────────────────────────────────────
+
+let _challengeData = null;
+
+function initChallenge() {
+  // Check sessionStorage first (set by a previous page load with ?challenge=)
+  const stored = sessionStorage.getItem('statpad_challenge');
+  if (stored) {
+    try { _challengeData = JSON.parse(stored); } catch(e) {}
+  }
+  // Also check URL param
+  const params = new URLSearchParams(window.location.search);
+  const encoded = params.get('challenge');
+  if (encoded) {
+    try {
+      const data = JSON.parse(decodeURIComponent(atob(encoded)));
+      if (data && data.p && data.r) {
+        _challengeData = data;
+        sessionStorage.setItem('statpad_challenge', JSON.stringify(data));
+      }
+    } catch(e) {}
+    // Clean the URL
+    const clean = new URL(window.location.href);
+    clean.searchParams.delete('challenge');
+    window.history.replaceState({}, '', clean.toString());
+  }
+  if (_challengeData) {
+    document.getElementById('challenge-banner')?.classList.remove('hidden');
+  }
+}
+
+function generateChallengeUrl() {
+  const data = {
+    p: PUZZLE.puzzleNumber,
+    r: state.rows.map(r => ({
+      n: r.givenUp ? null : (r.player ? r.player.name : null),
+      v: r.statValue || 0,
+      t: r.percentile !== null ? getPercentileTier(r.percentile) : '',
+      g: r.givenUp ? 1 : 0,
+    })),
+  };
+  const encoded = btoa(encodeURIComponent(JSON.stringify(data)));
+  const url = new URL(window.location.origin + window.location.pathname);
+  url.searchParams.set('challenge', encoded);
+  return url.toString();
+}
+
+function handleChallengeBtn() {
+  if (!isGameComplete()) {
+    // Flash the label to indicate it's not ready yet
+    const label = document.getElementById('challenge-btn-label');
+    if (label) {
+      label.textContent = 'FINISH FIRST';
+      setTimeout(() => { label.textContent = 'DUEL'; }, 1800);
+    }
+    return;
+  }
+  const url = generateChallengeUrl();
+  const label = document.getElementById('challenge-btn-label');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      if (label) {
+        label.textContent = 'COPIED!';
+        setTimeout(() => { label.textContent = 'DUEL'; }, 2000);
+      }
+    });
+  } else {
+    prompt('Copy your challenge link:', url);
+  }
+  trackGA('challenge_link_generated', { puzzle_number: PUZZLE.puzzleNumber });
+}
+
+function showChallengeComparison() {
+  if (!_challengeData) return;
+  const overlay = document.getElementById('challenge-overlay');
+  const content = document.getElementById('challenge-content');
+  if (!overlay || !content) return;
+
+  if (_challengeData.p !== PUZZLE.puzzleNumber) {
+    content.innerHTML = `<p class="ch-mismatch">This challenge was for Puzzle #${_challengeData.p}, not today's puzzle (#${PUZZLE.puzzleNumber}).</p>`;
+    overlay.classList.remove('hidden');
+    return;
+  }
+
+  const TIER_EMOJI = { purple:'🟣', blue:'🔵', gold:'🟡', silver:'⚪', bronze:'🟤', '':'⚫' };
+  let myTotal = 0, theirTotal = 0;
+
+  const rowsHtml = PUZZLE.rows.map((_, i) => {
+    const mine   = state.rows[i] || {};
+    const theirs = (_challengeData.r || [])[i] || {};
+
+    const myScore    = mine.statValue || 0;
+    const theirScore = theirs.v || 0;
+    myTotal    += myScore;
+    theirTotal += theirScore;
+
+    const myName    = mine.givenUp   ? 'Gave Up' : (mine.player ? mine.player.name : '—');
+    const theirName = theirs.g       ? 'Gave Up' : (theirs.n || '—');
+    const myEmoji   = mine.givenUp   ? '❌' : mine.submitted ? (TIER_EMOJI[getPercentileTier(mine.percentile)] || '⚫') : '⬛';
+    const theirEmoji = theirs.g      ? '❌' : (TIER_EMOJI[theirs.t] || '⬛');
+
+    const myWins    = myScore > theirScore;
+    const theirWins = theirScore > myScore;
+
+    return `<div class="ch-row">
+      <div class="ch-cell${theirWins ? ' ch-winner' : ''}">
+        <span class="ch-emoji">${theirEmoji}</span>
+        <span class="ch-name">${theirName}</span>
+        <span class="ch-score">${theirScore}</span>
+      </div>
+      <div class="ch-divider">vs</div>
+      <div class="ch-cell ch-cell-right${myWins ? ' ch-winner' : ''}">
+        <span class="ch-score">${myScore}</span>
+        <span class="ch-name">${myName}</span>
+        <span class="ch-emoji">${myEmoji}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  const myWins = myTotal > theirTotal;
+  const tie    = myTotal === theirTotal;
+  const result = tie ? "It's a tie! 🤝" : myWins ? 'You win! 🎉' : 'They win! 💪';
+
+  content.innerHTML = `
+    <div class="ch-header-row">
+      <div>CHALLENGER</div>
+      <div></div>
+      <div>YOU</div>
+    </div>
+    ${rowsHtml}
+    <div class="ch-total-row">
+      <div class="ch-total${!myWins && !tie ? ' ch-winner' : ''}">${theirTotal}</div>
+      <div class="ch-result">${result}</div>
+      <div class="ch-total${myWins ? ' ch-winner' : ''}">${myTotal}</div>
+    </div>`;
+
+  overlay.classList.remove('hidden');
+  // Clear so it doesn't show again on re-completion
+  sessionStorage.removeItem('statpad_challenge');
 }
 
 // ── Entry Point ───────────────────────────────────────────────

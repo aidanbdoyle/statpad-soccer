@@ -9,7 +9,7 @@
   <title>Stat of the Day — Daily PL Puzzle</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <!-- ↓ Bump this number on every deploy to force cache refresh on all devices ↓ -->
-  <script>window.CACHE_VER = '52';</script>
+  <script>window.CACHE_VER = '53';</script>
   <script>
     var l = document.createElement('link');
     l.rel = 'stylesheet';
@@ -78,6 +78,11 @@
       </div>
     </div>
 
+    <!-- ── Challenge Banner ── -->
+    <div id="challenge-banner" class="hidden">
+      <span>⚔</span> You've been challenged — finish the puzzle to see results!
+    </div>
+
     <!-- ── Game Grid (rows injected by game.js) ── -->
     <div id="game-grid"></div>
 
@@ -98,6 +103,10 @@
       <button class="footer-btn" id="btn-share">
         <span class="footer-icon">⬆&#xFE0E;</span>
         <span id="share-btn-label">SHARE</span>
+      </button>
+      <button class="footer-btn" id="btn-challenge">
+        <span class="footer-icon">⚔&#xFE0E;</span>
+        <span id="challenge-btn-label">DUEL</span>
       </button>
     </footer>
 
@@ -222,6 +231,20 @@
         <button class="modal-close-btn" id="stats-close-btn">Close</button>
       </div>
       <div id="stats-content"></div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════
+       CHALLENGE COMPARISON MODAL
+  ════════════════════════════════════════ -->
+  <div id="challenge-overlay" class="overlay hidden">
+    <div id="challenge-modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <span class="modal-title">HEAD-TO-HEAD</span>
+        <button class="modal-close-btn" id="challenge-close-btn">Close</button>
+      </div>
+      <div id="challenge-content"></div>
     </div>
   </div>
 
