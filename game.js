@@ -2892,15 +2892,11 @@ function setupEventListeners() {
 let _challengeData = null;
 
 function initChallenge() {
-  // Check sessionStorage first (set by a previous page load with ?challenge=)
-  const stored = sessionStorage.getItem('statpad_challenge');
-  if (stored) {
-    try { _challengeData = JSON.parse(stored); } catch(e) {}
-  }
-  // Also check URL param
-  const params = new URLSearchParams(window.location.search);
+  const params  = new URLSearchParams(window.location.search);
   const encoded = params.get('challenge');
+
   if (encoded) {
+    // ── Arrived via a genuine challenge link ──────────────────
     try {
       const data = JSON.parse(decodeURIComponent(atob(encoded)));
       if (data && data.p && data.r) {
@@ -2908,20 +2904,45 @@ function initChallenge() {
         sessionStorage.setItem('statpad_challenge', JSON.stringify(data));
       }
     } catch(e) {}
-    // Clean the URL
+    // Clean the ?challenge= param from the address bar
     const clean = new URL(window.location.href);
     clean.searchParams.delete('challenge');
     window.history.replaceState({}, '', clean.toString());
+  } else {
+    // ── No URL param — only restore from sessionStorage if the
+    //    user is mid-game in the same tab (reloaded after arriving
+    //    via a challenge link). Ignore it if the game is done or the
+    //    puzzle number has changed.
+    const stored = sessionStorage.getItem('statpad_challenge');
+    if (stored) {
+      try {
+        const data = JSON.parse(stored);
+        if (data && data.p === PUZZLE.puzzleNumber && !isGameComplete()) {
+          _challengeData = data;
+        } else {
+          sessionStorage.removeItem('statpad_challenge');
+        }
+      } catch(e) { sessionStorage.removeItem('statpad_challenge'); }
+    }
   }
+
   if (_challengeData) {
-    // Discard stale data if it's for a different puzzle or the game is already done
-    const wrongPuzzle = _challengeData.p !== PUZZLE.puzzleNumber;
-    const alreadyDone = isGameComplete();
-    if (wrongPuzzle || alreadyDone) {
+    // Final guard: discard if wrong puzzle or game already done
+    if (_challengeData.p !== PUZZLE.puzzleNumber || isGameComplete()) {
       _challengeData = null;
       sessionStorage.removeItem('statpad_challenge');
     } else {
-      document.getElementById('challenge-banner')?.classList.remove('hidden');
+      const banner = document.getElementById('challenge-banner');
+      if (banner) {
+        banner.classList.remove('hidden');
+        // Dismiss button
+        const x = banner.querySelector('.ch-banner-dismiss');
+        if (x) x.addEventListener('click', () => {
+          banner.classList.add('hidden');
+          _challengeData = null;
+          sessionStorage.removeItem('statpad_challenge');
+        });
+      }
     }
   }
 }
