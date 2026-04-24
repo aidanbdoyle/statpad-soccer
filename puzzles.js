@@ -435,41 +435,44 @@ const PUZZLES = [
   {
     puzzleNumber: 10,
     date: "2026-04-24",
-    category: "Clean Sheets",
-    categoryKey: "clean_sheets",
-    categoryUnit: "clean sheet",
+    category: "Assists",
+    categoryKey: "assists",
+    categoryUnit: "assist",
     categoryMode: "career",
-    target: 225,
+    target: 175,
     rows: [
       {
-        clubs: ["Liverpool"],
+        clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: null
+        qualifier: { type: "nationality", value: "Scotland", display: "SCOTTISH", scopeDisplay: "CAREER" }
       },
       {
-        clubs: ["Chelsea"],
-        seasonStart: 2004,
+        clubs: [],
+        seasonStart: 2020,
         seasonEnd: 2026,
-        qualifier: null
+        qualifier: { type: "nationality", value: "England", display: "ENGLISH", scopeDisplay: "CAREER" }
       },
       {
-        clubs: ["Manchester City"],
-        seasonStart: 2008,
-        seasonEnd: 2026,
-        qualifier: null
-      },
-      {
-        clubs: ["Arsenal"],
+        clubs: ["Blackburn Rovers", "Bolton"],
         seasonStart: 1992,
-        seasonEnd: 2020,
+        seasonEnd: 2026,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2005,
-        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "B", display: "LAST NAME STARTS WITH B", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "max_stat", key: "goals", value: 10, scope: "career", display: "MAX 10 CAREER GOALS", scopeDisplay: "CAREER" },
+          { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" }
+        ]
       }
     ]
   }
