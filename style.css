@@ -648,11 +648,14 @@ input  { font-family: inherit; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 4px;
+  width: 68px;
+  height: 68px;
   background: #3a3a37;
   border: 1px solid #555;
-  border-radius: 50px;
-  padding: 10px 22px;
+  border-radius: 50%;
+  padding: 0;
   color: #cccccc;
   font-size: 0.65rem;
   font-weight: 700;
@@ -969,7 +972,7 @@ input  { font-family: inherit; }
   .qualifier-main { font-size: 0.75rem; }
   .qualifier-flags { font-size: 1.2rem; }
   #main-footer { gap: 6px; }
-  .footer-btn { padding: 8px 14px; }
+  .footer-btn { width: 58px; height: 58px; }
   /* Result card on small mobile */
   .rc-name { font-size: 1.05rem; }
   .rc-subtitle { font-size: 0.78rem; }
