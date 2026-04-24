@@ -2892,59 +2892,37 @@ function setupEventListeners() {
 let _challengeData = null;
 
 function initChallenge() {
+  // The banner shows ONLY when ?challenge= is present in the URL.
+  // No sessionStorage — avoids any false positives on plain page loads.
   const params  = new URLSearchParams(window.location.search);
   const encoded = params.get('challenge');
+  if (!encoded) return;
 
-  if (encoded) {
-    // ── Arrived via a genuine challenge link ──────────────────
-    try {
-      const data = JSON.parse(decodeURIComponent(atob(encoded)));
-      if (data && data.p && data.r) {
-        _challengeData = data;
-        sessionStorage.setItem('statpad_challenge', JSON.stringify(data));
-      }
-    } catch(e) {}
-    // Clean the ?challenge= param from the address bar
-    const clean = new URL(window.location.href);
-    clean.searchParams.delete('challenge');
-    window.history.replaceState({}, '', clean.toString());
-  } else {
-    // ── No URL param — only restore from sessionStorage if the
-    //    user is mid-game in the same tab (reloaded after arriving
-    //    via a challenge link). Ignore it if the game is done or the
-    //    puzzle number has changed.
-    const stored = sessionStorage.getItem('statpad_challenge');
-    if (stored) {
-      try {
-        const data = JSON.parse(stored);
-        if (data && data.p === PUZZLE.puzzleNumber && !isGameComplete()) {
-          _challengeData = data;
-        } else {
-          sessionStorage.removeItem('statpad_challenge');
-        }
-      } catch(e) { sessionStorage.removeItem('statpad_challenge'); }
+  try {
+    const data = JSON.parse(decodeURIComponent(atob(encoded)));
+    if (data && data.p && data.r) {
+      _challengeData = data;
     }
+  } catch(e) { return; }
+
+  if (!_challengeData) return;
+
+  // Discard if it's for a different puzzle or the game is already finished
+  if (_challengeData.p !== PUZZLE.puzzleNumber || isGameComplete()) {
+    _challengeData = null;
+    return;
   }
 
-  if (_challengeData) {
-    // Final guard: discard if wrong puzzle or game already done
-    if (_challengeData.p !== PUZZLE.puzzleNumber || isGameComplete()) {
-      _challengeData = null;
-      sessionStorage.removeItem('statpad_challenge');
-    } else {
-      const banner = document.getElementById('challenge-banner');
-      if (banner) {
-        banner.classList.remove('hidden');
-        // Dismiss button
-        const x = banner.querySelector('.ch-banner-dismiss');
-        if (x) x.addEventListener('click', () => {
-          banner.classList.add('hidden');
-          _challengeData = null;
-          sessionStorage.removeItem('statpad_challenge');
-        });
-      }
-    }
-  }
+  const banner = document.getElementById('challenge-banner');
+  if (!banner) return;
+  banner.classList.remove('hidden');
+
+  // Dismiss ×
+  const x = banner.querySelector('.ch-banner-dismiss');
+  if (x) x.addEventListener('click', () => {
+    banner.classList.add('hidden');
+    _challengeData = null;
+  });
 }
 
 function generateChallengeUrl() {
@@ -3054,8 +3032,6 @@ function showChallengeComparison() {
 
   overlay.classList.remove('hidden');
   document.getElementById('challenge-banner')?.classList.add('hidden');
-  // Clear so it doesn't show again on re-completion
-  sessionStorage.removeItem('statpad_challenge');
 }
 
 // ── Entry Point ───────────────────────────────────────────────
