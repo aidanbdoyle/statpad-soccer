@@ -2914,7 +2914,15 @@ function initChallenge() {
     window.history.replaceState({}, '', clean.toString());
   }
   if (_challengeData) {
-    document.getElementById('challenge-banner')?.classList.remove('hidden');
+    // Discard stale data if it's for a different puzzle or the game is already done
+    const wrongPuzzle = _challengeData.p !== PUZZLE.puzzleNumber;
+    const alreadyDone = isGameComplete();
+    if (wrongPuzzle || alreadyDone) {
+      _challengeData = null;
+      sessionStorage.removeItem('statpad_challenge');
+    } else {
+      document.getElementById('challenge-banner')?.classList.remove('hidden');
+    }
   }
 }
 
@@ -3024,6 +3032,7 @@ function showChallengeComparison() {
     </div>`;
 
   overlay.classList.remove('hidden');
+  document.getElementById('challenge-banner')?.classList.add('hidden');
   // Clear so it doesn't show again on re-completion
   sessionStorage.removeItem('statpad_challenge');
 }
