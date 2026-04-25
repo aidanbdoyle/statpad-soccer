@@ -16,7 +16,7 @@ const PUZZLES = [
     categoryKey: "apps",
     categoryUnit: "appearance",
     categoryMode: "career",
-    target: 750,
+    target: 450,
     rows: [
       {
         clubs: [],
@@ -62,7 +62,7 @@ const PUZZLES = [
     categoryKey: "goals",
     categoryUnit: "goal",
     categoryMode: "season",
-    target: 75,
+    target: 50,
     rows: [
       {
         clubs: ["West Ham","Southampton"],
@@ -108,7 +108,7 @@ const PUZZLES = [
     categoryKey: "assists",
     categoryUnit: "assist",
     categoryMode: "career",
-    target: 175,
+    target: 50,
     rows: [
       {
         clubs: [],
@@ -157,7 +157,7 @@ const PUZZLES = [
     categoryKey: "apps",
     categoryUnit: "appearance",
     categoryMode: "career",
-    target: 950,
+    target: 500,
     rows: [
       {
         clubs: ["Newcastle"],
@@ -206,7 +206,7 @@ const PUZZLES = [
     categoryKey: "goals",
     categoryUnit: "goal",
     categoryMode: "career",
-    target: 225,
+    target: 200,
     rows: [
       {
         clubs: [],
@@ -252,7 +252,7 @@ const PUZZLES = [
     categoryKey: "assists",
     categoryUnit: "assist",
     categoryMode: "career",
-    target: 175,
+    target: 50,
     rows: [
       {
         clubs: [],
@@ -295,7 +295,7 @@ const PUZZLES = [
     categoryKey: "saves",
     categoryUnit: "save",
     categoryMode: "career",
-    target: 2000,
+    target: 2050,
     rows: [
       {
         clubs: ["Arsenal", "Southampton"],
@@ -347,7 +347,7 @@ const PUZZLES = [
     categoryKey: "shots",
     categoryUnit: "shot",
     categoryMode: "season",
-    target: 450,
+    target: 300,
     rows: [
       {
         clubs: ["Arsenal", "Tottenham"],
@@ -393,7 +393,7 @@ const PUZZLES = [
     categoryKey: "goals",
     categoryUnit: "goal",
     categoryMode: "career",
-    target: 350,
+    target: 300,
     rows: [
       {
         clubs: [],
@@ -439,7 +439,7 @@ const PUZZLES = [
     categoryKey: "assists",
     categoryUnit: "assist",
     categoryMode: "career",
-    target: 175,
+    target: 100,
     rows: [
       {
         clubs: [],
@@ -491,7 +491,7 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 2024,
         seasonEnd: 2024,
-        qualifier: { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "SEASON" }
+        qualifier: { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "SEASON" }
       },
       {
         clubs: [],
