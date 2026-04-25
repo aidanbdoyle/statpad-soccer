@@ -1419,9 +1419,11 @@ function makeRowSubtitle(rowConfig) {
   // Time
   const allStart = start <= 1992;
   const allEnd   = end   >= 2026;
+  const nextYY   = String(end + 1).slice(-2);
   const timeStr  = (allStart && allEnd) ? 'All-Time'
     : allStart ? `Before ${end}`
     : allEnd   ? `Since ${start}`
+    : start === end ? `${start}–${nextYY}`
     : `${start}–${end}`;
 
   // Qualifier prefix (nationality, position, award, etc.)
