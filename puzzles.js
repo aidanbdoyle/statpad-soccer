@@ -475,6 +475,49 @@ const PUZZLES = [
         ]
       }
     ]
+  },
+
+  // ── Puzzle 11 ────────────────────────────────────────────────
+  {
+    puzzleNumber: 11,
+    date: "2026-04-25",
+    category: "Tackles Won",
+    categoryKey: "tackles_won",
+    categoryUnit: "tackle won",
+    categoryMode: "career",
+    target: 1200,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 2024,
+        seasonEnd: 2024,
+        qualifier: { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "SEASON" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Belgium", display: "BELGIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Manchester City", "Manchester United"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Nigeria", "Senegal"], display: "NIGERIAN / SENEGALESE", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: ["Asian", "Oceanian"], display: "ASIAN / OCEANIAN", scopeDisplay: "CAREER" }
+      }
+    ]
   }
 
 ];

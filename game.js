@@ -919,7 +919,9 @@ function checkQualifier(player, season, qualifier) {
     }
     case 'continent': {
       const playerContinent = CONTINENT_MAP[player.nationality] || '';
-      return playerContinent.toLowerCase() === qualifier.value.toLowerCase();
+      // value can be a string or an array of continent strings (OR logic)
+      const values = Array.isArray(qualifier.value) ? qualifier.value : [qualifier.value];
+      return values.some(v => playerContinent.toLowerCase() === v.toLowerCase());
     }
     case 'non_european': {
       const playerContinent = CONTINENT_MAP[player.nationality] || '';
