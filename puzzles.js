@@ -518,6 +518,55 @@ const PUZZLES = [
         qualifier: { type: "continent", value: ["Asian", "Oceanian"], display: "ASIAN / OCEANIAN", scopeDisplay: "CAREER" }
       }
     ]
+  },
+
+  // ── Puzzle 12 ────────────────────────────────────────────────
+  {
+    puzzleNumber: 12,
+    date: "2026-04-26",
+    category: "Saves",
+    categoryKey: "saves",
+    categoryUnit: "save",
+    categoryMode: "career",
+    target: 2350,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "nationality_one_of", values: ["Netherlands", "Belgium"], display: "DUTCH / BELGIAN", scopeDisplay: "CAREER" },
+          { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: ["Chelsea", "Tottenham"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "last_name_starts_with", value: "F", display: "LAST NAME STARTS WITH F", scopeDisplay: "CAREER" },
+          { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 2016,
+        seasonEnd: 2016,
+        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "SEASON" }
+      },
+      {
+        clubs: ["Southampton"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+      }
+    ]
   }
 
 ];
