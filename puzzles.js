@@ -567,6 +567,95 @@ const PUZZLES = [
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       }
     ]
+  },
+
+  // ── Puzzle 13 ────────────────────────────────────────────────
+  {
+    puzzleNumber: 13,
+    date: "2026-04-27",
+    category: "Assists",
+    categoryKey: "assists",
+    categoryUnit: "assist",
+    categoryMode: "season",
+    target: 50,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Spain", display: "SPANISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Manchester City"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "France", display: "FRENCH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Liverpool"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      }
+    ]
+  },
+
+  // ── Puzzle 14 ────────────────────────────────────────────────
+  {
+    puzzleNumber: 14,
+    date: "2026-04-28",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "career",
+    target: 100,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Switzerland", "Austria"], display: "SWISS / AUSTRIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "nationality", value: "England", display: "ENGLISH", scopeDisplay: "CAREER" },
+          { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: ["Brighton", "Brentford"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2008,
+        seasonEnd: 2013,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "min_stat", key: "red_cards", value: 5, scope: "career", display: "MIN 5 CAREER RED CARDS", scopeDisplay: "CAREER" }
+      }
+    ]
   }
 
 ];
