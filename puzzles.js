@@ -586,7 +586,7 @@ const PUZZLES = [
         qualifier: { type: "nationality", value: "Spain", display: "SPANISH", scopeDisplay: "CAREER" }
       },
       {
-        clubs: ["Manchester City"],
+        clubs: ["Tottenham"],
         seasonStart: 1992,
         seasonEnd: 2026,
         qualifier: null
@@ -595,16 +595,16 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "nationality", value: "France", display: "FRENCH", scopeDisplay: "CAREER" }
+        qualifier: { type: "nationality", value: "Germany", display: "GERMAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "CAREER" }
+        qualifier: { type: "position", value: "F", display: "FORWARD", scopeDisplay: "CAREER" }
       },
       {
-        clubs: ["Liverpool"],
+        clubs: ["Wolves", "Norwich"],
         seasonStart: 1992,
         seasonEnd: 2026,
         qualifier: null
