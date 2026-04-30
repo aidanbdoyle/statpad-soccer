@@ -699,6 +699,49 @@ const PUZZLES = [
         qualifier: { type: "award", award: "golden_boot", scope: "season", display: "WON GOLDEN BOOT", scopeDisplay: "SAME SEASON" }
       }
     ]
+  },
+
+  // ── Puzzle 16 ────────────────────────────────────────────────
+  {
+    puzzleNumber: 16,
+    date: "2026-04-30",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "season",
+    target: 100,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["United States", "Canada", "Mexico"], display: "AMERICAN / CANADIAN / MEXICAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 1992,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "award", award: "golden_boot", scope: "season", display: "WON GOLDEN BOOT", scopeDisplay: "SAME SEASON" }
+      }
+    ]
   }
 
 ];
