@@ -942,6 +942,10 @@ function checkQualifier(player, season, qualifier) {
       const pos = (player.position || '').toUpperCase();
       return pos !== 'G' && pos !== 'GK';
     }
+    case 'exclude_nationality': {
+      const normNat = s => (s || '').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
+      return normNat(player.nationality) !== normNat(qualifier.value);
+    }
     case 'last_name_starts_with': {
       const NAME_ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
       const parts = player.name.trim().split(/\s+/);
@@ -1392,6 +1396,7 @@ function qualifierLabel(q) {
       return toTitleCase(q.display);
     case 'outfield':          return 'Outfield';
     case 'non_european':      return 'Non-European';
+    case 'exclude_nationality': return toTitleCase(q.display);
     case 'relegated':         return 'Relegated';
     case 'last_name_starts_with': return 'Last Name: ' + q.value;
     case 'max_stat':
@@ -2066,10 +2071,18 @@ function getRejectionReason(player, rowConfig) {
       if (actual !== q.value.toUpperCase())
         return `${player.name}'s last name starts with ${actual}, not ${q.value}.`;
     }
+    if (q.type === 'exclude_nationality') {
+      const normNat = s => (s||'').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
+      if (normNat(player.nationality) === normNat(q.value))
+        return `${player.name} is ${player.nationality} — this row excludes ${q.display} players.`;
+    }
     if (q.type === 'max_stat' && q.scope === 'career') {
       const total = player.seasons.reduce((s, ss) => s + (ss[q.key]||0), 0);
-      if (total > q.value)
+      if (total > q.value) {
+        if (q.key === 'won_pl_title')
+          return `${player.name} has won the Premier League title — this row requires players who never won it.`;
         return `${player.name} has ${total} career ${STAT_LABELS[q.key]||q.key} — this row requires max ${q.value}.`;
+      }
     }
     if (q.type === 'min_stat' && q.scope === 'career') {
       const total = player.seasons.reduce((s, ss) => s + (ss[q.key]||0), 0);

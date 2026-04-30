@@ -742,6 +742,53 @@ const PUZZLES = [
         qualifier: { type: "award", award: "golden_boot", scope: "season", display: "WON GOLDEN BOOT", scopeDisplay: "SAME SEASON" }
       }
     ]
+  },
+
+  // ── Puzzle 17 ────────────────────────────────────────────────
+  {
+    puzzleNumber: 17,
+    date: "2026-05-01",
+    category: "Appearances",
+    categoryKey: "apps",
+    categoryUnit: "appearance",
+    categoryMode: "career",
+    target: 450,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Croatia", "Serbia"], display: "CROATIAN / SERBIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Wolves"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exclude_nationality", value: "Portugal", display: "NON-PORTUGUESE", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "outfield", display: "OUTFIELD", scopeDisplay: "CAREER" },
+          { type: "max_stat", key: "won_pl_title", value: 0, scope: "career", display: "NEVER WON PL TITLE", scopeDisplay: "CAREER" },
+          { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "C", display: "LAST NAME STARTS WITH C", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2014,
+        seasonEnd: 2026,
+        qualifier: null
+      }
+    ]
   }
 
 ];
