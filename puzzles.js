@@ -661,7 +661,7 @@ const PUZZLES = [
   // ── Puzzle 15 ────────────────────────────────────────────────
   {
     puzzleNumber: 15,
-    date: "2026-04-29",
+    date: "2026-04-30",
     category: "Goals",
     categoryKey: "goals",
     categoryUnit: "goal",
