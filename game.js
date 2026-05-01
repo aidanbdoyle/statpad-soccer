@@ -2715,8 +2715,12 @@ function closeStatsModal() {
 // ── Initialisation ────────────────────────────────────────────
 function _init() {
   // Load player data: prefer scraped data, fall back to sample
-  if (window.PLAYERS_DATA && window.PLAYERS_DATA.players && window.PLAYERS_DATA.players.length) {
-    players = window.PLAYERS_DATA.players;
+  // players_data.js may export either an array or an object with a .players key
+  const _pd = window.PLAYERS_DATA;
+  if (Array.isArray(_pd) && _pd.length) {
+    players = _pd;
+  } else if (_pd && _pd.players && _pd.players.length) {
+    players = _pd.players;
   } else {
     players = SAMPLE_PLAYERS;
     console.info('StatpadGame: using built-in sample dataset. Run scraper.py to load full data.');
