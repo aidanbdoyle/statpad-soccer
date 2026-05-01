@@ -143,7 +143,7 @@ const PUZZLES = [
         seasonEnd: 2026,
         qualifier: [
           { type: "nationality", value: "France", display: "FRENCH", scopeDisplay: "CAREER" },
-          { type: "max_stat", key: "goals", value: 10, scope: "season", display: "MAX 10 GOALS IN A SEASON", scopeDisplay: "SEASON" }
+          { type: "max_peak_season", key: "goals", value: 10, display: "MAX 10 GOALS IN A SEASON", scopeDisplay: "CAREER" }
         ]
       }
     ]
@@ -742,6 +742,50 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2014,
+        seasonEnd: 2026,
+        qualifier: null
+      }
+    ]
+  },
+  {
+    puzzleNumber: 17,
+    date: "2026-05-01",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "career",
+    target: 350,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "first_last_same_letter", display: "FIRST & LAST NAME SAME INITIAL", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2020,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Brazil", display: "BRAZILIAN", scopeDisplay: "SEASON" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "nationality", value: "Wales", display: "WELSH", scopeDisplay: "CAREER" },
+          { type: "max_peak_season", key: "goals", value: 10, display: "MAX 10 GOALS IN A SEASON", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: ["Crystal Palace"],
+        seasonStart: 2015,
+        seasonEnd: 2025,
+        qualifier: null
+      },
+      {
+        clubs: ["Bournemouth", "West Brom"],
+        seasonStart: 1992,
         seasonEnd: 2026,
         qualifier: null
       }

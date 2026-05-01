@@ -946,6 +946,12 @@ function checkQualifier(player, season, qualifier) {
       const normNat = s => (s || '').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
       return normNat(player.nationality) !== normNat(qualifier.value);
     }
+    case 'max_peak_season': {
+      // Qualifies player if their best single season for this stat <= value.
+      // All valid seasons then count toward the score (not just low ones).
+      const peak = player.seasons.reduce((m, s) => Math.max(m, s[qualifier.key] || 0), 0);
+      return peak <= qualifier.value;
+    }
     case 'last_name_starts_with': {
       const NAME_ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
       const parts = player.name.trim().split(/\s+/);
@@ -957,6 +963,18 @@ function checkQualifier(player, season, qualifier) {
       }
       const lastName = normName(parts.slice(lastNameStart).join(' '));
       return lastName.startsWith(qualifier.value.toLowerCase());
+    }
+    case 'first_last_same_letter': {
+      const ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
+      const parts = player.name.trim().split(/\s+/);
+      if (parts.length < 2) return false;
+      const firstLetter = normName(parts[0])[0];
+      let lastNameStart = parts.length - 1;
+      for (let i = 1; i < parts.length - 1; i++) {
+        if (ARTICLES.has(parts[i].toLowerCase())) { lastNameStart = i; break; }
+      }
+      const lastLetter = normName(parts[lastNameStart])[0];
+      return firstLetter === lastLetter;
     }
     default:
       return true;
@@ -1397,6 +1415,8 @@ function qualifierLabel(q) {
     case 'outfield':          return 'Outfield';
     case 'non_european':      return 'Non-European';
     case 'exclude_nationality': return toTitleCase(q.display);
+    case 'max_peak_season':   return toTitleCase(q.display);
+    case 'first_last_same_letter': return toTitleCase(q.display || 'Same First & Last Initial');
     case 'relegated':         return 'Relegated';
     case 'last_name_starts_with': return 'Last Name: ' + q.value;
     case 'max_stat':
@@ -2071,10 +2091,26 @@ function getRejectionReason(player, rowConfig) {
       if (actual !== q.value.toUpperCase())
         return `${player.name}'s last name starts with ${actual}, not ${q.value}.`;
     }
+    if (q.type === 'first_last_same_letter') {
+      const ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
+      const parts = player.name.trim().split(/\s+/);
+      if (parts.length < 2) return `${player.name} doesn't have both a first and last name.`;
+      const firstLetter = normName(parts[0])[0].toUpperCase();
+      let lastIdx = parts.length - 1;
+      for (let i = 1; i < parts.length - 1; i++) { if (ARTICLES.has(parts[i].toLowerCase())) { lastIdx = i; break; } }
+      const lastLetter = normName(parts[lastIdx])[0].toUpperCase();
+      if (firstLetter !== lastLetter)
+        return `${player.name}'s first name starts with ${firstLetter} and last name starts with ${lastLetter} — they must match.`;
+    }
     if (q.type === 'exclude_nationality') {
       const normNat = s => (s||'').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
       if (normNat(player.nationality) === normNat(q.value))
         return `${player.name} is ${player.nationality} — this row excludes ${q.display} players.`;
+    }
+    if (q.type === 'max_peak_season') {
+      const peak = player.seasons.reduce((m, s) => Math.max(m, s[q.key] || 0), 0);
+      if (peak > q.value)
+        return `${player.name}'s best season was ${peak} ${q.key.replace(/_/g,' ')} — this row requires a max of ${q.value} in any single season.`;
     }
     if (q.type === 'max_stat' && q.scope === 'career') {
       const total = player.seasons.reduce((s, ss) => s + (ss[q.key]||0), 0);
