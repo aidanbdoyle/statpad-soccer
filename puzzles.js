@@ -754,7 +754,7 @@ const PUZZLES = [
     categoryKey: "goals",
     categoryUnit: "goal",
     categoryMode: "career",
-    target: 350,
+    target: 300,
     rows: [
       {
         clubs: [],
@@ -787,6 +787,47 @@ const PUZZLES = [
         clubs: ["Bournemouth", "West Brom"],
         seasonStart: 1992,
         seasonEnd: 2026,
+        qualifier: null
+      }
+    ]
+  },
+  {
+    puzzleNumber: 18,
+    date: "2026-05-02",
+    category: "Assists",
+    categoryKey: "assists",
+    categoryUnit: "assist",
+    categoryMode: "career",
+    target: 250,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "G", display: "LAST NAME STARTS WITH G", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Liverpool"],
+        seasonStart: 2010,
+        seasonEnd: 2019,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_matches_nationality", display: "LAST NAME STARTS WITH SAME LETTER AS NATIONALITY", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Everton"],
+        seasonStart: 2010,
+        seasonEnd: 2019,
         qualifier: null
       }
     ]

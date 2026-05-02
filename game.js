@@ -976,6 +976,19 @@ function checkQualifier(player, season, qualifier) {
       const lastLetter = normName(parts[lastNameStart])[0];
       return firstLetter === lastLetter;
     }
+    case 'last_name_matches_nationality': {
+      // Player's last name must start with the same letter as their nationality
+      const ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
+      const parts = player.name.trim().split(/\s+/);
+      if (parts.length < 1) return false;
+      let lastNameStart = parts.length - 1;
+      for (let i = 1; i < parts.length - 1; i++) {
+        if (ARTICLES.has(parts[i].toLowerCase())) { lastNameStart = i; break; }
+      }
+      const lastInitial = normName(parts[lastNameStart])[0];
+      const natInitial  = normName((player.nationality || '').trim())[0];
+      return !!lastInitial && !!natInitial && lastInitial === natInitial;
+    }
     default:
       return true;
   }
@@ -1416,7 +1429,8 @@ function qualifierLabel(q) {
     case 'non_european':      return 'Non-European';
     case 'exclude_nationality': return toTitleCase(q.display);
     case 'max_peak_season':   return toTitleCase(q.display);
-    case 'first_last_same_letter': return toTitleCase(q.display || 'Same First & Last Initial');
+    case 'first_last_same_letter':       return toTitleCase(q.display || 'Same First & Last Initial');
+    case 'last_name_matches_nationality': return toTitleCase(q.display || 'Last Name = Nationality Initial');
     case 'relegated':         return 'Relegated';
     case 'last_name_starts_with': return 'Last Name: ' + q.value;
     case 'max_stat':
@@ -2101,6 +2115,16 @@ function getRejectionReason(player, rowConfig) {
       const lastLetter = normName(parts[lastIdx])[0].toUpperCase();
       if (firstLetter !== lastLetter)
         return `${player.name}'s first name starts with ${firstLetter} and last name starts with ${lastLetter} — they must match.`;
+    }
+    if (q.type === 'last_name_matches_nationality') {
+      const ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
+      const parts = player.name.trim().split(/\s+/);
+      let lastIdx = parts.length - 1;
+      for (let i = 1; i < parts.length - 1; i++) { if (ARTICLES.has(parts[i].toLowerCase())) { lastIdx = i; break; } }
+      const lastInitial = normName(parts[lastIdx])[0].toUpperCase();
+      const natInitial  = normName((player.nationality||'').trim())[0].toUpperCase();
+      if (lastInitial !== natInitial)
+        return `${player.name}'s last name starts with ${lastInitial} but their nationality (${player.nationality}) starts with ${natInitial} — they must match.`;
     }
     if (q.type === 'exclude_nationality') {
       const normNat = s => (s||'').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
