@@ -2204,11 +2204,13 @@ function handleSubmit() {
   const validSeasons = getValidSeasons(selectedPlayer, rowConfig);
 
   if (!validSeasons.length) {
-    showError(getRejectionReason(selectedPlayer, rowConfig));
+    const rejectionReason = getRejectionReason(selectedPlayer, rowConfig);
+    showError(rejectionReason);
     trackGA('player_rejected', {
-      puzzle_number: PUZZLE.puzzleNumber,
-      row_index:     activeRow + 1,
-      player_name:   selectedPlayer.name,
+      puzzle_number:    PUZZLE.puzzleNumber,
+      row_index:        activeRow + 1,
+      player_name:      selectedPlayer.name,
+      rejection_reason: rejectionReason,
     });
     return;
   }
