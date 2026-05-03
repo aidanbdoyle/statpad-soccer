@@ -1097,7 +1097,9 @@ function makeClubCell(rowConfig) {
   cell.className = 'grid-cell club-cell';
 
   const wrap = document.createElement('div');
-  wrap.className = `club-badges-wrap${rowConfig.clubs.length > 1 ? ' multi' : ''}`;
+  const clubCount = rowConfig.clubs.length;
+  wrap.className = 'club-badges-wrap' +
+    (clubCount === 4 ? ' multi quad' : clubCount > 1 ? ' multi' : '');
 
   if (rowConfig.clubs.length === 0) {
     const anyLabel = document.createElement('div');

@@ -831,6 +831,47 @@ const PUZZLES = [
         qualifier: null
       }
     ]
+  },
+  {
+    puzzleNumber: 19,
+    date: "2026-05-03",
+    category: "Tackles Won",
+    categoryKey: "tackles_won",
+    categoryUnit: "tackle won",
+    categoryMode: "season",
+    target: 200,
+    rows: [
+      {
+        clubs: ["Manchester City","Manchester United","Liverpool","Chelsea"],
+        seasonStart: 2020,
+        seasonEnd: 2020,
+        qualifier: null
+      },
+      {
+        clubs: ["Leicester","West Ham","Tottenham","Arsenal"],
+        seasonStart: 2020,
+        seasonEnd: 2020,
+        qualifier: null
+      },
+      {
+        clubs: ["Leeds United","Everton","Aston Villa","Newcastle"],
+        seasonStart: 2020,
+        seasonEnd: 2020,
+        qualifier: null
+      },
+      {
+        clubs: ["Wolves","Crystal Palace","Southampton","Brighton"],
+        seasonStart: 2020,
+        seasonEnd: 2020,
+        qualifier: null
+      },
+      {
+        clubs: ["Burnley","Fulham","West Brom","Sheffield United"],
+        seasonStart: 2020,
+        seasonEnd: 2020,
+        qualifier: null
+      }
+    ]
   }
 
 ];
