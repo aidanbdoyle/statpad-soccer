@@ -97,7 +97,7 @@ const CLUB_LOGOS = {
   "Brentford":           "https://upload.wikimedia.org/wikipedia/en/2/2a/Brentford_FC_crest.svg",
   "Bournemouth":         "https://upload.wikimedia.org/wikipedia/en/e/e5/AFC_Bournemouth_%282013%29.svg",
   "Brighton":            "https://upload.wikimedia.org/wikipedia/en/f/fd/Brighton_%26_Hove_Albion_logo.svg",
-  "Burnley":             "https://upload.wikimedia.org/wikipedia/en/6/62/Burnley_F.C._Logo.svg",
+  "Burnley":             "https://upload.wikimedia.org/wikipedia/en/6/6d/Burnley_FC_Logo.svg",
   "Watford":             "https://upload.wikimedia.org/wikipedia/en/e/e2/Watford.svg",
   "Norwich":             "https://resources.premierleague.com/premierleague/badges/50/t45.png",
   "Sheffield United":    "https://upload.wikimedia.org/wikipedia/en/9/9c/Sheffield_United_FC_logo.svg",
