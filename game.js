@@ -1414,6 +1414,37 @@ function getCardBadgeUrl(player) {
   return (club && CLUB_LOGOS[club]) ? CLUB_LOGOS[club] : 'data/pl_logo.png';
 }
 
+// For club-constrained rows, determine which club to show on the result card.
+// - Single club row → always that club.
+// - Multi-club row → whichever club the player contributed most stat-value to
+//   (falls back to appearances, then the first listed club).
+// - No club constraint → returns null (caller falls back to current-club logic).
+function getResultClub(player, rowConfig, bestSeason) {
+  const clubs = rowConfig.clubs;
+  if (!clubs || clubs.length === 0) return null;
+  if (clubs.length === 1) return clubs[0];
+
+  // Season mode: bestSeason tells us exactly which club season was used
+  if (bestSeason && bestSeason.club) return bestSeason.club;
+
+  // Career mode with multiple clubs: pick the one with most stat contribution
+  const key = PUZZLE.categoryKey;
+  let topClub = null, topVal = -1;
+  for (const club of clubs) {
+    const seasons = player.seasons.filter(s =>
+      s.club === club &&
+      s.seasonYear >= rowConfig.seasonStart &&
+      s.seasonYear <= rowConfig.seasonEnd
+    );
+    if (!seasons.length) continue;
+    const statTotal = seasons.reduce((sum, s) => sum + (s[key] || 0), 0);
+    const appsTotal = seasons.reduce((sum, s) => sum + (s.apps || 0), 0);
+    const val = statTotal > 0 ? statTotal : appsTotal / 1000; // prefer stat, tiebreak by apps
+    if (val > topVal) { topVal = val; topClub = club; }
+  }
+  return topClub || clubs[0];
+}
+
 // Human-readable subtitle from row config
 function toTitleCase(str) {
   return str.toLowerCase()
@@ -1502,8 +1533,11 @@ function makeResultCard(rowIdx) {
   const tier = getPercentileTier(percentile);
 
   // Gradient colour from tier (matches the percentile colour shown on the card)
-  const gradColor = tierGradientColor(tier);
-  const badgeUrl  = getCardBadgeUrl(player);
+  const gradColor  = tierGradientColor(tier);
+  const resultClub = getResultClub(player, rowConfig, season);
+  const badgeUrl   = resultClub && CLUB_LOGOS[resultClub]
+    ? CLUB_LOGOS[resultClub]
+    : getCardBadgeUrl(player);
   // Only PL CDN photos are shown (resources.premierleague.com).
   // Extras in player_photos_extra.js that are PL CDN URLs take priority over
   // FPL code lookups (identity-correct overrides for shared surnames, etc.).
