@@ -976,6 +976,17 @@ function checkQualifier(player, season, qualifier) {
       const lastLetter = normName(parts[lastNameStart])[0];
       return firstLetter === lastLetter;
     }
+    case 'last_name_length': {
+      const NAME_ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
+      const parts = player.name.trim().split(/\s+/);
+      let lastNameStart = parts.length - 1;
+      for (let i = 1; i < parts.length - 1; i++) {
+        if (NAME_ARTICLES.has(parts[i].toLowerCase())) { lastNameStart = i; break; }
+      }
+      const lastName = parts[lastNameStart];
+      const alphaOnly = lastName.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ]/g, '');
+      return alphaOnly.length === qualifier.value;
+    }
     case 'last_name_matches_nationality': {
       // Player's last name must start with the same letter as their nationality
       const ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
@@ -998,6 +1009,9 @@ function checkQualifier(player, season, qualifier) {
 // Normalises boolean fields (e.g. won_pl_title) to 0/1 so all stat
 // arithmetic works uniformly across numeric and boolean category keys.
 function getStatValue(season, key) {
+  if (key === 'goal_contributions') {
+    return (season.goals || 0) + (season.assists || 0);
+  }
   const v = season[key];
   if (v === null || v === undefined) return null;
   if (typeof v === 'boolean') return v ? 1 : 0;
@@ -1439,7 +1453,7 @@ function getResultClub(player, rowConfig, bestSeason) {
       s.seasonYear <= rowConfig.seasonEnd
     );
     if (!seasons.length) continue;
-    const statTotal = seasons.reduce((sum, s) => sum + (s[key] || 0), 0);
+    const statTotal = seasons.reduce((sum, s) => sum + (getStatValue(s, key) || 0), 0);
     const appsTotal = seasons.reduce((sum, s) => sum + (s.apps || 0), 0);
     const val = statTotal > 0 ? statTotal : appsTotal / 1000; // prefer stat, tiebreak by apps
     if (val > topVal) { topVal = val; topClub = club; }
@@ -1468,6 +1482,7 @@ function qualifierLabel(q) {
     case 'last_name_matches_nationality': return toTitleCase(q.display || 'Last Name = Nationality Initial');
     case 'relegated':         return 'Relegated';
     case 'last_name_starts_with': return 'Last Name: ' + q.value;
+    case 'last_name_length':      return q.display || `Last Name: ${q.value} Letters`;
     case 'max_stat':
     case 'min_stat':          return toTitleCase(q.display);
     default:
@@ -2142,6 +2157,16 @@ function getRejectionReason(player, rowConfig) {
       const actual = parts[idx][0].toUpperCase();
       if (actual !== q.value.toUpperCase())
         return `${player.name}'s last name starts with ${actual}, not ${q.value}.`;
+    }
+    if (q.type === 'last_name_length') {
+      const ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
+      const parts = player.name.trim().split(/\s+/);
+      let idx = parts.length - 1;
+      for (let i = 1; i < parts.length - 1; i++) { if (ARTICLES.has(parts[i].toLowerCase())) { idx = i; break; } }
+      const lastName = parts[idx];
+      const alphaLen = lastName.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ]/g, '').length;
+      if (alphaLen !== q.value)
+        return `${player.name}'s last name has ${alphaLen} letters — this row requires exactly ${q.value}.`;
     }
     if (q.type === 'first_last_same_letter') {
       const ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);

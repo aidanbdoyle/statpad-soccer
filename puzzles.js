@@ -916,6 +916,55 @@ const PUZZLES = [
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       }
     ]
+  },
+
+  // ── Puzzle 21 ────────────────────────────────────────────────
+  {
+    puzzleNumber: 21,
+    date: "2026-05-05",
+    category: "Goal Contributions",
+    categoryKey: "goal_contributions",
+    categoryUnit: "goal contribution",
+    categoryMode: "career",
+    target: 350,
+    rows: [
+      {
+        clubs: ["Brighton", "Brentford"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Netherlands", "Belgium"], display: "DUTCH / BELGIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2000,
+        seasonEnd: 2009,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "last_name_starts_with", value: "T", display: "LAST NAME STARTS WITH T", scopeDisplay: "CAREER" },
+          { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "last_name_length", value: 4, display: "4-LETTER LAST NAME", scopeDisplay: "CAREER" },
+          { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+        ]
+      }
+    ]
   }
 
 ];
