@@ -950,10 +950,7 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: [
-          { type: "last_name_starts_with", value: "T", display: "LAST NAME STARTS WITH T", scopeDisplay: "CAREER" },
-          { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
-        ]
+        qualifier: { type: "last_name_starts_with", value: "T", display: "LAST NAME STARTS WITH T", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
