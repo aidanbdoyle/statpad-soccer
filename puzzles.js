@@ -893,13 +893,13 @@ const PUZZLES = [
       },
       {
         clubs: ["Liverpool", "Everton"],
-        seasonStart: 1992,
+        seasonStart: 2006,
         seasonEnd: 2026,
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Newcastle", "Sunderland"],
-        seasonStart: 1992,
+        seasonStart: 2006,
         seasonEnd: 2026,
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       },
