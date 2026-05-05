@@ -872,6 +872,50 @@ const PUZZLES = [
         qualifier: null
       }
     ]
+  },
+  {
+    puzzleNumber: 20,
+    date: "2026-05-04",
+    category: "Saves",
+    categoryKey: "saves",
+    categoryUnit: "save",
+    categoryMode: "career",
+    target: 1800,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" },
+          { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: ["Liverpool", "Everton"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Newcastle", "Sunderland"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2010,
+        seasonEnd: 2019,
+        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2025,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+      }
+    ]
   }
 
 ];

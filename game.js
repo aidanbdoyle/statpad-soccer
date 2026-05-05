@@ -1200,9 +1200,11 @@ function makeQualifierCell(rowConfig) {
   const cell = document.createElement('div');
   cell.className = 'grid-cell qualifier-cell';
 
-  const quals = !rowConfig.qualifier ? []
+  const allQuals = !rowConfig.qualifier ? []
     : Array.isArray(rowConfig.qualifier) ? rowConfig.qualifier
     : [rowConfig.qualifier];
+  // GK position is implied by Saves/Clean Sheets — omit from qualifier column display
+  const quals = allQuals.filter(q => !(q.type === 'position' && (q.value === 'GK' || q.value === 'G')));
 
   quals.forEach(q => {
     const flags = q.showAsText ? null : qualifierFlags(q);
