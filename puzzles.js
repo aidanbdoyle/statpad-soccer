@@ -962,6 +962,57 @@ const PUZZLES = [
         ]
       }
     ]
+  },
+  {
+    puzzleNumber: 22,
+    date: "2026-05-06",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "season",
+    target: 50,
+    rows: [
+      {
+        clubs: ["West Ham", "Everton"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2020,
+        seasonEnd: 2020,
+        excludeClubs: ["Arsenal","Chelsea","Liverpool","Manchester City","Manchester United","Tottenham"],
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "J", display: "LAST NAME STARTS WITH J", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "max_stat", key: "apps", value: 90, scope: "career", display: "MAX 90 CAREER APPS", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          {
+            type: "nationality_one_of",
+            values: ["Denmark","Finland","Japan","Poland","Sweden","Ukraine","Switzerland","Nigeria","Scotland","Morocco","Georgia","Greece","Austria","Latvia","Canada","Israel","Albania","Turkiye","Peru","Honduras","Tunisia","North Macedonia","Indonesia","Qatar","Bahrain"],
+            display: "MAXIMUM OF TWO COLORS IN COUNTRY FLAG",
+            scopeDisplay: "CAREER",
+            showAsText: true
+          },
+          { type: "exclude_nationality", value: "England", display: "EXCLUDING ENGLAND", scopeDisplay: "CAREER" }
+        ]
+      }
+    ]
   }
 
 ];

@@ -1022,6 +1022,7 @@ function getStatValue(season, key) {
 function getValidSeasons(player, rowConfig) {
   return player.seasons.filter(s => {
     if (rowConfig.clubs.length > 0 && !rowConfig.clubs.includes(s.club)) return false;
+    if (rowConfig.excludeClubs && rowConfig.excludeClubs.includes(s.club)) return false;
     if (s.seasonYear < rowConfig.seasonStart) return false;
     if (s.seasonYear > rowConfig.seasonEnd)   return false;
     if (!checkQualifier(player, s, rowConfig.qualifier)) return false;
@@ -1219,6 +1220,18 @@ function makeQualifierCell(rowConfig) {
     : [rowConfig.qualifier];
   // GK position is implied by Saves/Clean Sheets — omit from qualifier column display
   const quals = allQuals.filter(q => !(q.type === 'position' && (q.value === 'GK' || q.value === 'G')));
+
+  // NOT BIG 6 block — shown before other qualifiers when excludeClubs is set
+  if (rowConfig.excludeClubs && rowConfig.excludeClubs.length > 0) {
+    const main = document.createElement('div');
+    main.className = 'qualifier-main';
+    main.textContent = 'NOT BIG 6';
+    cell.appendChild(main);
+    const scope = document.createElement('div');
+    scope.className = 'qualifier-scope';
+    scope.textContent = 'SAME SEASON';
+    cell.appendChild(scope);
+  }
 
   quals.forEach(q => {
     const flags = q.showAsText ? null : qualifierFlags(q);
@@ -2217,6 +2230,15 @@ function getRejectionReason(player, rowConfig) {
         return `${player.name} never won the Golden Boot.`;
       if (q.award === 'pl_title' && !playerWonPLTitle(player))
         return `${player.name} never won the Premier League title.`;
+    }
+  }
+
+  // 1b. excludeClubs — check if player only played for excluded clubs in range
+  if (rowConfig.excludeClubs && rowConfig.excludeClubs.length > 0) {
+    const seasonsInRange = player.seasons.filter(s => s.seasonYear >= start && s.seasonYear <= end);
+    const validExclude = seasonsInRange.filter(s => !rowConfig.excludeClubs.includes(s.club));
+    if (seasonsInRange.length > 0 && validExclude.length === 0) {
+      return `${player.name} only played for Big 6 clubs during the required season(s) — this row excludes Big 6 clubs.`;
     }
   }
 
