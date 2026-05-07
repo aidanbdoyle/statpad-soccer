@@ -1013,6 +1013,47 @@ const PUZZLES = [
         ]
       }
     ]
+  },
+  {
+    puzzleNumber: 23,
+    date: "2026-05-07",
+    category: "Saves",
+    categoryKey: "saves",
+    categoryUnit: "save",
+    categoryMode: "career",
+    target: 2000,
+    rows: [
+      {
+        clubs: ["Burnley","Watford","Stoke"],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Czech Republic","Slovakia","Poland"], display: "CZECH / SLOVAK / POLISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Germany","Netherlands"], display: "GERMAN / DUTCH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "first_last_same_length", display: "SAME NUMBER OF LETTERS IN FIRST & LAST NAME", scopeDisplay: "CAREER" }
+      }
+    ]
   }
 
 ];
