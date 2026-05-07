@@ -973,16 +973,16 @@ const PUZZLES = [
     target: 50,
     rows: [
       {
-        clubs: ["West Ham", "Everton"],
-        seasonStart: 1992,
-        seasonEnd: 2026,
-        qualifier: null
-      },
-      {
         clubs: [],
         seasonStart: 2020,
         seasonEnd: 2020,
         excludeClubs: ["Arsenal","Chelsea","Liverpool","Manchester City","Manchester United","Tottenham"],
+        qualifier: null
+      },
+      {
+        clubs: ["West Ham", "Everton"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
         qualifier: null
       },
       {
