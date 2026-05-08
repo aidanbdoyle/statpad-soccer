@@ -2904,7 +2904,7 @@ function populateDateSelect() {
     const dateStr = puzzleDateKey(d);
     const [, mm, dd] = dateStr.split('-');
     const puzzleNum = PUZZLES[d % PUZZLES.length].puzzleNumber;
-    const label = `${months[parseInt(mm, 10) - 1]} ${parseInt(dd, 10)} (Puzzle ${puzzleNum})`;
+    const label = `${months[parseInt(mm, 10) - 1]} ${parseInt(dd, 10)} (#${puzzleNum})`;
     const opt   = document.createElement('option');
     opt.value   = d;
     opt.textContent = d === totalDays ? `${label} ★` : label;  // star = today
