@@ -1054,6 +1054,50 @@ const PUZZLES = [
         qualifier: { type: "first_last_same_length", display: "SAME NUMBER OF LETTERS IN FIRST & LAST NAME", scopeDisplay: "CAREER" }
       }
     ]
+  },
+  {
+    puzzleNumber: 24,
+    date: "2026-05-08",
+    category: "Appearances",
+    categoryKey: "apps",
+    categoryUnit: "appearance",
+    categoryMode: "career",
+    target: 1100,
+    rows: [
+      {
+        clubs: ["Leeds United", "Burnley"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2000,
+        seasonEnd: 2019,
+        qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Denmark","Sweden","Norway","Finland","Iceland"], display: "SCANDINAVIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "award", award: "pl_title", scope: "career", display: "WON PL TITLE", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" },
+          { type: "max_stat", key: "assists", value: 25, scope: "career", display: "MAX 25 CAREER ASSISTS", scopeDisplay: "CAREER" }
+        ]
+      }
+    ]
   }
 
 ];
