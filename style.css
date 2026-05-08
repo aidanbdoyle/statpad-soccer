@@ -97,7 +97,7 @@ input  { font-family: inherit; }
   letter-spacing: 0.03em;
   cursor: pointer;
   appearance: auto;
-  max-width: 120px;
+  max-width: 220px;
 }
 .date-select:focus {
   outline: none;
