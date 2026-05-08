@@ -1004,7 +1004,7 @@ const PUZZLES = [
         qualifier: [
           {
             type: "nationality_one_of",
-            values: ["Denmark","Finland","Japan","Poland","Sweden","Ukraine","Switzerland","Nigeria","Scotland","Morocco","Georgia","Greece","Austria","Latvia","Canada","Israel","Albania","Turkiye","Peru","Honduras","Tunisia","North Macedonia","Indonesia","Qatar","Bahrain"],
+            values: ["Denmark","Finland","Japan","Poland","Sweden","Ukraine","Switzerland","Nigeria","Scotland","Morocco","Georgia","Greece","Austria","Latvia","Canada","Israel","Albania","Turkiye","Peru","Honduras","Tunisia","North Macedonia","Indonesia","Qatar","Bahrain","Bangladesh","China","Kazakhstan","Kyrgyzstan","Micronesia","Monaco","Pakistan","Palau","Saudi Arabia","Singapore","Somalia","Tonga","Vietnam"],
             display: "MAXIMUM OF TWO COLORS IN COUNTRY FLAG",
             scopeDisplay: "CAREER",
             showAsText: true
