@@ -76,6 +76,7 @@ input  { font-family: inherit; }
 @media (max-width: 600px) {
   .site-ball svg { width: 42px; height: 42px; }
   .site-title    { font-size: 1.4rem; }
+  .date-select   { font-size: 0.7rem; max-width: 175px; padding: 4px 6px; }
 }
 
 #header-right {
