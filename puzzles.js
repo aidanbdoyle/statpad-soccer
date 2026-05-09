@@ -1100,6 +1100,49 @@ const PUZZLES = [
     ]
   }
 
+  ,
+  {
+    puzzleNumber: 25,
+    date: "2026-05-09",
+    category: "Assists",
+    categoryKey: "assists",
+    categoryUnit: "assist",
+    categoryMode: "career",
+    target: 145,
+    rows: [
+      {
+        clubs: ["Fulham"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2018,
+        seasonEnd: 2018,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Italy","Netherlands","France"], display: "ITALIAN / DUTCH / FRENCH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_length", value: 7, display: "7-LETTER LAST NAME", scopeDisplay: "CAREER" }
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
