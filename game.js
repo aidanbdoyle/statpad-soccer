@@ -1459,6 +1459,45 @@ function getCardBadgeUrl(player) {
   return (club && CLUB_LOGOS[club]) ? CLUB_LOGOS[club] : 'data/pl_logo.png';
 }
 
+// Find the club most associated with a player's answer for a given row.
+// For club-constrained rows, delegates to getResultClub.
+// For unconstrained rows: uses the season's club (season mode) or the club
+// with the highest stat contribution within the year range (career mode).
+function getAnswerClub(player, rowConfig, season) {
+  // Club-constrained rows already handled
+  if (rowConfig.clubs && rowConfig.clubs.length > 0) {
+    return getResultClub(player, rowConfig, season);
+  }
+  // Season mode: the best season object carries its club directly
+  if (season && season.club) return season.club;
+  // Career mode: find the club with the most stat value in range
+  const key = PUZZLE.categoryKey;
+  const clubTotals = {};
+  for (const s of player.seasons) {
+    if (s.seasonYear < rowConfig.seasonStart || s.seasonYear > rowConfig.seasonEnd) continue;
+    if (!s.club) continue;
+    clubTotals[s.club] = (clubTotals[s.club] || 0) + (getStatValue(s, key) || 0);
+  }
+  let topClub = null, topVal = -1;
+  for (const [club, val] of Object.entries(clubTotals)) {
+    if (val > topVal) { topVal = val; topClub = club; }
+  }
+  // If all stats are 0 (e.g. defender in a goals puzzle), fall back to most appearances
+  if (!topClub || topVal === 0) {
+    const appTotals = {};
+    for (const s of player.seasons) {
+      if (s.seasonYear < rowConfig.seasonStart || s.seasonYear > rowConfig.seasonEnd) continue;
+      if (!s.club) continue;
+      appTotals[s.club] = (appTotals[s.club] || 0) + (s.apps || 0);
+    }
+    let topApps = -1;
+    for (const [club, apps] of Object.entries(appTotals)) {
+      if (apps > topApps) { topApps = apps; topClub = club; }
+    }
+  }
+  return topClub;
+}
+
 // For club-constrained rows, determine which club to show on the result card.
 // - Single club row → always that club.
 // - Multi-club row → whichever club the player contributed most stat-value to
@@ -1582,10 +1621,10 @@ function makeResultCard(rowIdx) {
 
   // Gradient colour from tier (matches the percentile colour shown on the card)
   const gradColor  = tierGradientColor(tier);
-  const resultClub = getResultClub(player, rowConfig, season);
-  const badgeUrl   = resultClub && CLUB_LOGOS[resultClub]
-    ? CLUB_LOGOS[resultClub]
-    : getCardBadgeUrl(player);
+  const answerClub = getAnswerClub(player, rowConfig, season);
+  const badgeUrl   = (answerClub && CLUB_LOGOS[answerClub])
+    ? CLUB_LOGOS[answerClub]
+    : 'data/pl_logo.png';
   // Only PL CDN photos are shown (resources.premierleague.com).
   // Extras in player_photos_extra.js that are PL CDN URLs take priority over
   // FPL code lookups (identity-correct overrides for shared surnames, etc.).
