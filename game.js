@@ -1836,6 +1836,10 @@ function buildTop5Panel(rowIdx) {
     club.className = 'top5-club';
     club.textContent = answer.season._careerMode ? 'Career' : clubStyle(answer.season.club).abbr;
 
+    const flagEl = document.createElement('span');
+    flagEl.className = 'top5-flag';
+    flagEl.textContent = FLAG_MAP[answer.player.nationality] || '';
+
     const valEl = document.createElement('span');
     valEl.className = 'top5-val';
     valEl.textContent = answer.statValue;
@@ -1844,6 +1848,7 @@ function buildTop5Panel(rowIdx) {
     item.appendChild(name);
     item.appendChild(szn);
     item.appendChild(club);
+    item.appendChild(flagEl);
     item.appendChild(valEl);
     list.appendChild(item);
   });

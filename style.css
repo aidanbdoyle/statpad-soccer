@@ -600,7 +600,7 @@ input  { font-family: inherit; }
 
 .top5-item {
   display: grid;
-  grid-template-columns: 22px 1fr 52px 36px 44px;
+  grid-template-columns: 22px 1fr 52px 36px 24px 44px;
   align-items: center;
   gap: 6px;
   padding: 5px 8px;
@@ -619,6 +619,7 @@ input  { font-family: inherit; }
 .top5-name  { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .top5-szn   { color: #888; font-size: 0.68rem; }
 .top5-club  { color: #aaa; font-size: 0.68rem; text-align: center; }
+.top5-flag  { font-size: 1rem; text-align: center; line-height: 1; }
 .top5-val   { font-weight: 700; text-align: right; color: #ffffff; }
 
 /* Given-up cell (legacy narrow) */
