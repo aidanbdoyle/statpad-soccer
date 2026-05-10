@@ -999,6 +999,10 @@ function checkQualifier(player, season, qualifier) {
       const alphaOnly = lastName.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ]/g, '');
       return alphaOnly.length === qualifier.value;
     }
+    case 'exact_clubs_count': {
+      const uniqueClubs = new Set(player.seasons.map(s => s.club).filter(Boolean));
+      return uniqueClubs.size === qualifier.value;
+    }
     case 'last_name_matches_nationality': {
       // Player's last name must start with the same letter as their nationality
       const ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);
@@ -1509,6 +1513,7 @@ function qualifierLabel(q) {
     case 'relegated':         return 'Relegated';
     case 'last_name_starts_with': return 'Last Name: ' + q.value;
     case 'last_name_length':      return q.display || `Last Name: ${q.value} Letters`;
+    case 'exact_clubs_count':    return q.display || `Exactly ${q.value} PL Clubs`;
     case 'max_stat':
     case 'min_stat':          return toTitleCase(q.display);
     default:
@@ -2193,6 +2198,11 @@ function getRejectionReason(player, rowConfig) {
       const alphaLen = lastName.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ]/g, '').length;
       if (alphaLen !== q.value)
         return `${player.name}'s last name has ${alphaLen} letters — this row requires exactly ${q.value}.`;
+    }
+    if (q.type === 'exact_clubs_count') {
+      const uniqueClubs = new Set(player.seasons.map(s => s.club).filter(Boolean));
+      if (uniqueClubs.size !== q.value)
+        return `${player.name} played for ${uniqueClubs.size} PL club${uniqueClubs.size !== 1 ? 's' : ''} — this row requires exactly ${q.value}.`;
     }
     if (q.type === 'first_last_same_letter') {
       const ARTICLES = new Set(['van','de','den','der','von','dos','das','da','du','di','del','la','le','do']);

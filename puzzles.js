@@ -1143,6 +1143,49 @@ const PUZZLES = [
     ]
   }
 
+  ,
+  {
+    puzzleNumber: 26,
+    date: "2026-05-10",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "career",
+    target: 220,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2010,
+        qualifier: { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Colombia","Peru","Ecuador","Chile"], display: "COLOMBIAN / PERUVIAN / ECUADORIAN / CHILEAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "N", display: "LAST NAME STARTS WITH N", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "P", display: "LAST NAME STARTS WITH P", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exact_clubs_count", value: 4, display: "PLAYED FOR EXACTLY 4 PL CLUBS", scopeDisplay: "CAREER" }
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
