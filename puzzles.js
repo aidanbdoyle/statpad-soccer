@@ -1184,6 +1184,49 @@ const PUZZLES = [
         qualifier: { type: "exact_clubs_count", value: 4, display: "PLAYED FOR EXACTLY 4 PL CLUBS", scopeDisplay: "CAREER" }
       }
     ]
+  },
+
+  // ── Puzzle 27 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 27,
+    date: "2026-05-11",
+    category: "Shots",
+    categoryKey: "shots",
+    categoryUnit: "shot",
+    categoryMode: "career",
+    target: 1400,
+    rows: [
+      {
+        clubs: ["West Ham", "Crystal Palace"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2010,
+        seasonEnd: 2020,
+        qualifier: { type: "nationality", value: "France", display: "FRENCH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Ireland", display: "IRISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "J", display: "LAST NAME STARTS WITH J", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2015,
+        seasonEnd: 2025,
+        qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
+      }
+    ]
   }
 
 ];
