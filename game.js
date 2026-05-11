@@ -131,8 +131,7 @@ const CLUB_LOGOS = {
 // ── Flag emoji map (nationality → flag emoji) ─────────────────
 const FLAG_MAP = {
   // British Isles
-  // England, Scotland, Wales subdivision flags omitted — poor Android/Windows
-  // support. Qualifiers for these nationalities fall back to display text.
+  "England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","Wales":"🏴󠁧󠁢󠁷󠁬󠁳󠁿",
   "Northern Ireland":"🇬🇧","Republic of Ireland":"🇮🇪","Ireland":"🇮🇪",
   // Europe
   "France":"🇫🇷","Germany":"🇩🇪","Spain":"🇪🇸","Italy":"🇮🇹","Portugal":"🇵🇹",
