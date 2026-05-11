@@ -175,6 +175,33 @@ const FLAG_MAP = {
   "Cape Verde":"🇨🇻","Malta":"🇲🇹",
 };
 
+// Detect whether subdivision flag emojis (🏴󠁧󠁢󠁥󠁮󠁧󠁿 etc.) render correctly.
+// On Android/Windows they render as a box — fall back to 🇬🇧 for all three.
+(function () {
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = 40; canvas.height = 40;
+    const ctx = canvas.getContext('2d');
+    ctx.font = '36px serif';
+    ctx.fillText('🏴󠁧󠁢󠁥󠁮󠁧󠁿', 0, 36);
+    const d = ctx.getImageData(0, 0, 40, 40).data;
+    // A correctly rendered flag has coloured (non-grayscale) pixels.
+    // A box/fallback is monochrome — R ≈ G ≈ B.
+    let hasColor = false;
+    for (let i = 0; i < d.length; i += 4) {
+      if (d[i + 3] < 128) continue; // skip transparent
+      if (Math.max(d[i], d[i+1], d[i+2]) - Math.min(d[i], d[i+1], d[i+2]) > 30) {
+        hasColor = true; break;
+      }
+    }
+    if (!hasColor) {
+      FLAG_MAP['England'] = FLAG_MAP['Scotland'] = FLAG_MAP['Wales'] = '🇬🇧';
+    }
+  } catch (e) {
+    FLAG_MAP['England'] = FLAG_MAP['Scotland'] = FLAG_MAP['Wales'] = '🇬🇧';
+  }
+}());
+
 // ── Continent groupings (for nationality qualifier) ──────────
 const CONTINENT_MAP = {
   // Europe
