@@ -1227,6 +1227,49 @@ const PUZZLES = [
         qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
       }
     ]
+  },
+
+  // ── Puzzle 28 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 28,
+    date: "2026-05-12",
+    category: "Appearances",
+    categoryKey: "apps",
+    categoryUnit: "appearance",
+    categoryMode: "career",
+    target: 1000,
+    rows: [
+      {
+        clubs: ["Liverpool"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Argentina", display: "ARGENTINIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "G", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "E", display: "LAST NAME STARTS WITH E", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exact_clubs_count", value: 2, display: "PLAYED FOR EXACTLY 2 PL CLUBS", scopeDisplay: "CAREER" }
+      }
+    ]
   }
 
 ];
