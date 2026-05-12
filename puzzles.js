@@ -1198,7 +1198,7 @@ const PUZZLES = [
     rows: [
       {
         clubs: ["West Ham", "Crystal Palace"],
-        seasonStart: 1992,
+        seasonStart: 2006,
         seasonEnd: 2026,
         qualifier: null
       },
