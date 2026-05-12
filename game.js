@@ -1260,8 +1260,12 @@ function makeQualifierCell(rowConfig) {
   const allQuals = !rowConfig.qualifier ? []
     : Array.isArray(rowConfig.qualifier) ? rowConfig.qualifier
     : [rowConfig.qualifier];
-  // GK position is implied by Saves/Clean Sheets — omit from qualifier column display
-  const quals = allQuals.filter(q => !(q.type === 'position' && (q.value === 'GK' || q.value === 'G')));
+  // GK position is implied by Saves/Clean Sheets — omit from qualifier column display in those cases only
+  const gkImpliedCategories = ['saves', 'clean_sheets'];
+  const quals = allQuals.filter(q => !(
+    q.type === 'position' && (q.value === 'GK' || q.value === 'G') &&
+    gkImpliedCategories.includes(PUZZLE.categoryKey)
+  ));
 
   // NOT BIG 6 block — shown before other qualifiers when excludeClubs is set
   if (rowConfig.excludeClubs && rowConfig.excludeClubs.length > 0) {
