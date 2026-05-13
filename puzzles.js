@@ -1270,6 +1270,221 @@ const PUZZLES = [
         qualifier: { type: "exact_clubs_count", value: 2, display: "PLAYED FOR EXACTLY 2 PL CLUBS", scopeDisplay: "CAREER" }
       }
     ]
+  },
+
+  // ── Puzzle 29 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 29,
+    date: "2026-05-13",
+    category: "Tackles Won",
+    categoryKey: "tackles_won",
+    categoryUnit: "tackle won",
+    categoryMode: "career",
+    target: 1350,
+    rows: [
+      {
+        clubs: ["Leicester"],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Spain", display: "SPANISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2015,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "D", display: "LAST NAME STARTS WITH D", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
+      }
+    ]
+  },
+
+  // ── Puzzle 30 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 30,
+    date: "2026-05-14",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "career",
+    target: 268,
+    rows: [
+      {
+        clubs: ["Tottenham"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2000,
+        qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Ireland", display: "IRISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "M", display: "LAST NAME STARTS WITH M", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Southampton"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      }
+    ]
+  },
+
+  // ── Puzzle 31 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 31,
+    date: "2026-05-15",
+    category: "Accurate Passes",
+    categoryKey: "accurate_passes",
+    categoryUnit: "accurate pass",
+    categoryMode: "career",
+    target: 38000,
+    rows: [
+      {
+        clubs: ["Liverpool"],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Spain", display: "SPANISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2010,
+        seasonEnd: 2020,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "CAREER" }
+      }
+    ]
+  },
+
+  // ── Puzzle 32 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 32,
+    date: "2026-05-16",
+    category: "Saves",
+    categoryKey: "saves",
+    categoryUnit: "save",
+    categoryMode: "career",
+    target: 2400,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 2010,
+        seasonEnd: 2020,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2015,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2015,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2011,
+        qualifier: null
+      }
+    ]
+  },
+
+  // ── Puzzle 33 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 33,
+    date: "2026-05-17",
+    category: "Assists",
+    categoryKey: "assists",
+    categoryUnit: "assist",
+    categoryMode: "career",
+    target: 257,
+    rows: [
+      {
+        clubs: ["Manchester United"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2000,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Spain", display: "SPANISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2015,
+        seasonEnd: 2026,
+        qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Southampton"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "S", display: "LAST NAME STARTS WITH S", scopeDisplay: "CAREER" }
+      }
+    ]
   }
 
 ];
