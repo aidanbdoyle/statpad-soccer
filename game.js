@@ -1365,8 +1365,8 @@ function makeQualifierCell(rowConfig) {
     } else if (flags && !FLAGS_SUPPORTED) {
       // Platform doesn't render flag emojis — show full country names instead
       const names = q.type === 'nationality'
-        ? flagDisplayName(q.value)
-        : (q.values || []).map(v => flagDisplayName(v)).join(' / ');
+        ? flagDisplayName(q.value).toUpperCase()
+        : (q.values || []).map(v => flagDisplayName(v).toUpperCase()).join(' / ');
       main.textContent = names;
     } else {
       main.textContent = q.display;
