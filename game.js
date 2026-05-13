@@ -202,6 +202,24 @@ const FLAG_MAP = {
   }
 }());
 
+// Detect whether country flag emojis render correctly on this platform.
+// Windows shows boxes or two-letter codes — fall back to text country names / abbreviations.
+const FLAGS_SUPPORTED = (function () {
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = 40; canvas.height = 40;
+    const ctx = canvas.getContext('2d');
+    ctx.font = '36px serif';
+    ctx.fillText('🇫🇷', 0, 36);
+    const d = ctx.getImageData(0, 0, 40, 40).data;
+    for (let i = 0; i < d.length; i += 4) {
+      if (d[i + 3] < 128) continue;
+      if (Math.max(d[i], d[i+1], d[i+2]) - Math.min(d[i], d[i+1], d[i+2]) > 30) return true;
+    }
+    return false;
+  } catch (e) { return false; }
+}());
+
 // ── Continent groupings (for nationality qualifier) ──────────
 const CONTINENT_MAP = {
   // Europe
@@ -1227,6 +1245,38 @@ function makeSeasonCell(rowConfig) {
 }
 
 // Friendly display names for flag tooltips
+// 2–3 letter nationality abbreviations used on platforms where flag emojis don't render
+const ABBR_MAP = {
+  "England":"ENG","Scotland":"SCO","Wales":"WAL","Northern Ireland":"NIR",
+  "Ireland":"IRL","Republic of Ireland":"IRL",
+  "France":"FRA","Germany":"GER","Spain":"ESP","Italy":"ITA","Netherlands":"NED",
+  "Belgium":"BEL","Portugal":"POR","Denmark":"DEN","Sweden":"SWE","Norway":"NOR",
+  "Finland":"FIN","Switzerland":"SUI","Austria":"AUT","Greece":"GRE","Turkey":"TUR",
+  "Poland":"POL","Czech Republic":"CZE","Slovakia":"SVK","Hungary":"HUN",
+  "Romania":"ROU","Bulgaria":"BUL","Croatia":"CRO","Serbia":"SRB","Ukraine":"UKR",
+  "Russia":"RUS","Iceland":"ISL","Albania":"ALB","Bosnia and Herzegovina":"BIH",
+  "Montenegro":"MNE","Kosovo":"XKX","Moldova":"MDA","Lithuania":"LTU","Latvia":"LAT",
+  "Estonia":"EST","Georgia":"GEO","Armenia":"ARM","Azerbaijan":"AZE",
+  "Luxembourg":"LUX","Cyprus":"CYP","Malta":"MLT","Gibraltar":"GIB",
+  "Brazil":"BRA","Argentina":"ARG","Colombia":"COL","Chile":"CHI","Uruguay":"URU",
+  "Ecuador":"ECU","Peru":"PER","Paraguay":"PAR","Bolivia":"BOL","Venezuela":"VEN",
+  "South Korea":"KOR","Japan":"JPN","China":"CHN","Australia":"AUS","New Zealand":"NZL",
+  "United States":"USA","Canada":"CAN","Mexico":"MEX","Jamaica":"JAM",
+  "Trinidad & Tobago":"TRI","Costa Rica":"CRC","Honduras":"HON","Haiti":"HAI",
+  "Cuba":"CUB","Curacao":"CUW","Curaçao":"CUW","Montserrat":"MSR",
+  "Antigua & Barbuda":"ATG","Antigua and Barbuda":"ATG","St. Kitts & Nevis":"SKN",
+  "Nigeria":"NGA","Ghana":"GHA","Senegal":"SEN","Ivory Coast":"CIV",
+  "Cote D'Ivoire":"CIV","Cote D’Ivoire":"CIV","Cameroon":"CMR",
+  "DR Congo":"COD","Congo":"CGO","Togo":"TOG","Mali":"MLI","Burkina Faso":"BFA",
+  "South Africa":"RSA","Morocco":"MAR","Algeria":"ALG","Tunisia":"TUN","Egypt":"EGY",
+  "Zimbabwe":"ZIM","Zambia":"ZMB","Gabon":"GAB","Guinea":"GUI","Sierra Leone":"SLE",
+  "Angola":"ANG","Mozambique":"MOZ","Tanzania":"TAN","Uganda":"UGA","Rwanda":"RWA",
+  "Kenya":"KEN","Ethiopia":"ETH","Sudan":"SUD","Mauritania":"MTN","Gambia":"GAM",
+  "Liberia":"LBR","Guinea-Bissau":"GNB","Equatorial Guinea":"GNQ","Burundi":"BDI",
+  "Madagascar":"MDG","Benin":"BEN","Namibia":"NAM","Cape Verde":"CPV",
+  "Israel":"ISR","Saudi Arabia":"KSA","Iran":"IRN","Iraq":"IRQ",
+};
+
 const FLAG_DISPLAY_NAMES = {
   "Ireland":          "Republic of Ireland",
   "Cote D'Ivoire":    "Ivory Coast",
@@ -1285,7 +1335,7 @@ function makeQualifierCell(rowConfig) {
     const main = document.createElement('div');
     main.className = 'qualifier-main';
 
-    if (flags) {
+    if (flags && FLAGS_SUPPORTED) {
       main.className += ' qualifier-flags';
       // Build individual flag chips so each shows its country on hover/tap
       const flagEntries = q.type === 'nationality'
@@ -1312,6 +1362,12 @@ function makeQualifierCell(rowConfig) {
       document.addEventListener('click', () => {
         document.querySelectorAll('.flag-chip.active').forEach(c => c.classList.remove('active'));
       }, { once: false, capture: false });
+    } else if (flags && !FLAGS_SUPPORTED) {
+      // Platform doesn't render flag emojis — show full country names instead
+      const names = q.type === 'nationality'
+        ? flagDisplayName(q.value)
+        : (q.values || []).map(v => flagDisplayName(v)).join(' / ');
+      main.textContent = names;
     } else {
       main.textContent = q.display;
     }
@@ -1907,7 +1963,9 @@ function buildTop5Panel(rowIdx) {
 
     const flagEl = document.createElement('span');
     flagEl.className = 'top5-flag';
-    flagEl.textContent = FLAG_MAP[answer.player.nationality] || '';
+    flagEl.textContent = FLAGS_SUPPORTED
+      ? (FLAG_MAP[answer.player.nationality] || '')
+      : (ABBR_MAP[answer.player.nationality] || '');
 
     const valEl = document.createElement('span');
     valEl.className = 'top5-val';
