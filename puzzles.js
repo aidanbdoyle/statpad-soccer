@@ -1296,15 +1296,15 @@ const PUZZLES = [
       },
       {
         clubs: [],
-        seasonStart: 2015,
-        seasonEnd: 2026,
+        seasonStart: 2020,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 2006,
         seasonEnd: 2026,
-        qualifier: { type: "last_name_starts_with", value: "D", display: "LAST NAME STARTS WITH D", scopeDisplay: "CAREER" }
+        qualifier: { type: "last_name_starts_with", value: "K", display: "LAST NAME STARTS WITH K", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
