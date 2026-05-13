@@ -1323,7 +1323,7 @@ const PUZZLES = [
     categoryKey: "goals",
     categoryUnit: "goal",
     categoryMode: "career",
-    target: 268,
+    target: 245,
     rows: [
       {
         clubs: ["Tottenham"],
@@ -1341,7 +1341,7 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "nationality", value: "Ireland", display: "IRISH", scopeDisplay: "CAREER" }
+        qualifier: { type: "nationality_one_of", values: ["Ghana", "Cameroon", "DR Congo"], display: "GHANAIAN / CAMEROONIAN / CONGOLESE", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
@@ -1350,7 +1350,7 @@ const PUZZLES = [
         qualifier: { type: "last_name_starts_with", value: "M", display: "LAST NAME STARTS WITH M", scopeDisplay: "CAREER" }
       },
       {
-        clubs: ["Southampton"],
+        clubs: ["Southampton", "Crystal Palace"],
         seasonStart: 1992,
         seasonEnd: 2026,
         qualifier: null
