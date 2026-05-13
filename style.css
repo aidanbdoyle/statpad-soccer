@@ -192,6 +192,13 @@ input  { font-family: inherit; }
   gap: 4px;
 }
 
+/* 2×2 grid for exactly 4 flags or 4 country names */
+.qualifier-flags.qualifier-flags--grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+}
+
 .flag-chip {
   position: relative;
   font-size: 1.5rem;

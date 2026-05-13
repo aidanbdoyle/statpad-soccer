@@ -1343,6 +1343,8 @@ function makeQualifierCell(rowConfig) {
         : (q.values || []).filter(v => FLAG_MAP[v])
             .map(v => ({ flag: FLAG_MAP[v], country: flagDisplayName(v) }));
 
+      if (flagEntries.length === 4) main.classList.add('qualifier-flags--grid2');
+
       flagEntries.forEach(({ flag, country }) => {
         const chip = document.createElement('span');
         chip.className = 'flag-chip';
@@ -1364,10 +1366,20 @@ function makeQualifierCell(rowConfig) {
       }, { once: false, capture: false });
     } else if (flags && !FLAGS_SUPPORTED) {
       // Platform doesn't render flag emojis — show full country names instead
-      const names = q.type === 'nationality'
-        ? flagDisplayName(q.value).toUpperCase()
-        : (q.values || []).map(v => flagDisplayName(v).toUpperCase()).join(' / ');
-      main.textContent = names;
+      const countryNames = q.type === 'nationality'
+        ? [flagDisplayName(q.value).toUpperCase()]
+        : (q.values || []).map(v => flagDisplayName(v).toUpperCase());
+      main.className += ' qualifier-flags';
+      if (countryNames.length === 4) {
+        main.classList.add('qualifier-flags--grid2');
+        countryNames.forEach(name => {
+          const span = document.createElement('span');
+          span.textContent = name;
+          main.appendChild(span);
+        });
+      } else {
+        main.textContent = countryNames.join(' / ');
+      }
     } else {
       main.textContent = q.display;
     }
