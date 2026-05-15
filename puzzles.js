@@ -1366,10 +1366,10 @@ const PUZZLES = [
     categoryKey: "accurate_passes",
     categoryUnit: "accurate pass",
     categoryMode: "career",
-    target: 38000,
+    target: 35000,
     rows: [
       {
-        clubs: ["Liverpool"],
+        clubs: ["Arsenal", "Manchester United"],
         seasonStart: 2006,
         seasonEnd: 2026,
         qualifier: null
@@ -1378,7 +1378,7 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 2006,
         seasonEnd: 2026,
-        qualifier: { type: "nationality", value: "Spain", display: "SPANISH", scopeDisplay: "CAREER" }
+        qualifier: { type: "nationality_one_of", values: ["Spain", "Portugal"], display: "SPANISH / PORTUGUESE", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
@@ -1390,7 +1390,7 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 2006,
         seasonEnd: 2026,
-        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
+        qualifier: { type: "first_last_same_letter", display: "FIRST & LAST NAME SAME INITIAL", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
