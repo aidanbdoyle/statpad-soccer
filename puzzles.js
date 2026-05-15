@@ -1382,6 +1382,12 @@ const PUZZLES = [
       },
       {
         clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
         seasonStart: 2010,
         seasonEnd: 2020,
         qualifier: null
@@ -1391,12 +1397,6 @@ const PUZZLES = [
         seasonStart: 2006,
         seasonEnd: 2026,
         qualifier: { type: "first_last_same_letter", display: "FIRST & LAST NAME SAME INITIAL", scopeDisplay: "CAREER" }
-      },
-      {
-        clubs: [],
-        seasonStart: 2006,
-        seasonEnd: 2026,
-        qualifier: { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "CAREER" }
       }
     ]
   },
