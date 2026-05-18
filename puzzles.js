@@ -1452,13 +1452,19 @@ const PUZZLES = [
     categoryKey: "assists",
     categoryUnit: "assist",
     categoryMode: "career",
-    target: 257,
+    target: 215,
     rows: [
+      {
+        clubs: ["Southampton", "Everton"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
       {
         clubs: ["Manchester United"],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
+        qualifier: { type: "exclude_nationality_one_of", values: ["England", "Scotland", "Wales", "Northern Ireland"], display: "NOT BRITISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
@@ -1471,12 +1477,6 @@ const PUZZLES = [
         seasonStart: 2015,
         seasonEnd: 2026,
         qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
-      },
-      {
-        clubs: ["Southampton"],
-        seasonStart: 1992,
-        seasonEnd: 2026,
-        qualifier: null
       },
       {
         clubs: [],

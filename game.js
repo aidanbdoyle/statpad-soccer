@@ -990,6 +990,10 @@ function checkQualifier(player, season, qualifier) {
       const normNat = s => (s || '').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
       return normNat(player.nationality) !== normNat(qualifier.value);
     }
+    case 'exclude_nationality_one_of': {
+      const normNat = s => (s || '').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
+      return !(qualifier.values || []).some(v => normNat(player.nationality) === normNat(v));
+    }
     case 'max_peak_season': {
       // Qualifies player if their best single season for this stat <= value.
       // All valid seasons then count toward the score (not just low ones).
@@ -1642,7 +1646,8 @@ function qualifierLabel(q) {
       return toTitleCase(q.display);
     case 'outfield':          return 'Outfield';
     case 'non_european':      return 'Non-European';
-    case 'exclude_nationality': return toTitleCase(q.display);
+    case 'exclude_nationality':         return toTitleCase(q.display);
+    case 'exclude_nationality_one_of':  return toTitleCase(q.display);
     case 'max_peak_season':   return toTitleCase(q.display);
     case 'first_last_same_letter':       return toTitleCase(q.display || 'Same First & Last Initial');
     case 'first_last_same_length':       return toTitleCase(q.display || 'Same Letters in First & Last Name');
@@ -2383,6 +2388,11 @@ function getRejectionReason(player, rowConfig) {
     if (q.type === 'exclude_nationality') {
       const normNat = s => (s||'').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
       if (normNat(player.nationality) === normNat(q.value))
+        return `${player.name} is ${player.nationality} — this row excludes ${q.display} players.`;
+    }
+    if (q.type === 'exclude_nationality_one_of') {
+      const normNat = s => (s||'').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
+      if ((q.values || []).some(v => normNat(player.nationality) === normNat(v)))
         return `${player.name} is ${player.nationality} — this row excludes ${q.display} players.`;
     }
     if (q.type === 'max_peak_season') {
