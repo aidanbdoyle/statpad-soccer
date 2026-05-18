@@ -1485,6 +1485,49 @@ const PUZZLES = [
         qualifier: { type: "last_name_starts_with", value: "S", display: "LAST NAME STARTS WITH S", scopeDisplay: "CAREER" }
       }
     ]
+  },
+
+  // ── Puzzle 34 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 34,
+    date: "2026-05-18",
+    category: "Yellow Cards",
+    categoryKey: "yellow_cards",
+    categoryUnit: "yellow card",
+    categoryMode: "career",
+    target: 185,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "France", display: "FRENCH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Netherlands", "Belgium"], display: "DUTCH / BELGIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["West Ham", "Crystal Palace"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "P", display: "LAST NAME STARTS WITH P", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "award", award: "golden_boot", scope: "career", display: "WON GOLDEN BOOT", scopeDisplay: "CAREER" }
+      }
+    ]
   }
 
 ];
