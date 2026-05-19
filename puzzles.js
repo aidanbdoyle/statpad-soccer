@@ -1528,6 +1528,58 @@ const PUZZLES = [
         qualifier: { type: "award", award: "golden_boot", scope: "career", display: "WON GOLDEN BOOT", scopeDisplay: "CAREER" }
       }
     ]
+  },
+
+  // ── Puzzle 35 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 35,
+    date: "2026-05-19",
+    category: "Clean Sheets",
+    categoryKey: "clean_sheets",
+    categoryUnit: "clean sheet",
+    categoryMode: "career",
+    target: 230,
+    rows: [
+      {
+        clubs: ["Burnley", "Leicester"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "D", display: "DEFENDERS", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "nationality", value: "Wales", display: "WELSH", scopeDisplay: "CAREER" },
+          { type: "position", value: "D", display: "DEFENDERS", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "CAREER" },
+          { type: "position", value: "D", display: "DEFENDERS", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 2020,
+        seasonEnd: 2025,
+        qualifier: { type: "position", value: "D", display: "DEFENDERS", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "last_name_starts_with", value: "C", display: "LAST NAME STARTS WITH C", scopeDisplay: "CAREER" },
+          { type: "position", value: "D", display: "DEFENDERS", scopeDisplay: "CAREER" }
+        ]
+      }
+    ]
   }
 
 ];
