@@ -945,6 +945,13 @@ function checkQualifier(player, season, qualifier) {
       const val = season[qualifier.key];
       return val !== null && val !== undefined && val >= qualifier.value;
     }
+    case 'min_two_stats': {
+      // qualifier.keys = [key1, key2], qualifier.values = [min1, min2], scope = 'career'
+      return qualifier.keys.every((k, i) => {
+        const total = player.seasons.reduce((sum, s) => sum + (s[k] || 0), 0);
+        return total >= qualifier.values[i];
+      });
+    }
     case 'max_stat': {
       if (qualifier.scope === 'career') {
         const total = player.seasons.reduce((sum, s) => sum + (s[qualifier.key] || 0), 0);
@@ -1657,7 +1664,8 @@ function qualifierLabel(q) {
     case 'last_name_length':      return q.display || `Last Name: ${q.value} Letters`;
     case 'exact_clubs_count':    return q.display || `Exactly ${q.value} PL Clubs`;
     case 'max_stat':
-    case 'min_stat':          return toTitleCase(q.display);
+    case 'min_stat':
+    case 'min_two_stats':     return toTitleCase(q.display);
     default:
       // nationality, nationality_one_of, continent, position
       return toTitleCase(q.display);
@@ -2412,6 +2420,13 @@ function getRejectionReason(player, rowConfig) {
       const total = player.seasons.reduce((s, ss) => s + (ss[q.key]||0), 0);
       if (total < q.value)
         return `${player.name} has ${total} career ${STAT_LABELS[q.key]||q.key} — this row requires at least ${q.value}.`;
+    }
+    if (q.type === 'min_two_stats') {
+      for (let i = 0; i < q.keys.length; i++) {
+        const total = player.seasons.reduce((s, ss) => s + (ss[q.keys[i]]||0), 0);
+        if (total < q.values[i])
+          return `${player.name} has ${total} career ${STAT_LABELS[q.keys[i]]||q.keys[i]} — this row requires at least ${q.values[i]}.`;
+      }
     }
     if (q.type === 'award' && q.scope === 'career') {
       if (q.award === 'golden_boot' && !playerWonGoldenBoot(player))

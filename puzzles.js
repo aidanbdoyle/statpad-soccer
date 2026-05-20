@@ -1620,7 +1620,10 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "last_name_starts_with", value: "H", display: "LAST NAME STARTS WITH H", scopeDisplay: "CAREER" }
+        qualifier: [
+          { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" },
+          { type: "min_two_stats", keys: ["goals", "assists"], values: [25, 25], scope: "career", display: "25+ GOALS & 25+ ASSISTS", scopeDisplay: "CAREER" }
+        ]
       }
     ]
   }
