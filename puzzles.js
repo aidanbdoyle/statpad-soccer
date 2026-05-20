@@ -1580,6 +1580,49 @@ const PUZZLES = [
         ]
       }
     ]
+  },
+
+  // ── Puzzle 36 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 36,
+    date: "2026-05-20",
+    category: "Appearances",
+    categoryKey: "apps",
+    categoryUnit: "appearance",
+    categoryMode: "career",
+    target: 825,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Germany", display: "GERMAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Nigeria", "Ghana", "Senegal"], display: "NIGERIAN / GHANAIAN / SENEGALESE", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Wolves", "Fulham"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2010,
+        seasonEnd: 2020,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "H", display: "LAST NAME STARTS WITH H", scopeDisplay: "CAREER" }
+      }
+    ]
   }
 
 ];
