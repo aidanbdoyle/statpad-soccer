@@ -1642,31 +1642,31 @@ const PUZZLES = [
         clubs: ["Arsenal"],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPEARANCES", scopeDisplay: "CAREER" }
+        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       },
       {
         clubs: ["Chelsea"],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPEARANCES", scopeDisplay: "CAREER" }
+        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       },
       {
         clubs: ["Liverpool"],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPEARANCES", scopeDisplay: "CAREER" }
+        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       },
       {
         clubs: ["Manchester City"],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPEARANCES", scopeDisplay: "CAREER" }
+        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       },
       {
         clubs: ["Manchester United"],
         seasonStart: 1992,
         seasonEnd: 2026,
-        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPEARANCES", scopeDisplay: "CAREER" }
+        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       }
     ]
   }

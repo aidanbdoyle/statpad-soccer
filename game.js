@@ -917,11 +917,11 @@ function seasonWonGoldenBoot(player, season) {
   return winners.some(w => normForAward(w) === pNorm);
 }
 
-function checkQualifier(player, season, qualifier) {
+function checkQualifier(player, season, qualifier, rowClubs) {
   if (!qualifier) return true;
   // Support arrays of qualifiers — all must pass
   if (Array.isArray(qualifier)) {
-    return qualifier.every(q => checkQualifier(player, season, q));
+    return qualifier.every(q => checkQualifier(player, season, q, rowClubs));
   }
 
   switch (qualifier.type) {
@@ -955,6 +955,13 @@ function checkQualifier(player, season, qualifier) {
     case 'max_stat': {
       if (qualifier.scope === 'career') {
         const total = player.seasons.reduce((sum, s) => sum + (s[qualifier.key] || 0), 0);
+        return total <= qualifier.value;
+      }
+      if (qualifier.scope === 'row_clubs') {
+        const clubs = rowClubs && rowClubs.length > 0 ? rowClubs : null;
+        const total = player.seasons
+          .filter(s => !clubs || clubs.includes(s.club))
+          .reduce((sum, s) => sum + (s[qualifier.key] || 0), 0);
         return total <= qualifier.value;
       }
       const val = season[qualifier.key];
@@ -1096,7 +1103,7 @@ function getValidSeasons(player, rowConfig) {
     if (rowConfig.excludeClubs && rowConfig.excludeClubs.includes(s.club)) return false;
     if (s.seasonYear < rowConfig.seasonStart) return false;
     if (s.seasonYear > rowConfig.seasonEnd)   return false;
-    if (!checkQualifier(player, s, rowConfig.qualifier)) return false;
+    if (!checkQualifier(player, s, rowConfig.qualifier, rowConfig.clubs)) return false;
     const statVal = getStatValue(s, PUZZLE.categoryKey);
     if (statVal === null) return false;
     // For boolean-backed stats (e.g. won_pl_title), only count seasons
@@ -2415,6 +2422,12 @@ function getRejectionReason(player, rowConfig) {
           return `${player.name} has won the Premier League title — this row requires players who never won it.`;
         return `${player.name} has ${total} career ${STAT_LABELS[q.key]||q.key} — this row requires max ${q.value}.`;
       }
+    }
+    if (q.type === 'max_stat' && q.scope === 'row_clubs') {
+      const filteredClubs = clubs && clubs.length > 0 ? clubs : null;
+      const total = player.seasons.filter(s => !filteredClubs || filteredClubs.includes(s.club)).reduce((acc, s) => acc + (s[q.key]||0), 0);
+      if (total > q.value)
+        return `${player.name} has ${total} ${STAT_LABELS[q.key]||q.key} at this club — this row requires max ${q.value}.`;
     }
     if (q.type === 'min_stat' && q.scope === 'career') {
       const total = player.seasons.reduce((s, ss) => s + (ss[q.key]||0), 0);
