@@ -1628,6 +1628,49 @@ const PUZZLES = [
     ]
   }
 
+  // ── Puzzle 37 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 37,
+    date: "2026-05-21",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "career",
+    target: 55,
+    rows: [
+      {
+        clubs: ["Arsenal"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPEARANCES", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Chelsea"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPEARANCES", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Liverpool"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPEARANCES", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Manchester City"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPEARANCES", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Manchester United"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPEARANCES", scopeDisplay: "CAREER" }
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
