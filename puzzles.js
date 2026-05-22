@@ -1669,7 +1669,53 @@ const PUZZLES = [
         qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       }
     ]
-  }
+  },
+
+  // ── Puzzle 38 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 38,
+    date: "2026-05-22",
+    category: "Tackles Won",
+    categoryKey: "tackles_won",
+    categoryUnit: "tackle won",
+    categoryMode: "season",
+    target: 245,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Argentina", display: "ARGENTINIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Southampton", "Crystal Palace"],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "continent", value: "European", display: "EUROPEAN", scopeDisplay: "CAREER" },
+          { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "award", award: "pl_title", scope: "season", display: "WON PL TITLE", scopeDisplay: "SAME SEASON" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "award", award: "golden_boot", scope: "season", display: "WON GOLDEN BOOT", scopeDisplay: "SAME SEASON" }
+      }
+    ]
+  },
 
 ];
 
