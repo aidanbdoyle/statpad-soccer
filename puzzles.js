@@ -1717,6 +1717,49 @@ const PUZZLES = [
     ]
   },
 
+  // ── Puzzle 39 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 39,
+    date: "2026-05-23",
+    category: "Shots",
+    categoryKey: "shots",
+    categoryUnit: "shot",
+    categoryMode: "season",
+    target: 300,
+    rows: [
+      {
+        clubs: ["Newcastle", "Aston Villa"],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "Germany", display: "GERMAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2015,
+        seasonEnd: 2025,
+        qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "SEASON" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "N", display: "LAST NAME STARTS WITH N", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "award", award: "golden_boot", scope: "season", display: "WON GOLDEN BOOT", scopeDisplay: "SAME SEASON" }
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
