@@ -1805,6 +1805,51 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 41 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 41,
+    date: "2026-05-25",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "season",
+    target: 55,
+    rows: [
+      {
+        clubs: ["Arsenal", "Manchester City", "Manchester United", "Aston Villa"],
+        seasonStart: 2025,
+        seasonEnd: 2025,
+        qualifier: null
+      },
+      {
+        clubs: ["Liverpool", "Bournemouth", "Sunderland", "Brighton"],
+        seasonStart: 2025,
+        seasonEnd: 2025,
+        qualifier: null
+      },
+      {
+        clubs: ["Brentford", "Chelsea", "Fulham", "Newcastle"],
+        seasonStart: 2025,
+        seasonEnd: 2025,
+        qualifier: null
+      },
+      {
+        clubs: ["Everton", "Leeds United", "Crystal Palace", "Nott'm Forest"],
+        seasonStart: 2025,
+        seasonEnd: 2025,
+        qualifier: null
+      },
+      {
+        clubs: ["Tottenham", "West Ham", "Burnley", "Wolves"],
+        seasonStart: 2025,
+        seasonEnd: 2025,
+        qualifier: null
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
