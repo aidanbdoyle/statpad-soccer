@@ -15,7 +15,7 @@ JS_FILE   = os.path.join(DATA_DIR, "players_data.js")
 SEASON_ID   = 777
 SEASON_KEY  = "2025-26"
 SEASON_YEAR = 2025
-TITLE_WINNER = "TBD"  # Season not yet decided - will update when known
+TITLE_WINNER = "Arsenal"  # 2025-26 PL champions
 
 API_BASE = "https://footballapi.pulselive.com/football"
 HEADERS  = {
@@ -258,7 +258,7 @@ def scrape_season():
                 "hit_woodwork":       hw if is_primary else 0,
                 "accurate_passes":    ap if is_primary else 0,
                 "clean_sheets": club_entry["clean_sheets"] or None,
-                "won_pl_title": False,  # TBD
+                "won_pl_title": (TITLE_WINNER != "TBD" and club_entry["club"] == TITLE_WINNER),
             })
 
     return records
