@@ -1811,11 +1811,11 @@ const PUZZLES = [
   {
     puzzleNumber: 41,
     date: "2026-05-25",
-    category: "Goals",
-    categoryKey: "goals",
-    categoryUnit: "goal",
+    category: "Goal Contributions",
+    categoryKey: "goal_contributions",
+    categoryUnit: "goal contribution",
     categoryMode: "season",
-    target: 55,
+    target: 65,
     rows: [
       {
         clubs: ["Arsenal", "Manchester City", "Manchester United", "Aston Villa"],
