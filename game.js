@@ -985,6 +985,11 @@ function checkQualifier(player, season, qualifier, rowClubs) {
       const playerContinent = CONTINENT_MAP[player.nationality] || '';
       return playerContinent.toLowerCase() !== 'european';
     }
+    case 'debut_season': {
+      // Only valid in the player's first ever PL season in the DB
+      const debutYear = Math.min(...player.seasons.map(s => s.seasonYear));
+      return season.seasonYear === debutYear;
+    }
     case 'relegated': {
       const relegated = RELEGATED[season.season] || [];
       return relegated.includes(season.club);
@@ -1660,6 +1665,7 @@ function qualifierLabel(q) {
       return toTitleCase(q.display);
     case 'outfield':          return 'Outfield';
     case 'non_european':      return 'Non-European';
+    case 'debut_season':      return 'PL Debut Season';
     case 'exclude_nationality':         return toTitleCase(q.display);
     case 'exclude_nationality_one_of':  return toTitleCase(q.display);
     case 'max_peak_season':   return toTitleCase(q.display);
@@ -2488,6 +2494,10 @@ function getRejectionReason(player, rowConfig) {
       if (q.award === 'pl_title')    return `${player.name} didn't win the PL title during the required seasons.`;
     }
     if (q.type === 'relegated') return `${player.name} wasn't relegated with their club during the required seasons.`;
+    if (q.type === 'debut_season') {
+      const debutYear = Math.min(...player.seasons.map(s => s.seasonYear));
+      return `${player.name}'s PL debut was in ${debutYear}–${String(debutYear+1).slice(2)} — this row only counts stats from a player's first PL season.`;
+    }
     if (q.type === 'max_stat' && q.scope === 'season') return `${player.name} exceeded the ${q.display} limit in the required season.`;
     if (q.type === 'min_stat' && q.scope === 'season') return `${player.name} didn't reach the ${q.display} requirement in the required season.`;
   }

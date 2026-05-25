@@ -1760,6 +1760,51 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 40 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 40,
+    date: "2026-05-24",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "season",
+    target: 60,
+    rows: [
+      {
+        clubs: ["Norwich", "Watford", "Ipswich"],
+        seasonStart: 1993,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1993,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Sweden", "Senegal"], display: "SWEDISH / SENEGALESE", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1993,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "N", display: "LAST NAME STARTS WITH N", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1993,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "L", display: "LAST NAME STARTS WITH L", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1993,
+        seasonEnd: 2026,
+        qualifier: { type: "debut_season", display: "PL DEBUT SEASON", scopeDisplay: "SEASON" }
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
