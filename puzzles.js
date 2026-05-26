@@ -1850,6 +1850,51 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 42 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 42,
+    date: "2026-05-26",
+    category: "Assists",
+    categoryKey: "assists",
+    categoryUnit: "assist",
+    categoryMode: "season",
+    target: 35,
+    rows: [
+      {
+        clubs: ["Everton", "Leeds United"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Croatia", "Serbia"], display: "CROATIAN / SERBIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2025,
+        seasonEnd: 2025,
+        qualifier: { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "Y", display: "LAST NAME STARTS WITH Y", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "debut_season", display: "PL DEBUT SEASON", scopeDisplay: "SEASON" }
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
