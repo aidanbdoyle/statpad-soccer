@@ -1895,6 +1895,51 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 43 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 43,
+    date: "2026-05-27",
+    category: "Accurate Passes",
+    categoryKey: "accurate_passes",
+    categoryUnit: "accurate pass",
+    categoryMode: "career",
+    target: 45000,
+    rows: [
+      {
+        clubs: ["Chelsea", "Liverpool"],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality", value: "France", display: "FRENCH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2016,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "A", display: "LAST NAME STARTS WITH A", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2026,
+        qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
