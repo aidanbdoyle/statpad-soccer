@@ -990,6 +990,12 @@ function checkQualifier(player, season, qualifier, rowClubs) {
       const debutYear = Math.min(...player.seasons.map(s => s.seasonYear));
       return season.seasonYear === debutYear;
     }
+    case 'min_clubs_scored_at': {
+      const clubsScored = new Set(
+        player.seasons.filter(s => (s.goals || 0) > 0).map(s => s.club)
+      );
+      return clubsScored.size >= qualifier.value;
+    }
     case 'relegated': {
       const relegated = RELEGATED[season.season] || [];
       return relegated.includes(season.club);
@@ -1665,7 +1671,8 @@ function qualifierLabel(q) {
       return toTitleCase(q.display);
     case 'outfield':          return 'Outfield';
     case 'non_european':      return 'Non-European';
-    case 'debut_season':      return 'PL Debut Season';
+    case 'debut_season':          return 'PL Debut Season';
+    case 'min_clubs_scored_at':   return `Scored At ${q.value}+ PL Clubs`;
     case 'exclude_nationality':         return toTitleCase(q.display);
     case 'exclude_nationality_one_of':  return toTitleCase(q.display);
     case 'max_peak_season':   return toTitleCase(q.display);
@@ -2497,6 +2504,10 @@ function getRejectionReason(player, rowConfig) {
     if (q.type === 'debut_season') {
       const debutYear = Math.min(...player.seasons.map(s => s.seasonYear));
       return `${player.name}'s PL debut was in ${debutYear}–${String(debutYear+1).slice(2)} — this row only counts stats from a player's first PL season.`;
+    }
+    if (q.type === 'min_clubs_scored_at') {
+      const clubsScored = new Set(player.seasons.filter(s => (s.goals || 0) > 0).map(s => s.club));
+      return `${player.name} has scored for ${clubsScored.size} PL club${clubsScored.size !== 1 ? 's' : ''} — this row requires scoring at ${q.value} or more.`;
     }
     if (q.type === 'max_stat' && q.scope === 'season') return `${player.name} exceeded the ${q.display} limit in the required season.`;
     if (q.type === 'min_stat' && q.scope === 'season') return `${player.name} didn't reach the ${q.display} requirement in the required season.`;

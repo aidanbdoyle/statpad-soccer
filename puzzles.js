@@ -1985,6 +1985,51 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 45 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 45,
+    date: "2026-05-29",
+    category: "Goals",
+    categoryKey: "goals",
+    categoryUnit: "goal",
+    categoryMode: "career",
+    target: 250,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Belgium", "Netherlands"], display: "BELGIAN / DUTCH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Everton", "Aston Villa"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: ["Leeds United", "Sunderland", "Derby"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "last_name_starts_with", value: "B", display: "LAST NAME STARTS WITH B", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "min_clubs_scored_at", value: 5, display: "SCORED AT 5+ PL CLUBS", scopeDisplay: "CAREER" }
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
