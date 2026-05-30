@@ -2030,6 +2030,51 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 46 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 46,
+    date: "2026-05-30",
+    category: "Appearances",
+    categoryKey: "apps",
+    categoryUnit: "appearance",
+    categoryMode: "career",
+    target: 1600,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exact_clubs_count", value: 1, display: "PLAYED FOR EXACTLY 1 PL CLUB", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exact_clubs_count", value: 2, display: "PLAYED FOR EXACTLY 2 PL CLUBS", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exact_clubs_count", value: 3, display: "PLAYED FOR EXACTLY 3 PL CLUBS", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exact_clubs_count", value: 4, display: "PLAYED FOR EXACTLY 4 PL CLUBS", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "exact_clubs_count", value: 5, display: "PLAYED FOR EXACTLY 5 PL CLUBS", scopeDisplay: "CAREER" }
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
