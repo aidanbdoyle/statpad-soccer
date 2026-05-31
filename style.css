@@ -539,13 +539,13 @@ input  { font-family: inherit; }
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #f0be18;
+  color: #ffffff;
   font-weight: 700;
   margin-top: 1px;
 }
 
 .qualifier-row-label {
-  color: #f0be18 !important;
+  color: #ffffff !important;
   font-size: 0.95rem !important;
   text-transform: uppercase;
   letter-spacing: 0.04em;

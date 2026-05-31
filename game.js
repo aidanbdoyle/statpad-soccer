@@ -996,6 +996,10 @@ function checkQualifier(player, season, qualifier, rowClubs) {
       );
       return clubsScored.size >= qualifier.value;
     }
+    case 'min_clubs_played_for': {
+      const clubs = new Set(player.seasons.map(s => s.club));
+      return clubs.size >= qualifier.value;
+    }
     case 'relegated': {
       const relegated = RELEGATED[season.season] || [];
       return relegated.includes(season.club);
@@ -1291,10 +1295,12 @@ function makeSeasonCell(rowConfig) {
     text.innerHTML = ranges
       .map(([s, e]) => s === e ? `${s}` : `${s}–${String(e + 1).slice(-2)}`)
       .join('<span class="season-and">&amp;</span>');
-  } else if (rowConfig.seasonStart === rowConfig.seasonEnd || rowConfig.seasonEnd - rowConfig.seasonStart <= 1) {
+  } else if (rowConfig.seasonStart === rowConfig.seasonEnd) {
     text.textContent = seasonLabel(rowConfig.seasonStart);
   } else {
-    text.innerHTML = `${rowConfig.seasonStart}<span class="season-to">to</span>${rowConfig.seasonEnd}`;
+    // Display the end year as the year the last season ended (seasonEnd + 1).
+    // seasonYear 2025 = 2025-26 season, so seasonEnd 2025 shows as 2026.
+    text.innerHTML = `${rowConfig.seasonStart}<span class="season-to">to</span>${rowConfig.seasonEnd + 1}`;
   }
 
   cell.appendChild(text);
@@ -1721,6 +1727,7 @@ function qualifierLabel(q) {
     case 'non_european':      return 'Non-European';
     case 'debut_season':          return 'PL Debut Season';
     case 'min_clubs_scored_at':   return `Scored At ${q.value}+ PL Clubs`;
+    case 'min_clubs_played_for':  return `Played For ${q.value}+ PL Clubs`;
     case 'exclude_nationality':         return toTitleCase(q.display);
     case 'exclude_nationality_one_of':  return toTitleCase(q.display);
     case 'max_peak_season':   return toTitleCase(q.display);
@@ -2556,6 +2563,10 @@ function getRejectionReason(player, rowConfig) {
     if (q.type === 'min_clubs_scored_at') {
       const clubsScored = new Set(player.seasons.filter(s => (s.goals || 0) > 0).map(s => s.club));
       return `${player.name} has scored for ${clubsScored.size} PL club${clubsScored.size !== 1 ? 's' : ''} — this row requires scoring at ${q.value} or more.`;
+    }
+    if (q.type === 'min_clubs_played_for') {
+      const cl = new Set(player.seasons.map(s => s.club));
+      return `${player.name} played for ${cl.size} PL club${cl.size !== 1 ? 's' : ''} — this row requires ${q.value} or more.`;
     }
     if (q.type === 'max_stat' && q.scope === 'season') return `${player.name} exceeded the ${q.display} limit in the required season.`;
     if (q.type === 'min_stat' && q.scope === 'season') return `${player.name} didn't reach the ${q.display} requirement in the required season.`;

@@ -21,25 +21,25 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Manchester United"],
         seasonStart: 2013,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "award", award: "golden_boot", scope: "career", display: "WON GOLDEN BOOT", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2020,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "max_stat", key: "goals", value: 5, scope: "career", display: "MAX 5 CAREER GOALS", scopeDisplay: "CAREER" },
           { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" }
@@ -79,13 +79,13 @@ const PUZZLES = [
       {
         clubs: ["Arsenal","Chelsea"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Spain","Italy","Portugal"], display: "SPANISH / ITALIAN / PORTUGUESE", scopeDisplay: "SEASON" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "relegated", display: "RELEGATED", scopeDisplay: "SEASON" }
       },
       {
@@ -113,25 +113,25 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Norway", display: "NORWEGIAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Aston Villa", "Leicester", "Newcastle"],
         seasonStart: 2012,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2000,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Ireland", "Cote D'Ivoire"], display: "IRISH / IVORIAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2010,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "nationality_one_of", values: ["Northern Ireland", "Scotland", "Wales"], display: "N. IRISH / SCOTTISH / WELSH", scopeDisplay: "CAREER", showAsText: true },
           { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
@@ -140,7 +140,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "nationality", value: "France", display: "FRENCH", scopeDisplay: "CAREER" },
           { type: "max_peak_season", key: "goals", value: 10, display: "MAX 10 GOALS IN A SEASON", scopeDisplay: "CAREER" }
@@ -168,7 +168,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "nationality_one_of", values: ["Netherlands", "Denmark"], display: "DUTCH / DANISH", scopeDisplay: "CAREER" },
           { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" }
@@ -177,19 +177,19 @@ const PUZZLES = [
       {
         clubs: ["Chelsea"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Brazil", display: "BRAZILIAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Aston Villa"],
         seasonStart: 2000,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "nationality", value: "Portugal", display: "PORTUGUESE", scopeDisplay: "CAREER" },
           { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "CAREER" }
@@ -217,25 +217,25 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Germany", display: "GERMAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Sunderland", "Leeds United"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "W", display: "LAST NAME STARTS WITH W", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "max_stat", key: "apps", value: 100, scope: "career", display: "MAX 100 CAREER APPS", scopeDisplay: "CAREER" },
           { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" }
@@ -263,25 +263,25 @@ const PUZZLES = [
       {
         clubs: ["Crystal Palace", "Swansea"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: "North American", display: "NORTH AMERICAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Fulham"],
         seasonStart: 2020,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "min_stat", key: "red_cards", value: 2, scope: "career", display: "MIN 2 CAREER RED CARDS", scopeDisplay: "CAREER" }
       }
     ]
@@ -300,13 +300,13 @@ const PUZZLES = [
       {
         clubs: ["Arsenal", "Southampton"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" },
           { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" }
@@ -315,13 +315,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2020,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" },
           { type: "award", award: "pl_title", scope: "season", display: "WON PL TITLE", scopeDisplay: "SAME SEASON" }
@@ -330,7 +330,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" },
           { type: "nationality_one_of", values: ["Norway", "Sweden", "Denmark", "Finland"], display: "SCANDINAVIAN", scopeDisplay: "CAREER" }
@@ -358,25 +358,25 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2020,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "relegated", display: "RELEGATED", scopeDisplay: "SEASON" }
       },
       {
         clubs: ["Leicester", "West Ham", "Aston Villa"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 2016,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "SEASON" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "nationality", value: "England", display: "ENGLISH", scopeDisplay: "SEASON" },
           { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "SEASON" }
@@ -398,25 +398,25 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Czech Republic", display: "CZECH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "max_stat", key: "assists", value: 25, scope: "career", display: "MAX 25 CAREER ASSISTS", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "V", display: "LAST NAME STARTS WITH V", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Stoke", "Middlesbrough"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
@@ -444,31 +444,31 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Scotland", display: "SCOTTISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2020,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "England", display: "ENGLISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Blackburn Rovers", "Bolton"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "B", display: "LAST NAME STARTS WITH B", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "max_stat", key: "goals", value: 10, scope: "career", display: "MAX 10 CAREER GOALS", scopeDisplay: "CAREER" },
           { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" }
@@ -496,25 +496,25 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Belgium", display: "BELGIAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Manchester City", "Manchester United"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Nigeria", "Senegal"], display: "NIGERIAN / SENEGALESE", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: ["Asian", "Oceanian"], display: "ASIAN / OCEANIAN", scopeDisplay: "CAREER" }
       }
     ]
@@ -533,7 +533,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "nationality_one_of", values: ["Netherlands", "Belgium"], display: "DUTCH / BELGIAN", scopeDisplay: "CAREER" },
           { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
@@ -542,13 +542,13 @@ const PUZZLES = [
       {
         clubs: ["Chelsea", "Tottenham"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "last_name_starts_with", value: "F", display: "LAST NAME STARTS WITH F", scopeDisplay: "CAREER" },
           { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
@@ -563,7 +563,7 @@ const PUZZLES = [
       {
         clubs: ["Southampton"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       }
     ]
@@ -582,31 +582,31 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Spain", display: "SPANISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Tottenham"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Germany", display: "GERMAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "F", display: "FORWARD", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Wolves", "Norwich"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       }
     ]
@@ -625,13 +625,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Switzerland", "Austria"], display: "SWISS / AUSTRIAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "nationality", value: "England", display: "ENGLISH", scopeDisplay: "CAREER" },
           { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "CAREER" }
@@ -640,7 +640,7 @@ const PUZZLES = [
       {
         clubs: ["Brighton", "Brentford"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
@@ -652,7 +652,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "min_stat", key: "red_cards", value: 5, scope: "career", display: "MIN 5 CAREER RED CARDS", scopeDisplay: "CAREER" }
       }
     ]
@@ -671,13 +671,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["United States", "Canada", "Mexico"], display: "AMERICAN / CANADIAN / MEXICAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
       },
       {
@@ -689,13 +689,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "award", award: "golden_boot", scope: "season", display: "WON GOLDEN BOOT", scopeDisplay: "SAME SEASON" }
       }
     ]
@@ -714,19 +714,19 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Croatia", "Serbia"], display: "CROATIAN / SERBIAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Wolves"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exclude_nationality", value: "Portugal", display: "NON-PORTUGUESE", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "outfield", display: "OUTFIELD", scopeDisplay: "CAREER" },
           { type: "max_stat", key: "won_pl_title", value: 0, scope: "career", display: "NEVER WON PL TITLE", scopeDisplay: "CAREER" },
@@ -736,13 +736,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "C", display: "LAST NAME STARTS WITH C", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2014,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       }
     ]
@@ -759,19 +759,19 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "first_last_same_letter", display: "FIRST & LAST NAME SAME INITIAL", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2020,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Brazil", display: "BRAZILIAN", scopeDisplay: "SEASON" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "nationality", value: "Wales", display: "WELSH", scopeDisplay: "CAREER" },
           { type: "max_peak_season", key: "goals", value: 10, display: "MAX 10 GOALS IN A SEASON", scopeDisplay: "CAREER" }
@@ -786,7 +786,7 @@ const PUZZLES = [
       {
         clubs: ["Bournemouth", "West Brom"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       }
     ]
@@ -803,13 +803,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "G", display: "LAST NAME STARTS WITH G", scopeDisplay: "CAREER" }
       },
       {
@@ -821,7 +821,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_matches_nationality", display: "LAST NAME STARTS WITH SAME LETTER AS NATIONALITY", scopeDisplay: "CAREER" }
       },
       {
@@ -885,7 +885,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" },
           { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
@@ -894,13 +894,13 @@ const PUZZLES = [
       {
         clubs: ["Liverpool", "Everton"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Newcastle", "Sunderland"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       },
       {
@@ -912,7 +912,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2025,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "GK", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       }
     ]
@@ -931,13 +931,13 @@ const PUZZLES = [
       {
         clubs: ["Brighton", "Brentford"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Netherlands", "Belgium"], display: "DUTCH / BELGIAN", scopeDisplay: "CAREER" }
       },
       {
@@ -949,13 +949,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "T", display: "LAST NAME STARTS WITH T", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "last_name_length", value: 4, display: "4-LETTER LAST NAME", scopeDisplay: "CAREER" },
           { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
@@ -982,25 +982,25 @@ const PUZZLES = [
       {
         clubs: ["West Ham", "Everton"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "J", display: "LAST NAME STARTS WITH J", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "max_stat", key: "apps", value: 90, scope: "career", display: "MAX 90 CAREER APPS", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           {
             type: "nationality_one_of",
@@ -1026,31 +1026,31 @@ const PUZZLES = [
       {
         clubs: ["Burnley","Watford","Stoke"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Czech Republic","Slovakia","Poland"], display: "CZECH / SLOVAK / POLISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Germany","Netherlands"], display: "GERMAN / DUTCH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "first_last_same_length", display: "SAME NUMBER OF LETTERS IN FIRST & LAST NAME", scopeDisplay: "CAREER" }
       }
     ]
@@ -1067,7 +1067,7 @@ const PUZZLES = [
       {
         clubs: ["Leeds United", "Burnley"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
@@ -1079,19 +1079,19 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Denmark","Sweden","Norway","Finland","Iceland"], display: "SCANDINAVIAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "award", award: "pl_title", scope: "career", display: "WON PL TITLE", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" },
           { type: "max_stat", key: "assists", value: 25, scope: "career", display: "MAX 25 CAREER ASSISTS", scopeDisplay: "CAREER" }
@@ -1113,7 +1113,7 @@ const PUZZLES = [
       {
         clubs: ["Fulham"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
@@ -1125,19 +1125,19 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Italy","Netherlands","France"], display: "ITALIAN / DUTCH / FRENCH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_length", value: 7, display: "7-LETTER LAST NAME", scopeDisplay: "CAREER" }
       }
     ]
@@ -1162,25 +1162,25 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Colombia","Peru","Ecuador","Chile"], display: "COLOMBIAN / PERUVIAN / ECUADORIAN / CHILEAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "N", display: "LAST NAME STARTS WITH N", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "P", display: "LAST NAME STARTS WITH P", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exact_clubs_count", value: 4, display: "PLAYED FOR EXACTLY 4 PL CLUBS", scopeDisplay: "CAREER" }
       }
     ]
@@ -1199,7 +1199,7 @@ const PUZZLES = [
       {
         clubs: ["West Ham", "Crystal Palace"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
@@ -1211,13 +1211,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Ireland", display: "IRISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "J", display: "LAST NAME STARTS WITH J", scopeDisplay: "CAREER" }
       },
       {
@@ -1242,31 +1242,31 @@ const PUZZLES = [
       {
         clubs: ["Liverpool"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Argentina", display: "ARGENTINIAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "G", display: "GOALKEEPER", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "E", display: "LAST NAME STARTS WITH E", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exact_clubs_count", value: 2, display: "PLAYED FOR EXACTLY 2 PL CLUBS", scopeDisplay: "CAREER" }
       }
     ]
@@ -1285,13 +1285,13 @@ const PUZZLES = [
       {
         clubs: ["Leicester"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Spain", display: "SPANISH", scopeDisplay: "CAREER" }
       },
       {
@@ -1303,13 +1303,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "K", display: "LAST NAME STARTS WITH K", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
       }
     ]
@@ -1328,7 +1328,7 @@ const PUZZLES = [
       {
         clubs: ["Tottenham"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
       },
       {
@@ -1340,19 +1340,19 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Ghana", "Cameroon", "DR Congo"], display: "GHANAIAN / CAMEROONIAN / CONGOLESE", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "M", display: "LAST NAME STARTS WITH M", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Southampton", "Crystal Palace"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       }
     ]
@@ -1371,19 +1371,19 @@ const PUZZLES = [
       {
         clubs: ["Arsenal", "Manchester United"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Spain", "Portugal"], display: "SPANISH / PORTUGUESE", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "CAREER" }
       },
       {
@@ -1395,7 +1395,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "first_last_same_letter", display: "FIRST & LAST NAME SAME INITIAL", scopeDisplay: "CAREER" }
       }
     ]
@@ -1409,37 +1409,37 @@ const PUZZLES = [
     categoryKey: "saves",
     categoryUnit: "save",
     categoryMode: "career",
-    target: 2400,
+    target: 1700,
     rows: [
       {
+        clubs: ["Crystal Palace"],
+        seasonStart: 2006,
+        seasonEnd: 2025,
+        qualifier: null
+      },
+      {
+        clubs: ["Burnley", "Stoke"],
+        seasonStart: 2006,
+        seasonEnd: 2025,
+        qualifier: null
+      },
+      {
         clubs: [],
-        seasonStart: 2010,
-        seasonEnd: 2020,
+        seasonStart: 2022,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
-        qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
-      },
-      {
-        clubs: [],
-        seasonStart: 2015,
-        seasonEnd: 2026,
-        qualifier: null
+        seasonEnd: 2025,
+        qualifier: { type: "last_name_starts_with", value: "K", display: "LAST NAME STARTS WITH K", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2015,
-        qualifier: null
-      },
-      {
-        clubs: [],
-        seasonStart: 2006,
-        seasonEnd: 2011,
-        qualifier: null
+        seasonEnd: 2025,
+        qualifier: { type: "min_clubs_played_for", value: 3, display: "PLAYED FOR 3+ PL CLUBS", scopeDisplay: "CAREER" }
       }
     ]
   },
@@ -1457,31 +1457,31 @@ const PUZZLES = [
       {
         clubs: ["Southampton", "Everton"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: ["Manchester United"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exclude_nationality_one_of", values: ["England", "Scotland", "Wales", "Northern Ireland"], display: "NOT BRITISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2000,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Spain", display: "SPANISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2015,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exclude_nationality", value: "England", display: "NON-ENGLISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "S", display: "LAST NAME STARTS WITH S", scopeDisplay: "CAREER" }
       }
     ]
@@ -1500,31 +1500,31 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "France", display: "FRENCH", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Netherlands", "Belgium"], display: "DUTCH / BELGIAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["West Ham", "Crystal Palace"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "P", display: "LAST NAME STARTS WITH P", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "award", award: "golden_boot", scope: "career", display: "WON GOLDEN BOOT", scopeDisplay: "CAREER" }
       }
     ]
@@ -1543,13 +1543,13 @@ const PUZZLES = [
       {
         clubs: ["Burnley", "Leicester"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "D", display: "DEFENDERS", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "nationality", value: "Wales", display: "WELSH", scopeDisplay: "CAREER" },
           { type: "position", value: "D", display: "DEFENDERS", scopeDisplay: "CAREER" }
@@ -1558,7 +1558,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "continent", value: "African", display: "AFRICAN", scopeDisplay: "CAREER" },
           { type: "position", value: "D", display: "DEFENDERS", scopeDisplay: "CAREER" }
@@ -1573,7 +1573,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "last_name_starts_with", value: "C", display: "LAST NAME STARTS WITH C", scopeDisplay: "CAREER" },
           { type: "position", value: "D", display: "DEFENDERS", scopeDisplay: "CAREER" }
@@ -1595,19 +1595,19 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Germany", display: "GERMAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Nigeria", "Ghana", "Senegal"], display: "NIGERIAN / GHANAIAN / SENEGALESE", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Wolves", "Fulham"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
@@ -1619,7 +1619,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" },
           { type: "min_two_stats", keys: ["goals", "assists"], values: [25, 25], scope: "career", display: "25+ GOALS & 25+ ASSISTS", scopeDisplay: "CAREER" }
@@ -1641,31 +1641,31 @@ const PUZZLES = [
       {
         clubs: ["Arsenal"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       },
       {
         clubs: ["Chelsea"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       },
       {
         clubs: ["Liverpool"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       },
       {
         clubs: ["Manchester City"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       },
       {
         clubs: ["Manchester United"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "max_stat", key: "apps", value: 100, scope: "row_clubs", display: "MAX 100 APPEARANCES", scopeDisplay: "AT THIS CLUB" }
       }
     ]
@@ -1684,19 +1684,19 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Argentina", display: "ARGENTINIAN", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Southampton", "Crystal Palace"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "continent", value: "European", display: "EUROPEAN", scopeDisplay: "CAREER" },
           { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "CAREER" }
@@ -1705,13 +1705,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "award", award: "pl_title", scope: "season", display: "WON PL TITLE", scopeDisplay: "SAME SEASON" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "award", award: "golden_boot", scope: "season", display: "WON GOLDEN BOOT", scopeDisplay: "SAME SEASON" }
       }
     ]
@@ -1730,13 +1730,13 @@ const PUZZLES = [
       {
         clubs: ["Newcastle", "Aston Villa"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "Germany", display: "GERMAN", scopeDisplay: "CAREER" }
       },
       {
@@ -1748,13 +1748,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "N", display: "LAST NAME STARTS WITH N", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "award", award: "golden_boot", scope: "season", display: "WON GOLDEN BOOT", scopeDisplay: "SAME SEASON" }
       }
     ]
@@ -1775,31 +1775,31 @@ const PUZZLES = [
       {
         clubs: ["Norwich", "Watford", "Ipswich"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Sweden", "Senegal"], display: "SWEDISH / SENEGALESE", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "N", display: "LAST NAME STARTS WITH N", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "L", display: "LAST NAME STARTS WITH L", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "debut_season", display: "PL DEBUT SEASON", scopeDisplay: "SEASON" }
       }
     ]
@@ -1865,13 +1865,13 @@ const PUZZLES = [
       {
         clubs: ["Everton", "Leeds United"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Croatia", "Serbia"], display: "CROATIAN / SERBIAN", scopeDisplay: "CAREER" }
       },
       {
@@ -1883,13 +1883,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "Y", display: "LAST NAME STARTS WITH Y", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "debut_season", display: "PL DEBUT SEASON", scopeDisplay: "SEASON" }
       }
     ]
@@ -1910,13 +1910,13 @@ const PUZZLES = [
       {
         clubs: ["Chelsea", "Liverpool"],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality", value: "France", display: "FRENCH", scopeDisplay: "CAREER" }
       },
       {
@@ -1928,13 +1928,13 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "A", display: "LAST NAME STARTS WITH A", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 2006,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "continent", value: "South American", display: "SOUTH AMERICAN", scopeDisplay: "CAREER" }
       }
     ]
@@ -2000,31 +2000,31 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Belgium", "Netherlands"], display: "BELGIAN / DUTCH", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Everton", "Aston Villa"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: ["Leeds United", "Sunderland", "Derby"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "last_name_starts_with", value: "B", display: "LAST NAME STARTS WITH B", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "min_clubs_scored_at", value: 5, display: "SCORED AT 5+ PL CLUBS", scopeDisplay: "CAREER" }
       }
     ]
@@ -2045,31 +2045,31 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exact_clubs_count", value: 1, display: "PLAYED FOR EXACTLY 1 PL CLUB", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exact_clubs_count", value: 2, display: "PLAYED FOR EXACTLY 2 PL CLUBS", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exact_clubs_count", value: 3, display: "PLAYED FOR EXACTLY 3 PL CLUBS", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exact_clubs_count", value: 4, display: "PLAYED FOR EXACTLY 4 PL CLUBS", scopeDisplay: "CAREER" }
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "exact_clubs_count", value: 5, display: "PLAYED FOR EXACTLY 5 PL CLUBS", scopeDisplay: "CAREER" }
       }
     ]
@@ -2135,19 +2135,19 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "nationality_one_of", values: ["Ireland", "Northern Ireland"], display: "IRISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Brighton", "Brentford"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: null
       },
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" },
           { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" }
@@ -2162,7 +2162,7 @@ const PUZZLES = [
       {
         clubs: ["Arsenal", "Chelsea", "Liverpool", "Manchester City", "Manchester United", "Tottenham"],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
       }
     ]
@@ -2228,7 +2228,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "max_stat", key: "goals", value: 50, scope: "career", display: "MAX 50 CAREER GOALS", scopeDisplay: "CAREER" },
           { type: "position", value: "F", display: "FORWARD", scopeDisplay: "CAREER" }
@@ -2237,7 +2237,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "max_stat", key: "assists", value: 50, scope: "career", display: "MAX 50 CAREER ASSISTS", scopeDisplay: "CAREER" },
           { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
@@ -2246,7 +2246,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "max_stat", key: "clean_sheets", value: 50, scope: "career", display: "MAX 50 CAREER CLEAN SHEETS", scopeDisplay: "CAREER" },
           { type: "position_one_of", values: ["D", "M"], display: "DEFENDER / MIDFIELDER", scopeDisplay: "CAREER" }
@@ -2255,7 +2255,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "max_stat", key: "yellow_cards", value: 50, scope: "career", display: "MAX 50 CAREER YELLOW CARDS", scopeDisplay: "CAREER" },
           { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "CAREER" }
@@ -2264,7 +2264,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 1992,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         qualifier: [
           { type: "max_stat", key: "clean_sheets", value: 50, scope: "career", display: "MAX 50 CAREER CLEAN SHEETS", scopeDisplay: "CAREER" },
           { type: "position", value: "G", display: "GOALKEEPER", scopeDisplay: "CAREER" }
@@ -2320,7 +2320,7 @@ const PUZZLES = [
       {
         clubs: ["Manchester City"],
         seasonStart: 2016,
-        seasonEnd: 2026,
+        seasonEnd: 2025,
         allowedSeasons: [2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],
         qualifier: null,
         rowLabel: "Guardiola Era"
