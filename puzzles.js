@@ -2075,6 +2075,51 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 47 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 47,
+    date: "2026-05-31",
+    category: "Tackles Won",
+    categoryKey: "tackles_won",
+    categoryUnit: "tackle won",
+    categoryMode: "season",
+    target: 150,
+    rows: [
+      {
+        clubs: ["Manchester City"],
+        seasonStart: 2022,
+        seasonEnd: 2022,
+        qualifier: null
+      },
+      {
+        clubs: ["Chelsea"],
+        seasonStart: 2020,
+        seasonEnd: 2020,
+        qualifier: null
+      },
+      {
+        clubs: ["Liverpool"],
+        seasonStart: 2018,
+        seasonEnd: 2018,
+        qualifier: null
+      },
+      {
+        clubs: ["Chelsea"],
+        seasonStart: 2011,
+        seasonEnd: 2011,
+        qualifier: null
+      },
+      {
+        clubs: ["Manchester United"],
+        seasonStart: 2007,
+        seasonEnd: 2007,
+        qualifier: null
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
