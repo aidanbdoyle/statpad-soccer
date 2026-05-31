@@ -1277,7 +1277,21 @@ function makeSeasonCell(rowConfig) {
   const text = document.createElement('div');
   text.className = 'season-text';
 
-  if (rowConfig.seasonStart === rowConfig.seasonEnd || rowConfig.seasonEnd - rowConfig.seasonStart <= 1) {
+  // Non-contiguous seasons → render as "YYYY - YYYY & YYYY - YYYY"
+  if (Array.isArray(rowConfig.allowedSeasons) && rowConfig.allowedSeasons.length) {
+    const years = [...rowConfig.allowedSeasons].sort((a, b) => a - b);
+    const ranges = [];
+    let runStart = years[0], prev = years[0];
+    for (let i = 1; i < years.length; i++) {
+      if (years[i] === prev + 1) { prev = years[i]; continue; }
+      ranges.push([runStart, prev]);
+      runStart = years[i]; prev = years[i];
+    }
+    ranges.push([runStart, prev]);
+    text.innerHTML = ranges
+      .map(([s, e]) => s === e ? `${s}` : `${s}<span class="season-to">to</span>${e + 1}`)
+      .join('<span class="season-and"> & </span>');
+  } else if (rowConfig.seasonStart === rowConfig.seasonEnd || rowConfig.seasonEnd - rowConfig.seasonStart <= 1) {
     text.textContent = seasonLabel(rowConfig.seasonStart);
   } else {
     text.innerHTML = `${rowConfig.seasonStart}<span class="season-to">to</span>${rowConfig.seasonEnd}`;
@@ -1488,6 +1502,7 @@ function updateActionCell(rowIdx) {
 function makeResultCell(rowIdx) {
   const { player, season, statValue, percentile } = state.rows[rowIdx];
   const tier = getPercentileTier(percentile);
+  const rowConfig = PUZZLE.rows[rowIdx];
 
   const cell = document.createElement('div');
   cell.className = `grid-cell result-cell${tier ? ' tier-' + tier : ''}`;
@@ -1566,6 +1581,12 @@ function makeResultCell(rowIdx) {
   cell.appendChild(chevron);
   cell.appendChild(topRow);
   cell.appendChild(seasonEl);
+  if (rowConfig && rowConfig.rowLabel) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'result-row-label';
+    labelEl.textContent = rowConfig.rowLabel;
+    cell.appendChild(labelEl);
+  }
   cell.appendChild(statRow);
   cell.appendChild(pWrap);
 

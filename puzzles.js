@@ -2289,32 +2289,37 @@ const PUZZLES = [
         clubs: ["Manchester United"],
         seasonStart: 1992,
         seasonEnd: 2012,
-        qualifier: null
+        qualifier: null,
+        rowLabel: "Sir Alex Ferguson Era"
       },
       {
         clubs: ["Arsenal"],
         seasonStart: 1996,
         seasonEnd: 2017,
-        qualifier: null
+        qualifier: null,
+        rowLabel: "Arsène Wenger Era"
       },
       {
         clubs: ["Chelsea"],
         seasonStart: 2004,
         seasonEnd: 2014,
         allowedSeasons: [2004, 2005, 2006, 2013, 2014],
-        qualifier: null
+        qualifier: null,
+        rowLabel: "José Mourinho Era"
       },
       {
         clubs: ["Liverpool"],
         seasonStart: 2015,
         seasonEnd: 2023,
-        qualifier: null
+        qualifier: null,
+        rowLabel: "Jürgen Klopp Era"
       },
       {
         clubs: ["Manchester City"],
         seasonStart: 2016,
         seasonEnd: 2025,
-        qualifier: null
+        qualifier: null,
+        rowLabel: "Pep Guardiola Era"
       }
     ]
   }
