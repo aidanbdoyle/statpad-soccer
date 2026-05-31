@@ -1277,7 +1277,7 @@ function makeSeasonCell(rowConfig) {
   const text = document.createElement('div');
   text.className = 'season-text';
 
-  // Non-contiguous seasons → render as "YYYY - YYYY & YYYY - YYYY"
+  // Non-contiguous seasons → render compactly as "2004–07 & 2013–15"
   if (Array.isArray(rowConfig.allowedSeasons) && rowConfig.allowedSeasons.length) {
     const years = [...rowConfig.allowedSeasons].sort((a, b) => a - b);
     const ranges = [];
@@ -1289,8 +1289,8 @@ function makeSeasonCell(rowConfig) {
     }
     ranges.push([runStart, prev]);
     text.innerHTML = ranges
-      .map(([s, e]) => s === e ? `${s}` : `${s}<span class="season-to">to</span>${e + 1}`)
-      .join('<span class="season-and"> & </span>');
+      .map(([s, e]) => s === e ? `${s}` : `${s}–${String(e + 1).slice(-2)}`)
+      .join('<span class="season-and">&amp;</span>');
   } else if (rowConfig.seasonStart === rowConfig.seasonEnd || rowConfig.seasonEnd - rowConfig.seasonStart <= 1) {
     text.textContent = seasonLabel(rowConfig.seasonStart);
   } else {
@@ -1451,6 +1451,14 @@ function makeQualifierCell(rowConfig) {
       cell.appendChild(scope);
     }
   });
+
+  // If no qualifiers shown and no excludeClubs but a rowLabel exists, show rowLabel
+  if (quals.length === 0 && !(rowConfig.excludeClubs && rowConfig.excludeClubs.length > 0) && rowConfig.rowLabel) {
+    const main = document.createElement('div');
+    main.className = 'qualifier-main qualifier-row-label';
+    main.textContent = rowConfig.rowLabel;
+    cell.appendChild(main);
+  }
 
   return cell;
 }

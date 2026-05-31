@@ -544,11 +544,19 @@ input  { font-family: inherit; }
   margin-top: 1px;
 }
 
+.qualifier-row-label {
+  color: #f0be18 !important;
+  font-size: 0.95rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .season-text .season-and {
   display: block;
-  font-size: 0.7em;
-  margin: 1px 0;
-  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #aaaaaa;
+  line-height: 1;
 }
 
 .result-stat-row {
