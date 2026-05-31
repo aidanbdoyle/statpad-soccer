@@ -2168,6 +2168,51 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 49 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 49,
+    date: "2026-06-02",
+    category: "Shots",
+    categoryKey: "shots",
+    categoryUnit: "shot",
+    categoryMode: "career",
+    target: 1500,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 2006,
+        seasonEnd: 2009,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2010,
+        seasonEnd: 2013,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2014,
+        seasonEnd: 2017,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2018,
+        seasonEnd: 2021,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2022,
+        seasonEnd: 2025,
+        qualifier: null
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
