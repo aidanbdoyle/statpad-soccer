@@ -1117,11 +1117,17 @@ function getStatValue(season, key) {
 
 // ── Player Matching ───────────────────────────────────────────
 function getValidSeasons(player, rowConfig) {
+  const allowedSet = Array.isArray(rowConfig.allowedSeasons) && rowConfig.allowedSeasons.length
+    ? new Set(rowConfig.allowedSeasons) : null;
   return player.seasons.filter(s => {
     if (rowConfig.clubs.length > 0 && !rowConfig.clubs.includes(s.club)) return false;
     if (rowConfig.excludeClubs && rowConfig.excludeClubs.includes(s.club)) return false;
-    if (s.seasonYear < rowConfig.seasonStart) return false;
-    if (s.seasonYear > rowConfig.seasonEnd)   return false;
+    if (allowedSet) {
+      if (!allowedSet.has(s.seasonYear)) return false;
+    } else {
+      if (s.seasonYear < rowConfig.seasonStart) return false;
+      if (s.seasonYear > rowConfig.seasonEnd)   return false;
+    }
     if (!checkQualifier(player, s, rowConfig.qualifier, rowConfig.clubs)) return false;
     const statVal = getStatValue(s, PUZZLE.categoryKey);
     if (statVal === null) return false;
@@ -1609,7 +1615,11 @@ function getAnswerClub(player, rowConfig, season) {
   const key = PUZZLE.categoryKey;
   const clubTotals = {};
   for (const s of player.seasons) {
-    if (s.seasonYear < rowConfig.seasonStart || s.seasonYear > rowConfig.seasonEnd) continue;
+    if (Array.isArray(rowConfig.allowedSeasons) && rowConfig.allowedSeasons.length) {
+      if (!rowConfig.allowedSeasons.includes(s.seasonYear)) continue;
+    } else {
+      if (s.seasonYear < rowConfig.seasonStart || s.seasonYear > rowConfig.seasonEnd) continue;
+    }
     if (!s.club) continue;
     clubTotals[s.club] = (clubTotals[s.club] || 0) + (getStatValue(s, key) || 0);
   }

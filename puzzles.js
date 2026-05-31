@@ -2273,6 +2273,52 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 51 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 51,
+    date: "2026-06-04",
+    category: "Goal Contributions",
+    categoryKey: "goal_contributions",
+    categoryUnit: "goal contribution",
+    categoryMode: "career",
+    target: 550,
+    rows: [
+      {
+        clubs: ["Manchester United"],
+        seasonStart: 1992,
+        seasonEnd: 2012,
+        qualifier: null
+      },
+      {
+        clubs: ["Arsenal"],
+        seasonStart: 1996,
+        seasonEnd: 2017,
+        qualifier: null
+      },
+      {
+        clubs: ["Chelsea"],
+        seasonStart: 2004,
+        seasonEnd: 2014,
+        allowedSeasons: [2004, 2005, 2006, 2013, 2014],
+        qualifier: null
+      },
+      {
+        clubs: ["Liverpool"],
+        seasonStart: 2015,
+        seasonEnd: 2023,
+        qualifier: null
+      },
+      {
+        clubs: ["Manchester City"],
+        seasonStart: 2016,
+        seasonEnd: 2025,
+        qualifier: null
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
