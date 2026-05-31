@@ -2120,6 +2120,54 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 48 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 48,
+    date: "2026-06-01",
+    category: "Clean Sheets",
+    categoryKey: "clean_sheets",
+    categoryUnit: "clean sheet",
+    categoryMode: "career",
+    target: 300,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "nationality_one_of", values: ["Ireland", "Northern Ireland"], display: "IRISH", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Brighton", "Brentford"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "non_european", display: "NON-EUROPEAN", scopeDisplay: "CAREER" },
+          { type: "outfield", display: "OUTFIELD PLAYER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 1999,
+        qualifier: { type: "position", value: "G", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["Arsenal", "Chelsea", "Liverpool", "Manchester City", "Manchester United", "Tottenham"],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
