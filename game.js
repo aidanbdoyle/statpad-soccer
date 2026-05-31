@@ -1011,6 +1011,14 @@ function checkQualifier(player, season, qualifier, rowClubs) {
       const pos = (player.position || '').toUpperCase();
       return pos !== 'G' && pos !== 'GK';
     }
+    case 'position_one_of': {
+      const pPos = (player.position || '').toUpperCase();
+      const vals = (qualifier.values || []).map(v => v.toUpperCase());
+      return vals.some(v => {
+        if (v === 'GK') return pPos === 'G' || pPos === 'GK';
+        return pPos.startsWith(v);
+      });
+    }
     case 'exclude_nationality': {
       const normNat = s => (s || '').toLowerCase().replace(/[\u2018\u2019\u201a\u201b]/g, "'");
       return normNat(player.nationality) !== normNat(qualifier.value);
@@ -1670,6 +1678,7 @@ function qualifierLabel(q) {
       if (q.award === 'pl_title')    return 'PL Title Winner';
       return toTitleCase(q.display);
     case 'outfield':          return 'Outfield';
+    case 'position_one_of':   return toTitleCase(q.display);
     case 'non_european':      return 'Non-European';
     case 'debut_season':          return 'PL Debut Season';
     case 'min_clubs_scored_at':   return `Scored At ${q.value}+ PL Clubs`;

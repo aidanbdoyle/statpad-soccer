@@ -2213,6 +2213,66 @@ const PUZZLES = [
     ]
   }
 
+  ,
+
+  // ── Puzzle 50 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 50,
+    date: "2026-06-03",
+    category: "Appearances",
+    categoryKey: "apps",
+    categoryUnit: "appearance",
+    categoryMode: "career",
+    target: 1100,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "max_stat", key: "goals", value: 50, scope: "career", display: "MAX 50 CAREER GOALS", scopeDisplay: "CAREER" },
+          { type: "position", value: "F", display: "FORWARD", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "max_stat", key: "assists", value: 50, scope: "career", display: "MAX 50 CAREER ASSISTS", scopeDisplay: "CAREER" },
+          { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "max_stat", key: "clean_sheets", value: 50, scope: "career", display: "MAX 50 CAREER CLEAN SHEETS", scopeDisplay: "CAREER" },
+          { type: "position_one_of", values: ["D", "M"], display: "DEFENDER / MIDFIELDER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "max_stat", key: "yellow_cards", value: 50, scope: "career", display: "MAX 50 CAREER YELLOW CARDS", scopeDisplay: "CAREER" },
+          { type: "position", value: "D", display: "DEFENDER", scopeDisplay: "CAREER" }
+        ]
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2026,
+        qualifier: [
+          { type: "max_stat", key: "clean_sheets", value: 50, scope: "career", display: "MAX 50 CAREER CLEAN SHEETS", scopeDisplay: "CAREER" },
+          { type: "position", value: "G", display: "GOALKEEPER", scopeDisplay: "CAREER" }
+        ]
+      }
+    ]
+  }
+
 ];
 
 // ── Auto-select today's puzzle ───────────────────────────────
