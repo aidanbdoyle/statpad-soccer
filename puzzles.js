@@ -780,7 +780,7 @@ const PUZZLES = [
       {
         clubs: ["Crystal Palace"],
         seasonStart: 2015,
-        seasonEnd: 2025,
+        seasonEnd: 2024,
         qualifier: null
       },
       {
@@ -1223,7 +1223,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2015,
-        seasonEnd: 2025,
+        seasonEnd: 2024,
         qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "CAREER" }
       }
     ]
@@ -1297,7 +1297,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2020,
-        seasonEnd: 2025,
+        seasonEnd: 2024,
         qualifier: null
       },
       {
@@ -1567,7 +1567,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2020,
-        seasonEnd: 2025,
+        seasonEnd: 2024,
         qualifier: { type: "position", value: "D", display: "DEFENDERS", scopeDisplay: "CAREER" }
       },
       {
@@ -1742,7 +1742,7 @@ const PUZZLES = [
       {
         clubs: [],
         seasonStart: 2015,
-        seasonEnd: 2025,
+        seasonEnd: 2024,
         qualifier: { type: "position", value: "M", display: "MIDFIELDER", scopeDisplay: "SEASON" }
       },
       {
