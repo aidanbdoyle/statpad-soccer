@@ -1761,15 +1761,16 @@ function makeRowSubtitle(rowConfig) {
     clubStr = clubs.map(c => (CLUB_STYLES[c] || { abbr: c.slice(0,3).toUpperCase() }).abbr).join('/');
   }
 
-  // Time
+  // Time — end year displayed as (seasonEnd + 1) to reflect the year the last
+  // season ended. seasonEnd: 2025 means seasonYear 2025 = 2025-26 season → shows as 2026.
   const allStart = start <= 1992;
-  const allEnd   = end   >= 2026;
+  const allEnd   = end   >= 2025;
   const nextYY   = String(end + 1).slice(-2);
   const timeStr  = (allStart && allEnd) ? 'All-Time'
-    : allStart ? `Before ${end}`
+    : allStart ? `Before ${end + 1}`
     : allEnd   ? `Since ${start}`
     : start === end ? `${start}–${nextYY}`
-    : `${start}–${end}`;
+    : `${start}–${end + 1}`;
 
   // Qualifier prefix (nationality, position, award, etc.)
   const quals   = !rowConfig.qualifier ? []
@@ -2024,7 +2025,7 @@ function buildTop5Panel(rowIdx) {
   const clubStr = rowConfig.clubs.length ? rowConfig.clubs.join(' / ') : 'Any';
   const yrStr   = rowConfig.seasonStart === rowConfig.seasonEnd
     ? seasonLabel(rowConfig.seasonStart)
-    : `${rowConfig.seasonStart}–${rowConfig.seasonEnd}`;
+    : `${rowConfig.seasonStart}–${rowConfig.seasonEnd + 1}`;
   const qualArr = !rowConfig.qualifier ? [] : Array.isArray(rowConfig.qualifier) ? rowConfig.qualifier : [rowConfig.qualifier];
   const qualStr = qualArr.length ? qualArr.map(q => q.display).join(' + ') : 'None';
   constraints.textContent = `Clubs: ${clubStr}  ·  Years: ${yrStr}  ·  Qual: ${qualStr}`;

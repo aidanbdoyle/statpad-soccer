@@ -2136,7 +2136,7 @@ const PUZZLES = [
         clubs: [],
         seasonStart: 1992,
         seasonEnd: 2025,
-        qualifier: { type: "nationality_one_of", values: ["Ireland", "Northern Ireland"], display: "IRISH", scopeDisplay: "CAREER" }
+        qualifier: { type: "nationality", value: "Ireland", display: "IRISH", scopeDisplay: "CAREER" }
       },
       {
         clubs: ["Brighton", "Brentford"],
