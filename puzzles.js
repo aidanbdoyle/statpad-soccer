@@ -2327,6 +2327,50 @@ const PUZZLES = [
       }
     ]
   }
+  ,
+
+  // ── Puzzle 52 ───────────────────────────────────────────────
+  {
+    puzzleNumber: 52,
+    date: "2026-06-05",
+    category: "Assists",
+    categoryKey: "assists",
+    categoryUnit: "assist",
+    categoryMode: "career",
+    target: 200,
+    rows: [
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2025,
+        qualifier: { type: "nationality", value: "Italy", display: "ITALIAN", scopeDisplay: "CAREER" }
+      },
+      {
+        clubs: ["West Ham"],
+        seasonStart: 1992,
+        seasonEnd: 2025,
+        qualifier: null
+      },
+      {
+        clubs: ["Newcastle", "Aston Villa"],
+        seasonStart: 1992,
+        seasonEnd: 2025,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 2005,
+        seasonEnd: 2009,
+        qualifier: null
+      },
+      {
+        clubs: [],
+        seasonStart: 1992,
+        seasonEnd: 2025,
+        qualifier: { type: "min_stat", key: "yellow_cards", value: 50, scope: "career", display: "MIN 50 CAREER YELLOW CARDS", scopeDisplay: "CAREER" }
+      }
+    ]
+  }
 
 ];
 
