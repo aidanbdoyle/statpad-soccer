@@ -2359,8 +2359,8 @@ const PUZZLES = [
       },
       {
         clubs: [],
-        seasonStart: 2005,
-        seasonEnd: 2009,
+        seasonStart: 2010,
+        seasonEnd: 2014,
         qualifier: null
       },
       {
